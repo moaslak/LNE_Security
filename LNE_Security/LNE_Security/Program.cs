@@ -8,7 +8,6 @@ namespace LNE_Security
         public static void Main(string[] args)
         {
             Console.WriteLine("Hello World");
-            
         }
     }
 }
