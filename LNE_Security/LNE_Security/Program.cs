@@ -7,7 +7,11 @@ namespace LNE_Security
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World");
+            TECHCOOL.UI.Menu menu = new TECHCOOL.UI.Menu();
+            TECHCOOL.UI.Screen screen;
+            
+            menu.Draw();
+            Console.ReadKey();
         }
     }
 }
