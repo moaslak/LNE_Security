@@ -11,4 +11,8 @@
     <PackageReference Include="TECHCOOL" Version="1.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Documentation\" />
+  </ItemGroup>
+
 </Project>
