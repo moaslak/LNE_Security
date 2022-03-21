@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace LNE_Security
 {
-    public partial class Database
+    public partial class Company
     {
-        public static Database Instance { get; private set; }
+        public static Company Instance { get; private set; }
 
-        static Database()
+        static Company()
         {
-            Instance = new Database();
+            Instance = new Company();
         }
     }
 }
