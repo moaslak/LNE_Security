@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LNE_Security;
 
-partial class Database
+partial class Company
 {
     public int ID { get; set; }
     public string CompanyName { get; set; }
