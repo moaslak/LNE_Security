@@ -7,20 +7,19 @@ namespace LNE_Security
 {
     public class Sales
     {
-        public SalesOrder SalesOrder
-        {
-            get => default;
-            set
-            {
-            }
-        }
-
+        public SalesOrder SalesOrder { get; set; }
+        
         public void NewOrder()
         {
             throw new System.NotImplementedException();
         }
 
-        public void GetOrder()
+        public void GetOrder(UInt32 ID)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetAllOrders()
         {
             throw new System.NotImplementedException();
         }
@@ -30,7 +29,7 @@ namespace LNE_Security
             throw new System.NotImplementedException();
         }
 
-        public void UpdateOrder()
+        public void UpdateOrder(UInt32 ID)
         {
             throw new System.NotImplementedException();
         }
