@@ -59,12 +59,17 @@ namespace LNE_Security
             ContactInfo = contactInfo;
             Database = database;
             Address = address;
+            ID++;
             return this;
         }
 
-        public virtual Person DeletePerson()
+        public virtual Person DeletePerson(ContactInfo contactInfom,
+            Database database, Address address)
         {
-            throw new System.NotImplementedException();
+            ContactInfo = contactInfom;
+            Database = database;
+            Address = address;
+            return null;
         }
 
         public virtual Person UpdatePerson()

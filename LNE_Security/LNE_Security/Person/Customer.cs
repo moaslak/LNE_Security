@@ -7,18 +7,25 @@ namespace LNE_Security
 {
     public class Customer : Person
     {
-        public override Person NewPerson(ContactInfo contactInfo, Database database, Address address)
+        Person _person;
+        public override Person NewPerson(ContactInfo contactInfo,
+            Database database, Address address)
         {
             
             contactInfo = new ContactInfo();
             address = new Address();
             database = new Database();
-            return this; 
+            return _person; 
         }
 
-        public override Person DeletePerson()
+        public override Person DeletePerson(ContactInfo contactInfo,
+            Database database, Address address)
         {
-            throw new System.NotImplementedException();
+            database = new Database();
+            contactInfo = new ContactInfo();
+            address = new Address();
+            _person.DeletePerson(contactInfo, database, address);
+            return _person;
         }
 
         public override Person GetPerson()
