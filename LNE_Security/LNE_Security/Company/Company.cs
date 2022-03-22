@@ -39,13 +39,8 @@ namespace LNE_Security
             }
         }
 
-        public string CompanyName
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public string CompanyName { get; set; }
+        
 
         public string StreetName
         {

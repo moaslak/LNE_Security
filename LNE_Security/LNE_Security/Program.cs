@@ -15,11 +15,11 @@ namespace LNE_Security
 
         public static void Main(string[] args)
         {
-            TECHCOOL.UI.Menu menu = new TECHCOOL.UI.Menu();
-            TECHCOOL.UI.Screen screen;
-            
-            menu.Draw();
-            Console.ReadKey();
+            ScreenHandler screenHandler = new ScreenHandler();
+            Company company = new Company();
+            company.CompanyName = "test";
+            screenHandler.Company = company;
+            ScreenHandler.Display(screenHandler);
         }
     }
 }

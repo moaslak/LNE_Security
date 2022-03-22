@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using TECHCOOL.UI;
 namespace LNE_Security
 {
-    public class ScreenHandler : Techcool
+    public class ScreenHandler : Screen
     {
-        public Company Company
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public Company Company { get; set; }
+        
 
-        public Person Person
+        public Person Person { get; set; }
+
+
+        public override string Title { get; set; }
+
+        protected override void Draw()
         {
-            get => default;
-            set
-            {
-            }
+            Title = Company.CompanyName;
+            Clear(this);
+            Console.WriteLine("Screen");
         }
     }
 }
