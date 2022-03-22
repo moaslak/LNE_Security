@@ -5,9 +5,10 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Company
+    public class OrderLine
     {
-        public Storage Storage
+
+        public Product Product
         {
             get => default;
             set
@@ -15,7 +16,7 @@ namespace LNE_Security
             }
         }
 
-        public Sales Sales
+        public UInt16 Quantity
         {
             get => default;
             set
@@ -23,12 +24,17 @@ namespace LNE_Security
             }
         }
 
-        public Database Database
+        public double Price
         {
             get => default;
             set
             {
             }
+        }
+
+        public double CalculateLinePrice()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
