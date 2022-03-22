@@ -12,6 +12,7 @@ namespace LNE_Security
             get => default;
             set
             {
+                ContactInfo = value;
             }
         }
 
@@ -20,6 +21,7 @@ namespace LNE_Security
             get => default;
             set
             {
+                Database = value;
             }
         }
 
@@ -28,6 +30,7 @@ namespace LNE_Security
             get => default;
             set
             {
+                Address = value;
             }
         }
 
@@ -36,6 +39,7 @@ namespace LNE_Security
             get => default;
             set
             {
+                ID = value;
             }
         }
 
@@ -44,12 +48,18 @@ namespace LNE_Security
             get => default;
             set
             {
+                Type = value;
             }
         }
 
-        public virtual Person NewPerson()
-        {
-            throw new System.NotImplementedException();
+        public virtual Person NewPerson(
+            ContactInfo contactInfo, Database database,
+            Address address)
+        { 
+            ContactInfo = contactInfo;
+            Database = database;
+            Address = address;
+            return this;
         }
 
         public virtual Person DeletePerson()

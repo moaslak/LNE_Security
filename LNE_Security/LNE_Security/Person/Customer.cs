@@ -9,7 +9,7 @@ namespace LNE_Security
     {
         public override Person NewPerson()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public override Person DeletePerson()
