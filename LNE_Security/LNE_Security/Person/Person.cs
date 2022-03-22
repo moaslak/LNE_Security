@@ -61,8 +61,10 @@ namespace LNE_Security
             ContactInfo = contactInfo;
             Database = database;
             Address = address;
+            ID++;
             return this;
         }
+
 
         public virtual Person DeletePerson(ContactInfo contactInfo, 
             Database database, Address address)
@@ -80,6 +82,7 @@ namespace LNE_Security
             Database = database;
             Address = address;
             return this;
+
         }
 
         public virtual Person GetPerson(ContactInfo contactInfo)

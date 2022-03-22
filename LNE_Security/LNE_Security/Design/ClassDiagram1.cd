@@ -92,10 +92,10 @@
       <Property Name="Location" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="LNE_Security.Company" Collapsed="true">
-    <Position X="7" Y="6.75" Width="1.5" />
+  <Class Name="LNE_Security.Company">
+    <Position X="7" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAEAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <HashCode>AAAAQAAAAEAAAACIAAAABAAACEIAAAABIAAAAAAAAgA=</HashCode>
       <FileName>Company\Company.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -111,9 +111,9 @@
       <FileName>Person\Person.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Address" />
       <Property Name="ContactInfo" />
       <Property Name="Database" />
+      <Property Name="Address" />
     </ShowAsAssociation>
   </Class>
   <Class Name="LNE_Security.Address">
@@ -156,7 +156,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAAAAAQAAAAAAAAAAAIAAAAAAAAAgAAAA=</HashCode>
+      <HashCode>AACAAAAAAAAAAAAAQAAAABAAAAAAIAAAAAAAAAgAAAA=</HashCode>
       <FileName>Person\Customer.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -164,7 +164,7 @@
     <Position X="4" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAAAIAAAAA=</HashCode>
-      <FileName>Location.cs</FileName>
+      <FileName>Company\Location.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
