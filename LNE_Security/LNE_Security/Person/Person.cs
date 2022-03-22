@@ -34,7 +34,7 @@ namespace LNE_Security
             }
         }
 
-        public int ID
+        public UInt16 ID
         {
             get => default;
             set
