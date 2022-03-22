@@ -14,7 +14,7 @@
     <Position X="10" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Menu.cs</FileName>
+      <FileName>Design\Menu.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="ScreenHandler" />
@@ -23,8 +23,8 @@
   <Class Name="LNE_Security.Database" Collapsed="true">
     <Position X="7" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Database.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Data\Database.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LNE_Security.OrderLine">
@@ -64,21 +64,22 @@
       <Property Name="OrderLines" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="LNE_Security.ScreenHandler" Collapsed="true">
+  <Class Name="LNE_Security.ScreenHandler">
     <Position X="10" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>ScreenHandler.cs</FileName>
+      <FileName>Design\ScreenHandler.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Company" />
+      <Property Name="Person" />
     </ShowAsAssociation>
   </Class>
   <Class Name="LNE_Security.Techcool" Collapsed="true">
     <Position X="10" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Techcool.cs</FileName>
+      <FileName>Design\Techcool.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LNE_Security.Storage" Collapsed="true">
@@ -99,6 +100,62 @@
       <Property Name="Sales" />
       <Property Name="Database" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Person">
+    <Position X="13.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAIAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Person\Person.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Address" />
+      <Property Name="ContactInfo" />
+      <Property Name="Database" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Address" Collapsed="true">
+    <Position X="17" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Person\Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.ContactInfo" Collapsed="true">
+    <Position X="13.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Person\ContactInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.Employee" Collapsed="true">
+    <Position X="17" Y="7.5" Width="1.5" />
+    <InheritanceLine Type="LNE_Security.Person" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="15" Y="7.062" />
+        <Point X="15.375" Y="7.062" />
+        <Point X="15.375" Y="7.846" />
+        <Point X="17" Y="7.846" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Person\Employee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.Customer" Collapsed="true">
+    <Position X="17" Y="6.25" Width="1.5" />
+    <InheritanceLine Type="LNE_Security.Person" FixedFromPoint="true">
+      <Path>
+        <Point X="15" Y="7.062" />
+        <Point X="15.375" Y="7.062" />
+        <Point X="15.375" Y="6.596" />
+        <Point X="17" Y="6.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Person\Customer.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
