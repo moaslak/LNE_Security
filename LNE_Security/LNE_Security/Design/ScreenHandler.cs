@@ -22,12 +22,5 @@ namespace LNE_Security
             Clear(this);
             Console.WriteLine("Screen");
         }
-
-        public override string Title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        protected override void Draw()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
