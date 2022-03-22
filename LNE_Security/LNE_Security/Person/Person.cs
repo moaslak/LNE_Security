@@ -30,5 +30,41 @@ namespace LNE_Security
             {
             }
         }
+
+        public UInt16 ID
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public Enum Type
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public virtual Person NewPerson()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual Person DeletePerson()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual Person UpdatePerson()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual Person GetPerson()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

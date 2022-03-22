@@ -14,5 +14,25 @@ namespace LNE_Security
             {
             }
         }
+
+        public void NewOrder()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetOrder()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeleteOrder()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UpdateOrder()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

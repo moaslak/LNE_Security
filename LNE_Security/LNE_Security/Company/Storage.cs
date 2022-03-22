@@ -19,5 +19,10 @@ namespace LNE_Security
         {
             throw new System.NotImplementedException();
         }
+
+        public void Put()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
