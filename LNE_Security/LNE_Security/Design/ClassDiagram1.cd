@@ -40,7 +40,7 @@
   <Class Name="LNE_Security.Product">
     <Position X="7" Y="16.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAhgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAABggAAABAAAAAAgAAEAAAAAAQAAAAAIAAA=</HashCode>
       <FileName>Company\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -67,7 +67,7 @@
   <Class Name="LNE_Security.ScreenHandler">
     <Position X="10" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AIAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Design\ScreenHandler.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -107,7 +107,7 @@
   <Class Name="LNE_Security.Person">
     <Position X="13.5" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAEAAgAAAQAAAAAIAAAAAIAACAQAAAAgAAAA=</HashCode>
+      <HashCode>AACAAAAAAEAAgAAAQAAAAAIEBAACIAACAQAAAAgAAAA=</HashCode>
       <FileName>Person\Person.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -134,8 +134,8 @@
     <Position X="17" Y="8.75" Width="1.5" />
     <InheritanceLine Type="LNE_Security.Person" ManuallyRouted="true" FixedFromPoint="true">
       <Path>
-        <Point X="15" Y="7.587" />
-        <Point X="15.375" Y="7.587" />
+        <Point X="15" Y="7.888" />
+        <Point X="15.375" Y="7.888" />
         <Point X="15.375" Y="9.655" />
         <Point X="17" Y="9.655" />
       </Path>
@@ -149,10 +149,10 @@
     <Position X="17" Y="6.25" Width="1.5" />
     <InheritanceLine Type="LNE_Security.Person" FixedFromPoint="true">
       <Path>
-        <Point X="15" Y="7.587" />
-        <Point X="15.375" Y="7.587" />
-        <Point X="15.375" Y="6.918" />
-        <Point X="17" Y="6.918" />
+        <Point X="15" Y="7.888" />
+        <Point X="15.375" Y="7.888" />
+        <Point X="15.375" Y="7.069" />
+        <Point X="17" Y="7.069" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
