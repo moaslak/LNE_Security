@@ -2,18 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace LNE_Security;
-
-partial class Company
+namespace LNE_Security
 {
-    public int ID { get; set; }
-    public string CompanyName { get; set; }
-    public string RoadName { get; set; }
-    public int HouseNumber { get; set; }
-    public int ZipCode { get; set; }
-    public string Country { get; set; }
-    public Decimal Currency { get; set; }
+    public class Company
+    {
+        public Storage Storage
+        {
+            get => default;
+            set
+            {
+            }
+        }
 
+        public Sales Sales
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public Database Database
+        {
+            get => default;
+            set
+            {
+            }
+        }
+    }
 }

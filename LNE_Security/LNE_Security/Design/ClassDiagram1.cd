@@ -20,20 +20,6 @@
       <Property Name="ScreenHandler" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="LNE_Security.ContactInfo" Collapsed="true">
-    <Position X="12.5" Y="8" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAEAAACAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
-      <FileName>ContactInfo.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LNE_Security.Customer" Collapsed="true">
-    <Position X="14.75" Y="7.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Customer.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="LNE_Security.Database" Collapsed="true">
     <Position X="7" Y="3.75" Width="1.5" />
     <TypeIdentifier>
@@ -41,47 +27,28 @@
       <FileName>Database.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LNE_Security.Employee" Collapsed="true">
-    <Position X="14.75" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Employee.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="LNE_Security.OrderLine">
     <Position X="7" Y="12.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
-      <FileName>OrderLine.cs</FileName>
+      <FileName>Company\OrderLine.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Product" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="LNE_Security.Person" Collapsed="true">
-    <Position X="12.5" Y="6.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAEAAAAAAAAAAAAIAAAAAAAACAAAAAAAAAAA=</HashCode>
-      <FileName>Person.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ContactInfo" />
-      <Property Name="Database" />
-      <Property Name="Address" />
     </ShowAsAssociation>
   </Class>
   <Class Name="LNE_Security.Product">
     <Position X="7" Y="14.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAhgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Product.cs</FileName>
+      <FileName>Company\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LNE_Security.Sales" Collapsed="true">
     <Position X="7" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Sales.cs</FileName>
+      <FileName>Company\Sales.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="SalesOrder" />
@@ -91,7 +58,7 @@
     <Position X="7" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAAABAAEAAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
-      <FileName>SalesOrder.cs</FileName>
+      <FileName>Company\SalesOrder.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="OrderLines" />
@@ -105,7 +72,6 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Company" />
-      <Property Name="Person" />
     </ShowAsAssociation>
   </Class>
   <Class Name="LNE_Security.Techcool" Collapsed="true">
@@ -119,13 +85,13 @@
     <Position X="4" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Storage.cs</FileName>
+      <FileName>Company\Storage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LNE_Security.Company" Collapsed="true">
     <Position X="7" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAAAAEAAgAAAAAAABAAACEIAAAABQAAAAAAAAiA=</HashCode>
+      <HashCode>AAAAAAAAAEAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Company\Company.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -133,13 +99,6 @@
       <Property Name="Sales" />
       <Property Name="Database" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="LNE_Security.Address">
-    <Position X="13.5" Y="4" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Address.cs</FileName>
-    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LNE_Security
 {
-    public partial class Company
+    public class Database
     {
         public static Company Instance { get; private set; }
 
