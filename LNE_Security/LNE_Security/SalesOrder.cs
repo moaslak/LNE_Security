@@ -7,12 +7,38 @@ namespace LNE_Security
 {
     public class SalesOrder
     {
-        public OrderLine OrderLine
+        public List<OrderLine> OrderLines
         {
             get => default;
             set
             {
             }
+        }
+
+        public int OrderID
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public double TotalPrice
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public double CalculateVATS()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public double CalculateTotalPrice()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

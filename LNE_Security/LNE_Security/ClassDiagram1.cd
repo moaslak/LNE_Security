@@ -48,10 +48,10 @@
       <FileName>Employee.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LNE_Security.OrderLine" Collapsed="true">
-    <Position X="7" Y="12.75" Width="1.5" />
+  <Class Name="LNE_Security.OrderLine">
+    <Position X="7" Y="12.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>OrderLine.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -61,18 +61,19 @@
   <Class Name="LNE_Security.Person" Collapsed="true">
     <Position X="12.5" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAEAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAIAAAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Person.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="ContactInfo" />
       <Property Name="Database" />
+      <Property Name="Address" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="LNE_Security.Product" Collapsed="true">
+  <Class Name="LNE_Security.Product">
     <Position X="7" Y="14.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAhgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Product.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -86,15 +87,15 @@
       <Property Name="SalesOrder" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="LNE_Security.SalesOrder" Collapsed="true">
-    <Position X="7" Y="10.75" Width="1.5" />
+  <Class Name="LNE_Security.SalesOrder">
+    <Position X="7" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AIAAABAAEAAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>SalesOrder.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="OrderLine" />
-    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="OrderLines" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="LNE_Security.ScreenHandler" Collapsed="true">
     <Position X="10" Y="6.75" Width="1.5" />
@@ -132,6 +133,13 @@
       <Property Name="Sales" />
       <Property Name="Database" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Address">
+    <Position X="13.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Address.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

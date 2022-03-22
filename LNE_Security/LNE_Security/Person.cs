@@ -22,5 +22,13 @@ namespace LNE_Security
             {
             }
         }
+
+        public Address Address
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }
