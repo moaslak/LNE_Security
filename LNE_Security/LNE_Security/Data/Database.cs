@@ -12,6 +12,7 @@ namespace LNE_Security
         static Company()
         {
             Instance = new Company();
+            return;
         }
     }
 }
