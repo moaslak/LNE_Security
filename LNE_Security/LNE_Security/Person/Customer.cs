@@ -18,8 +18,7 @@ namespace LNE_Security
             return _person; 
         }
 
-        public override Person DeletePerson(ContactInfo contactInfo,
-            Database database, Address address)
+        public override Person DeletePerson(ContactInfo contactInfo, Database database, Address address)
         {
             database = new Database();
             contactInfo = new ContactInfo();
@@ -28,12 +27,12 @@ namespace LNE_Security
             return _person;
         }
 
-        public override Person GetPerson()
+        public override Person GetPerson(ContactInfo contactInfo)
         {
             throw new System.NotImplementedException();
         }
 
-        public override Person UpdatePerson()
+        public override Person UpdatePerson(ContactInfo contactInfo, Database database, Address address)
         {
             throw new System.NotImplementedException();
         }

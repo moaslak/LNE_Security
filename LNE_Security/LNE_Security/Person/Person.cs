@@ -7,6 +7,8 @@ namespace LNE_Security
 {
     public abstract class Person
     {
+        Address address1 = new Address();
+        ContactInfo contactInfo1 = new ContactInfo();
         public ContactInfo ContactInfo
         {
             get => default;
@@ -72,7 +74,7 @@ namespace LNE_Security
         public virtual Person DeletePerson(ContactInfo contactInfom,
             Database database, Address address)
         {
-            ContactInfo = contactInfom;
+            ContactInfo = contactInfo;
             Database = database;
             Address = address;
             return null;
@@ -83,15 +85,31 @@ namespace LNE_Security
         {
             throw new NotImplementedException();
         }
+        public virtual Person UpdatePerson(ContactInfo contactInfo,
+            Database database, Address address)
 
-        public virtual Person UpdatePerson()
         {
-            throw new System.NotImplementedException();
+            ContactInfo = contactInfo;
+            Database = database;
+            Address = address;
+            return this;
+
         }
 
-        public virtual Person GetPerson()
+        public virtual Person GetPerson(ContactInfo contactInfo)
         {
-            throw new System.NotImplementedException();
+            ContactInfo = contactInfo;
+            return this;
+        }
+
+        public void CompbineNames()
+        {
+            ContactInfo contactInfo = new();
+            Console.Write($"Indtast fornavn: ");
+            var fornavn = Convert.ToString(Console.ReadLine());
+            Console.Write($"Indtast efternavn: ");
+            var efternavn = Convert.ToString(Console.ReadLine());
+            Console.WriteLine($"{fornavn + efternavn}");
         }
     }
 }

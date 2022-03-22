@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TECHCOOL.UI;
+
 namespace LNE_Security
 {
     public class ScreenHandler : Screen
@@ -20,6 +21,13 @@ namespace LNE_Security
             Title = Company.CompanyName;
             Clear(this);
             Console.WriteLine("Screen");
+        }
+
+        public override string Title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        protected override void Draw()
+        {
+            throw new NotImplementedException();
         }
     }
 }
