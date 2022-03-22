@@ -23,7 +23,7 @@
   <Class Name="LNE_Security.ContactInfo" Collapsed="true">
     <Position X="12.5" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAEAAACAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>ContactInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -124,8 +124,8 @@
   <Class Name="LNE_Security.Company" Collapsed="true">
     <Position X="7" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAEAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
-      <FileName>Company.cs</FileName>
+      <HashCode>AAAAQAAAAEAAgAAAAAAABAAACEIAAAABQAAAAAAAAiA=</HashCode>
+      <FileName>Company\Company.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Storage" />
