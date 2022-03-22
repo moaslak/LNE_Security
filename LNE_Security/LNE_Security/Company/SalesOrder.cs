@@ -15,7 +15,7 @@ namespace LNE_Security
             }
         }
 
-        public int OrderID
+        public UInt32 OrderID
         {
             get => default;
             set
