@@ -16,17 +16,17 @@ namespace LNE_Security
             return this; 
         }
 
-        public override Person DeletePerson()
+        public override Person DeletePerson(ContactInfo contactInfo, Database database, Address address)
         {
             throw new System.NotImplementedException();
         }
 
-        public override Person GetPerson()
+        public override Person GetPerson(ContactInfo contactInfo)
         {
             throw new System.NotImplementedException();
         }
 
-        public override Person UpdatePerson()
+        public override Person UpdatePerson(ContactInfo contactInfo, Database database, Address address)
         {
             throw new System.NotImplementedException();
         }
