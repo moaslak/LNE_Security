@@ -7,12 +7,13 @@ namespace LNE_Security
 {
     public class Database
     {
+        // TODO: implementér singleton
         public static Company Instance { get; private set; }
 
-        static Company()
+        /*static Company()
         {
             Instance = new Company();
-            return;
-        }
+            
+        }*/
     }
 }
