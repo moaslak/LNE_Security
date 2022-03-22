@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LNE_Security.Program" Collapsed="true">
+    <Position X="10" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Menu" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Menu">
+    <Position X="10" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Design\Menu.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ScreenHandler" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Database" Collapsed="true">
+    <Position X="7" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Data\Database.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.OrderLine">
+    <Position X="7" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Company\OrderLine.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Product" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Product">
+    <Position X="7" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAhgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Company\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.Sales">
+    <Position X="7" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAQAAAAAAAAAAAAAAAABAAIAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Company\Sales.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SalesOrder" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.SalesOrder">
+    <Position X="7" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAABAAEAAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Company\SalesOrder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="OrderLines" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="LNE_Security.ScreenHandler">
+    <Position X="10" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Design\ScreenHandler.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Company" />
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Techcool" Collapsed="true">
+    <Position X="10" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Design\Techcool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.Storage">
+    <Position X="4" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIABAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Company\Storage.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Location" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Company" Collapsed="true">
+    <Position X="7" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Company\Company.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Storage" />
+      <Property Name="Sales" />
+      <Property Name="Database" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Person">
+    <Position X="13.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAEAAgAAAQAAAAAIAAAAAIAACAQAAAAgAAAA=</HashCode>
+      <FileName>Person\Person.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Address" />
+      <Property Name="ContactInfo" />
+      <Property Name="Database" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LNE_Security.Address">
+    <Position X="17" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgACAAAAAAAAAAEIAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Person\Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.ContactInfo">
+    <Position X="13.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Person\ContactInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.Employee">
+    <Position X="17" Y="8.75" Width="1.5" />
+    <InheritanceLine Type="LNE_Security.Person" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="15" Y="7.587" />
+        <Point X="15.375" Y="7.587" />
+        <Point X="15.375" Y="9.655" />
+        <Point X="17" Y="9.655" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAQAAAAAAAAAAAIAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Person\Employee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.Customer">
+    <Position X="17" Y="6.25" Width="1.5" />
+    <InheritanceLine Type="LNE_Security.Person" FixedFromPoint="true">
+      <Path>
+        <Point X="15" Y="7.587" />
+        <Point X="15.375" Y="7.587" />
+        <Point X="15.375" Y="6.918" />
+        <Point X="17" Y="6.918" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAQAAAAAAAAAAAIAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Person\Customer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LNE_Security.Location">
+    <Position X="4" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAAAIAAAAA=</HashCode>
+      <FileName>Location.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
