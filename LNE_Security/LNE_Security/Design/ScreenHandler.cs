@@ -5,9 +5,9 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Company
+    public class ScreenHandler : Techcool
     {
-        public Storage Storage
+        public Company Company
         {
             get => default;
             set
@@ -15,15 +15,7 @@ namespace LNE_Security
             }
         }
 
-        public Sales Sales
-        {
-            get => default;
-            set
-            {
-            }
-        }
-
-        public Database Database
+        public Person Person
         {
             get => default;
             set

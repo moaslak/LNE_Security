@@ -5,9 +5,9 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Company
+    public class Product
     {
-        public Storage Storage
+        public UInt32 ID
         {
             get => default;
             set
@@ -15,7 +15,7 @@ namespace LNE_Security
             }
         }
 
-        public Sales Sales
+        public string Description
         {
             get => default;
             set
@@ -23,7 +23,7 @@ namespace LNE_Security
             }
         }
 
-        public Database Database
+        public double PricePerItem
         {
             get => default;
             set

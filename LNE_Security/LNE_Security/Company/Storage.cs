@@ -5,9 +5,9 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Company
+    public class Storage
     {
-        public Storage Storage
+        public Location Location
         {
             get => default;
             set
@@ -15,20 +15,14 @@ namespace LNE_Security
             }
         }
 
-        public Sales Sales
+        public void Pick()
         {
-            get => default;
-            set
-            {
-            }
+            throw new System.NotImplementedException();
         }
 
-        public Database Database
+        public void Put()
         {
-            get => default;
-            set
-            {
-            }
+            throw new System.NotImplementedException();
         }
     }
 }

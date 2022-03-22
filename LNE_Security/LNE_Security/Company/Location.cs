@@ -5,9 +5,9 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Company
+    public class Location
     {
-        public Storage Storage
+        public char Section
         {
             get => default;
             set
@@ -15,7 +15,7 @@ namespace LNE_Security
             }
         }
 
-        public Sales Sales
+        public byte Shelve
         {
             get => default;
             set
@@ -23,7 +23,7 @@ namespace LNE_Security
             }
         }
 
-        public Database Database
+        public UInt16 Row
         {
             get => default;
             set

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Company
+    public class SalesOrder
     {
-        public Storage Storage
+        public List<OrderLine> OrderLines
         {
             get => default;
             set
@@ -15,7 +15,7 @@ namespace LNE_Security
             }
         }
 
-        public Sales Sales
+        public int OrderID
         {
             get => default;
             set
@@ -23,12 +23,22 @@ namespace LNE_Security
             }
         }
 
-        public Database Database
+        public double TotalPrice
         {
             get => default;
             set
             {
             }
+        }
+
+        public double CalculateVATS()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public double CalculateTotalPrice()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
