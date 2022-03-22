@@ -5,9 +5,9 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Menu
+    public class OrderLine
     {
-        public ScreenHandler ScreenHandler
+        public Product Product
         {
             get => default;
             set

@@ -5,9 +5,17 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Menu
+    public class ScreenHandler : Techcool
     {
-        public ScreenHandler ScreenHandler
+        public Company Company
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public Person Person
         {
             get => default;
             set

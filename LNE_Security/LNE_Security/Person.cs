@@ -5,9 +5,17 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Menu
+    public abstract class Person
     {
-        public ScreenHandler ScreenHandler
+        public ContactInfo ContactInfo
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public Database Database
         {
             get => default;
             set

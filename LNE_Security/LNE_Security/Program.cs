@@ -5,6 +5,14 @@ namespace LNE_Security
 {
     class Program
     {
+        public Menu Menu
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
         public static void Main(string[] args)
         {
             TECHCOOL.UI.Menu menu = new TECHCOOL.UI.Menu();
