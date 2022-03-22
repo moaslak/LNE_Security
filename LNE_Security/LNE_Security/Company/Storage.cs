@@ -7,5 +7,17 @@ namespace LNE_Security
 {
     public class Storage
     {
+        public Location Location
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public void Pick()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
