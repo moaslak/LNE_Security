@@ -24,17 +24,21 @@ namespace LNE_Security
             contactInfo = new ContactInfo();
             address = new Address();
             _person.DeletePerson(contactInfo, database, address);
-            return _person;
+            return null;
         }
 
         public override Person GetPerson(ContactInfo contactInfo)
         {
-            throw new System.NotImplementedException();
+            contactInfo = new contactInfo();
+            return _person;
         }
 
         public override Person UpdatePerson(ContactInfo contactInfo, Database database, Address address)
         {
-            throw new System.NotImplementedException();
+            contactInfo = new ContactInfo();
+            database = new Database();
+            address = new Address();
+            return _person;
         }
     }
 }
