@@ -8,30 +8,11 @@ namespace LNE_Security
     public class OrderLine
     {
 
-        public Product Product
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public Product Product { get; set; }
 
-        public UInt16 Quantity
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public UInt16 Quantity { get; set; }
 
-        public double Price
-        {
-            get => default;
-            set
-            {
-            }
-        }
-
+        public double Price { get; set; }   
         public double CalculateLinePrice()
         {
             throw new System.NotImplementedException();

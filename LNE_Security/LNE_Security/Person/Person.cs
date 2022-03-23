@@ -36,14 +36,8 @@ namespace LNE_Security
             }
         }
 
-        public UInt16 ID
-        {
-            get => default;
-            set
-            {
-                ID = value;
-            }
-        }
+        public UInt16 ID { get; set; } // TODO: Lav id generator
+
 
         public Enum Type
         {

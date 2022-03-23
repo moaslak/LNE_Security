@@ -36,38 +36,13 @@ namespace LNE_Security
         public string StreetName { get; set; }
         public enum Currencies { DKK, USD, blank }
         public Currencies Currency { get; set; }
-        public string CVR
-        {
-            get => default;
-            set
-            {
-            }
-        }
-        
+        public string CVR { get; set; }        
 
-        public string HouseNumber
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public string HouseNumber { get; set; }
 
-        public string ZipCode
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public string ZipCode { get; set; }
 
-        public string City
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public string City { get; set; }
 
         public Company(string companyName, string streetName, string country)
         {

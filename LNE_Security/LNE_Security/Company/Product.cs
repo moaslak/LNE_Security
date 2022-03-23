@@ -13,29 +13,14 @@ namespace LNE_Security
     public class Product
     {
         public int ProductNumber { get; set; }
-        public string ProductName 
-        {
-            get { return ProductName; }
-            set { ProductName = value; }
-        }
+        public string? ProductName { get; set; }
+
         public float SalesPrice { get; set; }
         public float CompanyPrice { get; set; }
         public float AmountInStorage { get; set; }
-        public UInt32 ID
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public UInt32 ID { get; set; }
 
-        public string Description
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public string? Description { get; set; }
 
         public void CalculateProfit()
         {
