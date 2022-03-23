@@ -8,9 +8,11 @@ namespace LNE_Security
 {
     public class ScreenHandler : Screen
     {
-        public Company Company { get; set; }
-        
-
+        static Company company { get; set; }
+        public ScreenHandler(Company Company)
+        {
+            company = Company;
+        }
         public Person Person { get; set; }
 
 
@@ -18,9 +20,7 @@ namespace LNE_Security
 
         protected override void Draw()
         {
-            Title = Company.CompanyName;
-            Clear(this);
-            Console.WriteLine("Screen");
+            
         }
     }
 }
