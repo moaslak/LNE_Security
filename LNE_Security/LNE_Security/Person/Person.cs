@@ -71,7 +71,7 @@ namespace LNE_Security
             throw new NotImplementedException();
         }
 
-        public virtual Person DeletePerson(ContactInfo contactInfom,
+        public virtual Person DeletePerson(ContactInfo contactInfo,
             Database database, Address address)
         {
             ContactInfo = contactInfo;
@@ -85,6 +85,13 @@ namespace LNE_Security
         {
             throw new NotImplementedException();
         }
+
+        // overload
+
+        public virtual Person UpdatePerson()
+        {
+            throw new NotImplementedException();
+        }
         public virtual Person UpdatePerson(ContactInfo contactInfo,
             Database database, Address address)
 
@@ -94,6 +101,12 @@ namespace LNE_Security
             Address = address;
             return this;
 
+        }
+
+        // overload
+        public virtual Person GetPerson()
+        {
+            throw new NotImplementedException();
         }
 
         public virtual Person GetPerson(ContactInfo contactInfo)
