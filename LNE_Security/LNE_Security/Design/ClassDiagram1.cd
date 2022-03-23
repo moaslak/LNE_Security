@@ -3,7 +3,7 @@
   <Class Name="LNE_Security.Program" Collapsed="true">
     <Position X="18.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAAAAAAAAAAAAABAAAAIAAAAAAAABAAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAIBAAAAAQ=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -168,7 +168,7 @@
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAABAAAAAAAAAAAEIAAAAAEAAAQAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAABAAEAAAAAAAAEIAAAAAEAAAQAAAAAAABAAAAAA=</HashCode>
       <FileName>Company\Invoice.cs</FileName>
     </TypeIdentifier>
   </Class>
