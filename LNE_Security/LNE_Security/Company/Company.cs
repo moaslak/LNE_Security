@@ -31,6 +31,11 @@ namespace LNE_Security
             }
         }
 
+        public string CompanyName { get; set; }
+        public string Country { get; set; }
+        public string StreetName { get; set; }
+        public enum Currencies { DKK, USD, blank }
+        public Currencies Currency { get; set; }
         public string CVR
         {
             get => default;
@@ -38,17 +43,7 @@ namespace LNE_Security
             {
             }
         }
-
-        public string CompanyName { get; set; }
         
-
-        public string StreetName
-        {
-            get => default;
-            set
-            {
-            }
-        }
 
         public string HouseNumber
         {
@@ -74,20 +69,15 @@ namespace LNE_Security
             }
         }
 
-        public string Country
+        public Company(string companyName, string streetName, string country)
         {
-            get => default;
-            set
-            {
-            }
+            CompanyName = companyName;
+            StreetName = streetName;
+            Country = country;
         }
-
-        public string Currency
+        public Company(string companyName)
         {
-            get => default;
-            set
-            {
-            }
+            CompanyName = companyName;
         }
     }
 }

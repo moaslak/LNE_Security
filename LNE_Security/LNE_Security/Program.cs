@@ -13,13 +13,17 @@ namespace LNE_Security
             }
         }
 
+        static Company company = new Company("LNE Security", "Navn Gade 1", "Denmark");
+        
+
         public static void Main(string[] args)
         {
-            ScreenHandler screenHandler = new ScreenHandler();
-            Company company = new Company();
-            company.CompanyName = "test";
-            screenHandler.Company = company;
-            ScreenHandler.Display(screenHandler);
+            if(company.Country == "Denmark")
+                company.Currency = Company.Currencies.DKK;
+            else
+                company.Currency = Company.Currencies.USD;
+            CompanyScreen companyScreen = new CompanyScreen(company);
+            ScreenHandler.Display(companyScreen);
         }
     }
 }
