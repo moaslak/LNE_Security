@@ -38,7 +38,6 @@ namespace LNE_Security
                 Title = "Company Screen";
                 Clear(this);
                 CompanyListPage.AddColumn("Company name", "CompanyName");
-                CompanyListPage.AddColumn("Street", "StreetName");
                 CompanyListPage.AddColumn("Country", "Country");
                 CompanyListPage.AddColumn("Currency", "Currency");
                 selected = CompanyListPage.Select(); // TODO: Der bruges dobbelt ENTER tryk. Ét bør være rigeligt.
