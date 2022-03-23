@@ -7,29 +7,14 @@ namespace LNE_Security
 {
     public class SalesOrder
     {
-        public List<OrderLine> OrderLines
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public List<OrderLine>? OrderLines { get; set; }
 
-        public UInt32 OrderID
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public UInt32 OrderID { get; set; }
 
-        public double TotalPrice
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public double TotalPrice { get; set; }
+
+        public DateTime OrderTime { get; set; }
+        public DateTime CompletionTime { get; set; }
 
         public double CalculateVATS()
         {
@@ -40,5 +25,7 @@ namespace LNE_Security
         {
             throw new System.NotImplementedException();
         }
+
+        
     }
 }

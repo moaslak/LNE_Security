@@ -29,7 +29,7 @@ namespace LNE_Security
 
         public override Person GetPerson(ContactInfo contactInfo)
         {
-            contactInfo = new contactInfo();
+            contactInfo = new ContactInfo();
             return _person;
         }
 
