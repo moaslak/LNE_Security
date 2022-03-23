@@ -43,6 +43,13 @@ namespace LNE_Security
             {
             }
         }
+        public string StreetName
+        {
+            get => default;
+            set
+            {
+            }
+        }
         
 
         public string HouseNumber

@@ -6,6 +6,7 @@ using TECHCOOL.UI;
 
 namespace LNE_Security
 {
+    
     public class ScreenHandler : Screen
     {
         static Company company { get; set; }
@@ -15,7 +16,7 @@ namespace LNE_Security
         }
         public Person Person { get; set; }
 
-
+        
         public override string Title { get; set; }
 
         protected override void Draw()

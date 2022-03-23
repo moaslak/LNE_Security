@@ -26,7 +26,7 @@ namespace LNE_Security
             
             ListPage<Company> CompanyListPage = new ListPage<Company>();
             ListPage<String> selectModeListPage = new ListPage<String>();
-
+            ListPage<CompanyDetails> companyDetails = new ListPage<CompanyDetails>();
             CompanyListPage.Add(company);
 
             selectModeListPage.Add(NEW);
@@ -49,6 +49,9 @@ namespace LNE_Security
             {
                 case "LNE Security":
                     Console.WriteLine("Selection: " + selected.CompanyName);
+                    break;
+                case "Company Details":
+                    Console.WriteLine("Show Details" + selected.CompanyDetails);
                     break;
                 case "New Company":
                     Console.WriteLine("IMPLEMENT NEW COMPANY");
