@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LNE_Security
 {
-    // Mock data
+
     
     public class Invoice : Sales
     {
