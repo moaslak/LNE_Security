@@ -24,6 +24,7 @@ namespace LNE_Security
             else
                 company.Currency = Company.Currencies.USD;
             CompanyScreen companyScreen = new CompanyScreen(company);
+            CompanyDetails details = new CompanyDetails(company);
             ScreenHandler.Display(companyScreen);
             */
         }
