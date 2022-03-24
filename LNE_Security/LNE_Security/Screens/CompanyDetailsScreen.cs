@@ -4,8 +4,6 @@ using TECHCOOL.UI;
 namespace LNE_Security;
 public class CompanyDetailsScreen : ScreenHandler
 {
-	static string BACK = "Back";
-	static string EDIT = "Edit";
 	private Company company;
 	
 	public CompanyDetailsScreen(Company Company) : base(Company)
@@ -20,7 +18,7 @@ public class CompanyDetailsScreen : ScreenHandler
 
 		ListPage<string> SelectedList = new ListPage<string>();
 
-		Title = "Company Details";
+		Title = company.CompanyName + " Company Details";
 		Clear(this);
 
 		CompanylistPage.AddColumn("Company name", "CompanyName");
