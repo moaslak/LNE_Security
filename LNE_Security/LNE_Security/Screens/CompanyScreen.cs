@@ -10,6 +10,7 @@ namespace LNE_Security
     public class CompanyScreen : ScreenHandler
     {
         private Company company { get; set; }
+        private CompanyDetails details { get; set; }
         public CompanyScreen(Company Company) : base(Company)
         {
             this.company = Company;
@@ -19,6 +20,7 @@ namespace LNE_Security
              //Clean the screen
             
             ListPage<Company> CompanyListPage = new ListPage<Company>();
+
             CompanyListPage.Add(company);
             
             Title = "Company Screen";
