@@ -1,45 +1,36 @@
 ﻿using System;
+using TECHCOOL.UI;
 
 namespace LNE_Security;
 public class CompanyDetails : ScreenHandler
 {
 	static string BACK = "Back";
-	private Company company { get; set; }
-	public CompanyDetails(Company Company) : base(company)
+	private Company company;
+	private CompanyScreen companyScreen { get; set; }
+	public CompanyDetails(Company Company) : base(Company)
 	{
 		this.company = Company;
 	}
 
-	public override void Draw()
+	protected override void Draw()
     {
-		ListPage<Company> CompanylistPage = new ListPage<Company>();
-		listPage<String> SelectedList = new listPage<string>();
-		CompanyScreen companyScreen = new CompanyScreen();
-		CompanylistPage.Show(Company);
-		SelectedList.Add(BACK);
-		Company selected;
+		ListPage<CompanyScreen> CompanylistPage = new ListPage<CompanyScreen>();
+		ListPage<string> SelectedList = new ListPage<string>();
+		CompanylistPage.Add(companyScreen);
+
 		do
 		{
 			Title = "Company Details";
-			Clear(companyScreen());
+			Clear(this);
 			CompanylistPage.AddColumn("Company name", "CompanyName");
-			CompanyListPage.AddColumn("Street name", "StreetName");
-			CompanyListPage.AddColumn("House number", "HouseNumber");
-			CompanyListPage.AddColumn("Zipcode", "ZipCode");
-			CompanyListPage.AddColumn("City", "City");
-			CompanyListPage.AddColumn("Country", "Country");
-			CompanyListPage.AddColumn("Currency", "Currency");
-		} while (!(Console.ReadKey().Key == Console.Escape));
-
-        switch (company.CompanyType)
-        {
-			case "LNE_Security":
-				Console.WriteLine("Company Details" + selected.Company);
-				break;
-			case "BACK":
-				Environment.Exit(0);
-        }
-
+			CompanylistPage.AddColumn("Street name", "StreetName");
+			CompanylistPage.AddColumn("House number", "HouseNumber");
+			CompanylistPage.AddColumn("Zipcode", "ZipCode");
+			CompanylistPage.AddColumn("City", "City");
+			CompanylistPage.AddColumn("Country", "Country");
+			CompanylistPage.AddColumn("Currency", "Currency");
+		} while (!(Console.ReadKey().Key == ConsoleKey.Escape));
+		
 		
 	}
 }

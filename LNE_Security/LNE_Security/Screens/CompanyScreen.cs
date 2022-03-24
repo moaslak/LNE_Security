@@ -13,6 +13,7 @@ namespace LNE_Security
         static string BACK = "Back";
         static string NEW = "New Company";
         private Company company { get; set; }
+        private CompanyDetails details { get; set; }
         public CompanyScreen(Company Company) : base(Company)
         {
             this.company = Company;
@@ -28,7 +29,7 @@ namespace LNE_Security
             ListPage<String> selectModeListPage = new ListPage<String>();
             ListPage<CompanyDetails> companyDetails = new ListPage<CompanyDetails>();
             CompanyListPage.Add(company);
-
+            companyDetails.Add(details);
             selectModeListPage.Add(NEW);
             selectModeListPage.Add(BACK);
             //string selectMode = selectModeListPage.Select();
@@ -42,16 +43,12 @@ namespace LNE_Security
                 CompanyListPage.AddColumn("Currency", "Currency");
                 selected = CompanyListPage.Select(); // TODO: Der bruges dobbelt ENTER tryk. Ét bør være rigeligt.
             } while(!(Console.ReadKey().Key == ConsoleKey.Enter));
-            
-            
-            
+
+
             switch (selected.CompanyName)
             {
                 case "LNE Security":
                     Console.WriteLine("Selection: " + selected.CompanyName);
-                    break;
-                case "Company Details":
-                    Console.WriteLine("Show Details" + selected.CompanyDetails);
                     break;
                 case "New Company":
                     Console.WriteLine("IMPLEMENT NEW COMPANY");
