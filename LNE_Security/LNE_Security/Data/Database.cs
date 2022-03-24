@@ -12,7 +12,10 @@ namespace LNE_Security
         Product product = new Product();
         List<Product> products = new List<Product>();
         List<Database> databases = new List<Database>();
+        public Database()
+        {
 
+        }
         public Database(uint id, string productName)
         {
             product.ID = id;

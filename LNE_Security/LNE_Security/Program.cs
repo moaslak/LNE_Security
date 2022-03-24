@@ -30,7 +30,7 @@ namespace LNE_Security
             */
         }
 
-        static private OrderLine orderLinesMockTest()
+         private static OrderLine orderLinesMockTest()
         {
             OrderLine orderLine = new OrderLine();
             Product product = new Product();
@@ -47,7 +47,7 @@ namespace LNE_Security
             return orderLine;
         }
 
-        static private void InvoiceMockTest(SalesOrder salesOrder)
+         private static void InvoiceMockTest(SalesOrder salesOrder)
         {
             
             Customer Customer = new Customer();
