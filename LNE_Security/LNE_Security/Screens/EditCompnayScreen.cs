@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LNE_Security.Screens
 {
-    internal class EditCompnayScreen
+    internal class EditCompnayScreen : ScreenHandler
     {
     }
 }

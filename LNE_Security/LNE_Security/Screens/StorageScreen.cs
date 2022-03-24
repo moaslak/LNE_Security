@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace LNE_Security.Screens
 {
-    internal class StorageScreen
+    public class StorageScreen : ScreenHandler
     {
-    }
+		private Company company;
+		public StorageScreen(Company Company) : base(Company)
+		{
+			this.company = Company;
+		}
+	}
 }
