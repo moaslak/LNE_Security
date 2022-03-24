@@ -3,7 +3,7 @@
   <Class Name="LNE_Security.Program" Collapsed="true">
     <Position X="18.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAIAAAAAAAIBAAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAACAAAIAAAAAAAIBAAAAAQ=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -57,7 +57,7 @@
   <Class Name="LNE_Security.SalesOrder">
     <Position X="10" Y="10.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAABAAEAAAACAAAEIAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AIAAABAAEAAAACAAAEIAIAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>Company\SalesOrder.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -67,12 +67,11 @@
   <Class Name="LNE_Security.ScreenHandler">
     <Position X="18.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAABAAAAAQ=</HashCode>
+      <HashCode>AIAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Design\ScreenHandler.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Person" />
-      <Property Name="Company" />
     </ShowAsAssociation>
   </Class>
   <Class Name="LNE_Security.Techcool" Collapsed="true">

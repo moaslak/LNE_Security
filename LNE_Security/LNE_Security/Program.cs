@@ -13,20 +13,19 @@ namespace LNE_Security
             }
         }
         // MOCK DATA
-        static Company company = new Company("LNE Security", "Navn Gade 1", "Denmark");
+        static Company company = new Company("LNE Security", "Navn Gade", "1b", "1337", "Aalborg", "Denmark");
         static SalesOrder salesOrder = new SalesOrder();
         public static void Main(string[] args)
         {
-            InvoiceMockTest(salesOrder);   
-            /*
+            //InvoiceMockTest(salesOrder);   
+            
             if (company.Country == "Denmark")
                 company.Currency = Company.Currencies.DKK;
             else
                 company.Currency = Company.Currencies.USD;
             CompanyScreen companyScreen = new CompanyScreen(company);
-            CompanyDetails details = new CompanyDetails(company);
             ScreenHandler.Display(companyScreen);
-            */
+            
         }
 
         static private OrderLine orderLinesMockTest()
