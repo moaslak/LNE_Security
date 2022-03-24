@@ -22,13 +22,5 @@ namespace LNE_Security
         {
             
         }
-
-        public Company Company
-        {
-            get => default;
-            set
-            {
-            }
-        }
     }
 }

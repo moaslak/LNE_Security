@@ -54,5 +54,17 @@ namespace LNE_Security
         {
             CompanyName = companyName;
         }
+
+        public Company(string companyName, string streetName, string houseNumber, string zipCode,
+            string city, string country)
+        {
+            CompanyName = companyName;
+            StreetName= streetName;
+            HouseNumber = houseNumber;
+            ZipCode = zipCode;
+            City = city;
+            Country = country;
+        }
+        
     }
 }
