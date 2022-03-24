@@ -28,6 +28,7 @@ namespace LNE_Security
             CompletionTime = completionTime;
             TotalPrice = totalPrice;
             CustomerID = customerID;
+            
         }
         public Invoice(List<OrderLine> orderLines)
         {

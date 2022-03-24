@@ -13,9 +13,9 @@ namespace LNE_Security
         public UInt16 Quantity { get; set; }
 
         public double Price { get; set; }   
-        public double CalculateLinePrice()
-        {
-            throw new System.NotImplementedException();
-        }
+        //public double CalculateLinePrice()
+        //{
+        //    throw new System.NotImplementedException();
+        //}
     }
 }

@@ -16,7 +16,7 @@ namespace LNE_Security
         public DateTime OrderTime { get; set; }
         public DateTime CompletionTime { get; set; }
 
-        public OrderLine orderLine { get; set; }
+        public OrderLine? orderLine { get; set; }
         public double CalculateVATS()
         {
             throw new System.NotImplementedException();

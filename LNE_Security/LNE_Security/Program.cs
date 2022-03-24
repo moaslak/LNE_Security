@@ -33,7 +33,7 @@ namespace LNE_Security
             OrderLine orderLine = new OrderLine();
             Product product = new Product();
             product.ProductNumber = 1;
-            product.ProductName = "string>";
+            product.ProductName = "string";
             product.SalesPrice = 1;
             product.ID = 1;
             product.Description = "Test";
@@ -50,14 +50,14 @@ namespace LNE_Security
             
             Customer Customer = new Customer();
             // Invoice mock test
+
+            OrderLine orderLine = orderLinesMockTest();
             salesOrder.TotalPrice = 100;
             salesOrder.OrderID = 1;
             salesOrder.CompletionTime = DateTime.Now.AddMonths(1);
             salesOrder.OrderTime = DateTime.Now;
             Customer.ID = 1;
-            OrderLine orderLine = orderLinesMockTest();
             
-
             Invoice invoice = new Invoice(salesOrder.OrderID, salesOrder.OrderTime, salesOrder.CompletionTime, salesOrder.TotalPrice, Customer.ID);
             invoice.State = Invoice.States.Created;
             invoice.SalesOrder = salesOrder;
