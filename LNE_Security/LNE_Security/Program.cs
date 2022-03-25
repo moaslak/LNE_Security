@@ -18,13 +18,12 @@ namespace LNE_Security
         static SalesOrder salesOrder = new SalesOrder();
         public static void Main(string[] args)
         {
-            InvoiceMockTest(salesOrder);
+            //InvoiceMockTest(salesOrder);
             
             if (company.Country == "Denmark")
                 company.Currency = Company.Currencies.DKK;
             else
                 company.Currency = Company.Currencies.USD;
-            CompanyScreen companyScreen = new CompanyScreen(company);
             MainMenuScreen mainMenuScreen = new MainMenuScreen(company);
             ScreenHandler.Display(mainMenuScreen);
             
@@ -42,7 +41,7 @@ namespace LNE_Security
             product.CompanyPrice = 2;
             product.AmountInStorage = 3;
             orderLine.Product = product;
-            orderLine.Price = 2;
+            orderLine.Product.SalesPrice = 1;
             orderLine.Quantity = 3;
             return orderLine;
         }

@@ -7,9 +7,9 @@ using TECHCOOL.UI;
 
 namespace LNE_Security.Screens
 {
-    internal class EditCompnayScreen : ScreenHandler
+    public class EditCompnayScreen : ScreenHandler
     {
-        class Options
+        public class Options
         {
             public string Option { get; set; }
             public string Value { get; set; }
@@ -25,11 +25,54 @@ namespace LNE_Security.Screens
             this.company = Company;
         }
 
+        private List<Company.Currencies> currenciesToList()
+        {
+            List<Company.Currencies> list = Enum.GetValues(typeof(Company.Currencies)).Cast<Company.Currencies>().ToList();
+            return list;
+        }
+
         private void EditCompany(Options selected)
         {
-            Console.Write("New value: ");
-            string newValue = Console.ReadLine();
+            string newValue = "";
+            if(selected.Option != "Currency")
+            {
+                Console.Write("New value: ");
+                newValue = Console.ReadLine();
+            }
+            else
+            {
+                List<Company.Currencies> currencies = currenciesToList();
+                
+                ListPage<Options> listPage = new ListPage<Options>();
+                listPage.AddColumn("Currency", "Option");
+                foreach(Company.Currencies cur in currencies)
+                {
+                    listPage.Add(new Options(cur.ToString(), cur.ToString()));
+                }
+                selected = listPage.Select();
 
+                switch (selected.Value)
+                {
+                    case "DKK":
+                        company.Currency = Company.Currencies.DKK;
+                        break;
+                    case "USD":
+                        company.Currency = Company.Currencies.USD;
+                        break;
+                    case "YEN":
+                        company.Currency = Company.Currencies.YEN;
+                        break;
+                    case "EURO":
+                        company.Currency = Company.Currencies.EURO;
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
+            if (newValue == null)
+                newValue = "";
             switch (selected.Option)
             {
                 case "Company name":
@@ -50,19 +93,75 @@ namespace LNE_Security.Screens
                 case "Country": 
                     this.company.Country = newValue;
                     break;
-                case "Currency":
-                    break; // TODO: det er en ENUM. LAV DENNE.
                 default:
                     break;
             }   
         }
 
-        private void ChangeCurrency(Company company)
+        /// <summary>
+        /// Modified version of EditCompany().
+        /// Only used for unit test
+        /// </summary>
+        /// <param name="selected"></param>
+        public void EditCompanyTesting(Options selected)
         {
+            string newValue = selected.Value;
 
+            if (selected.Option == "Currency")
+            {
 
+                List<Company.Currencies> currencies = currenciesToList();
+
+                ListPage<Options> listPage = new ListPage<Options>();
+                listPage.AddColumn("Currency", "Option");
+                foreach (Company.Currencies cur in currencies)
+                {
+                    listPage.Add(new Options(cur.ToString(), cur.ToString()));
+                }
+
+                switch (selected.Value)
+                {
+                    case "DKK":
+                        company.Currency = Company.Currencies.DKK;
+                        break;
+                    case "USD":
+                        company.Currency = Company.Currencies.USD;
+                        break;
+                    case "YEN":
+                        company.Currency = Company.Currencies.YEN;
+                        break;
+                    case "EURO":
+                        company.Currency = Company.Currencies.EURO;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            switch (selected.Option)
+            {
+                case "Company name":
+                    this.company.CompanyName = newValue;
+                    break;
+                case "Street name":
+                    this.company.StreetName = newValue;
+                    break;
+                case "House number":
+                    this.company.HouseNumber = newValue;
+                    break;
+                case "Zip code":
+                    this.company.ZipCode = newValue;
+                    break;
+                case "City":
+                    this.company.City = newValue;
+                    break;
+                case "Country":
+                    this.company.Country = newValue;
+                    break;
+                default:
+                    break;
+            }
         }
-
         protected override void Draw()
         {
             do
@@ -90,14 +189,19 @@ namespace LNE_Security.Screens
                 optionsListPage.Add(new Options("Zip code", company.ZipCode));
                 optionsListPage.Add(new Options("City", company.City));
                 optionsListPage.Add(new Options("Country", company.Country));
+                optionsListPage.Add(new Options("Currency", company.Currency.ToString()));
                 optionsListPage.Add(new Options("Back", "NO EDIT"));
                 Options selected = optionsListPage.Select();
                 
                 if(selected.Value != "NO EDIT")
                 {
                     EditCompany(selected);
-                    Console.WriteLine("Press a key to update..."); // TODO: Denne skal gerne væk
+                    Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
                     
+                }
+                else
+                {
+                    break;
                 }
                 Console.WriteLine("Press ESC to return to Company screen");
 

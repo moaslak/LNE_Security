@@ -19,17 +19,35 @@ namespace LNE_Security
         public DateTime CompletionTime { get; set; }
 
         public OrderLine? orderLine { get; set; }
+
+        /// <summary>
+        /// Adds the VATS to the total price
+        /// </summary>
+        /// <param name="VATS"></param>
+        /// <param name="TotalPrice"></param>
+        /// <returns>double</returns>
         public double CalculateVATS(double VATS, double TotalPrice)
         {
             return TotalPrice * VATS;
         }
 
+        /// <summary>
+        /// Calculates the total price from ALL the orderlines.
+        /// </summary>
+        /// <param name="orderLines"></param>
+        /// <returns>double</returns>
         public double CalculateTotalPrice(List<OrderLine> orderLines)
         {
+            if(orderLines == null)
+                return 0;
+            
             double totalPrice = 0;
             foreach(OrderLine orderLine in orderLines)
             {
-                totalPrice = totalPrice + orderLine.Price * orderLine.Quantity;
+                if (orderLine.Product.SalesPrice < 0)
+                    return 0;
+                else
+                    totalPrice = totalPrice + orderLine.Product.SalesPrice * orderLine.Quantity;
             }
             return totalPrice;
         }        
