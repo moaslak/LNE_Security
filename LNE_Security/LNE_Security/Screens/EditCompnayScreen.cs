@@ -57,6 +57,12 @@ namespace LNE_Security.Screens
             }   
         }
 
+        private void ChangeCurrency(Company company)
+        {
+
+
+        }
+
         protected override void Draw()
         {
             do

@@ -7,7 +7,9 @@ namespace LNE_Security
 {
     public class SalesOrder
     {
-        public List<OrderLine>? OrderLines { get; set; }
+        const double VATS = 1.25;
+
+        public List<OrderLine> OrderLines = new List<OrderLine>();
 
         public UInt32 OrderID { get; set; }
 
@@ -17,14 +19,19 @@ namespace LNE_Security
         public DateTime CompletionTime { get; set; }
 
         public OrderLine? orderLine { get; set; }
-        public double CalculateVATS()
+        public double CalculateVATS(double VATS, double TotalPrice)
         {
-            throw new System.NotImplementedException();
+            return TotalPrice * VATS;
         }
 
-        public double CalculateTotalPrice()
+        public double CalculateTotalPrice(List<OrderLine> orderLines)
         {
-            throw new System.NotImplementedException();
+            double totalPrice = 0;
+            foreach(OrderLine orderLine in orderLines)
+            {
+                totalPrice = totalPrice + orderLine.Price * orderLine.Quantity;
+            }
+            return totalPrice;
         }        
     }
 }

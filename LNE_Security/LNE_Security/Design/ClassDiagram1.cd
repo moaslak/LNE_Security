@@ -40,7 +40,7 @@
   <Class Name="LNE_Security.Product">
     <Position X="16.5" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAABggAAABAAAAAAgAAEAAAAAAQAAAAAIAAA=</HashCode>
+      <HashCode>AAAAAAAAAABggQAABAAAAAAgAAEAAAAAAQAAAAAIAAA=</HashCode>
       <FileName>Company\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -198,7 +198,7 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAgAAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Screens\EditCompnayScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -216,7 +216,7 @@
       <FileName>Screens\MainMenuScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LNE_Security.Screens.StorageScreen" Collapsed="true">
+  <Class Name="LNE_Security.Screens.StorageScreen">
     <Position X="14.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
