@@ -84,10 +84,17 @@ namespace LNE_Security.Screens
                 optionsListPage.Add(new Options("Zip code", company.ZipCode));
                 optionsListPage.Add(new Options("City", company.City));
                 optionsListPage.Add(new Options("Country", company.Country));
+                optionsListPage.Add(new Options("Back", "NO EDIT"));
                 Options selected = optionsListPage.Select();
-                EditCompany(selected);
-                Console.WriteLine("Press a key to update..."); // TODO: Denne skal gerne væk
+                
+                if(selected.Value != "NO EDIT")
+                {
+                    EditCompany(selected);
+                    Console.WriteLine("Press a key to update..."); // TODO: Denne skal gerne væk
+                    
+                }
                 Console.WriteLine("Press ESC to return to Company screen");
+
             } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 
             CompanyScreen companyScreen = new CompanyScreen(company);
