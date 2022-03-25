@@ -18,8 +18,8 @@ namespace LNE_Security
         static SalesOrder salesOrder = new SalesOrder();
         public static void Main(string[] args)
         {
-            InvoiceMockTest(salesOrder);
-            /*
+            //InvoiceMockTest(salesOrder);
+            
             if (company.Country == "Denmark")
                 company.Currency = Company.Currencies.DKK;
             else
@@ -27,7 +27,7 @@ namespace LNE_Security
             CompanyScreen companyScreen = new CompanyScreen(company);
             MainMenuScreen mainMenuScreen = new MainMenuScreen(company);
             ScreenHandler.Display(mainMenuScreen);
-            */
+            
         }
 
          private static OrderLine orderLinesMockTest()
@@ -63,7 +63,7 @@ namespace LNE_Security
             Invoice invoice = new Invoice(salesOrder.OrderID, salesOrder.OrderTime, salesOrder.CompletionTime, salesOrder.TotalPrice, Customer.ID);
             invoice.State = Invoice.States.Created;
             invoice.SalesOrder = salesOrder;
-            invoice.SalesOrder.OrderLines.Add(orderLine); // TODO: Denne fejler
+            //invoice.SalesOrder.OrderLines.Add(orderLine); // TODO: Denne fejler
             Console.WriteLine("OrderID: " + invoice.OrderID);
             Console.WriteLine("OrderTime: " + invoice.OrderTime);
             Console.WriteLine("CompletionTime: " + invoice.CompletionTime);

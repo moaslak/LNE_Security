@@ -22,13 +22,7 @@ namespace LNE_Security.Screens
     {
         private Company company { get; set; }
 
-        internal Options Options
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        internal Options Options { get; set; }
 
         public MainMenuScreen(Company Company) : base(Company)
         {

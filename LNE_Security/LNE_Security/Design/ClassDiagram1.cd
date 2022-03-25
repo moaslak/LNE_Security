@@ -23,7 +23,7 @@
   <Class Name="LNE_Security.Database" Collapsed="true">
     <Position X="5.25" Y="14.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAEAAAgAAAABAAAAAAAAAAAEAAAAAQAAABAAAAAA=</HashCode>
       <FileName>Data\Database.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -188,17 +188,17 @@
       <FileName>Screens\CompanyScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LNE_Security.Screens.EditClass" Collapsed="true">
-    <Position X="19" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Screens\EditClass.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="LNE_Security.Screens.EditCompnayScreen">
     <Position X="12" Y="4.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="LNE_Security.Screens.EditCompnayScreen.Options" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Screens\EditCompnayScreen.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Screens\EditCompnayScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -215,9 +215,6 @@
       <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAABAAAQ=</HashCode>
       <FileName>Screens\MainMenuScreen.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Options" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="LNE_Security.Screens.StorageScreen" Collapsed="true">
     <Position X="14.25" Y="4.5" Width="1.5" />
