@@ -4,7 +4,7 @@ using TECHCOOL.UI;
 namespace LNE_Security;
 public class CompanyDetailsScreen : ScreenHandler
 {
-	private Company company;
+	private Company company { get; set; }
 	
 	public CompanyDetailsScreen(Company Company) : base(Company)
 	{

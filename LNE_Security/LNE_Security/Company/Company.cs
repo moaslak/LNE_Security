@@ -65,6 +65,9 @@ namespace LNE_Security
             City = city;
             Country = country;
         }
+
+        List<Company>? CompanyList { get; set; }
+
         
     }
 }
