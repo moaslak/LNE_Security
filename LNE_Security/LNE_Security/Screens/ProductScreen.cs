@@ -32,8 +32,6 @@ namespace LNE_Security
                 productListPage.AddColumn("Product Name", "ProductName");
                 productListPage.AddColumn("Amount In Storage", "AmountInStorage");
                 productListPage.AddColumn("Company Price", "CompanyPrice");
-                // TODO: Lokation af product
-                // TODO: Enhed
                 productListPage.AddColumn("Sales Price", "SalesPrice");
                 productListPage.AddColumn("Profit In Percent", "CalculateProfit");
             } while (!(Console.ReadKey().Key == ConsoleKey.Enter));
