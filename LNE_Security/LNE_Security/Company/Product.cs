@@ -33,5 +33,8 @@ namespace LNE_Security
             Console.WriteLine((percent / SalesPrice) * 100);
         }
 
+        public List<Product>? products = new List<Product>();
+
+
     }
 }
