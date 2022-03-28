@@ -7,23 +7,23 @@ using TECHCOOL.UI;
 
 namespace LNE_Security.Screens
 {
-    class Options
-    {
-        public string Option { get; set; }
-        public string KeyPress { get; set; }
-        public Options(string option, string keyPress)
-        {
-            KeyPress = keyPress;
-            Option = option;
-            
-        }
-    }
+    
     public class MainMenuScreen : ScreenHandler
     {
+        class Options
+        {
+            public string Option { get; set; }
+            public string KeyPress { get; set; }
+            public Options(string option, string keyPress)
+            {
+                KeyPress = keyPress;
+                Option = option;
+
+            }
+        }
         private Company company { get; set; }
 
-        internal Options Options { get; set; }
-
+        
         public MainMenuScreen(Company Company) : base(Company)
         {
             this.company = Company;

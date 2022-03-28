@@ -14,18 +14,24 @@ namespace LNE_Security
             }
         }
         // MOCK DATA
-        static Company company = new Company("LNE Security", "Navn Gade", "1b", "1337", "Aalborg", "Denmark");
+        static Company lne = new Company("LNE Security", "Navn Gade", "1b", "1337", "Aalborg", "Denmark");
         static SalesOrder salesOrder = new SalesOrder();
+
+        static List<Company> companyList = new List<Company>();
         public static void Main(string[] args)
         {
             //InvoiceMockTest(salesOrder);
+            companyList.Add(lne);
+            foreach(Company company in companyList)
+            {
+                if (company.Country == "Denmark")
+                    company.Currency = Company.Currencies.DKK;
+                else
+                    company.Currency = Company.Currencies.USD;
+            }
             
-            if (company.Country == "Denmark")
-                company.Currency = Company.Currencies.DKK;
-            else
-                company.Currency = Company.Currencies.USD;
-            CompanyScreen companyScreen = new CompanyScreen(company);
-            MainMenuScreen mainMenuScreen = new MainMenuScreen(company);
+
+            MainMenuScreen mainMenuScreen = new MainMenuScreen(lne);
             ScreenHandler.Display(mainMenuScreen);
             
         }
@@ -42,7 +48,7 @@ namespace LNE_Security
             product.CompanyPrice = 2;
             product.AmountInStorage = 3;
             orderLine.Product = product;
-            orderLine.Price = 2;
+            orderLine.Product.SalesPrice = 1;
             orderLine.Quantity = 3;
             return orderLine;
         }
@@ -63,7 +69,7 @@ namespace LNE_Security
             Invoice invoice = new Invoice(salesOrder.OrderID, salesOrder.OrderTime, salesOrder.CompletionTime, salesOrder.TotalPrice, Customer.ID);
             invoice.State = Invoice.States.Created;
             invoice.SalesOrder = salesOrder;
-            //invoice.SalesOrder.OrderLines.Add(orderLine); // TODO: Denne fejler
+            invoice.SalesOrder.OrderLines.Add(orderLine); // TODO: Denne fejler
             Console.WriteLine("OrderID: " + invoice.OrderID);
             Console.WriteLine("OrderTime: " + invoice.OrderTime);
             Console.WriteLine("CompletionTime: " + invoice.CompletionTime);

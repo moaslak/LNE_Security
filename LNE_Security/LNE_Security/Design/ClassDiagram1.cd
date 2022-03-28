@@ -30,17 +30,17 @@
   <Class Name="LNE_Security.OrderLine">
     <Position X="13.5" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Company\OrderLine.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Product" />
+      <Field Name="Product" />
     </ShowAsAssociation>
   </Class>
   <Class Name="LNE_Security.Product">
     <Position X="16.5" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAABggAAABAAAAAAgAAEAAAAAAQAAAAAIAAA=</HashCode>
+      <HashCode>AAAAAAAAAABggQAABAgAAAAgAAEAAAAAAQAAAAAIAAA=</HashCode>
       <FileName>Company\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -57,11 +57,11 @@
   <Class Name="LNE_Security.SalesOrder">
     <Position X="10.5" Y="11.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAABAAEAAAACAAAEIAIAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AJAAABAAEAAAACAAAEIAIAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>Company\SalesOrder.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Property Name="OrderLines" />
+      <Field Name="OrderLines" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="LNE_Security.ScreenHandler">
@@ -75,7 +75,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="LNE_Security.Techcool" Collapsed="true">
-    <Position X="20.75" Y="0.5" Width="1.5" />
+    <Position X="13.75" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Design\Techcool.cs</FileName>
@@ -198,25 +198,25 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAgAAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Screens\EditCompnayScreen.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="LNE_Security.Screens.Options">
-    <Position X="3.25" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
-      <FileName>Screens\MainMenuScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LNE_Security.Screens.MainMenuScreen">
     <Position X="5.25" Y="4.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="LNE_Security.Screens.MainMenuScreen.Options" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Screens\MainMenuScreen.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAABAAAQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Screens\MainMenuScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LNE_Security.Screens.StorageScreen" Collapsed="true">
+  <Class Name="LNE_Security.Screens.StorageScreen">
     <Position X="14.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
@@ -224,7 +224,7 @@
     </TypeIdentifier>
   </Class>
   <Enum Name="LNE_Security.UnitPrice" Collapsed="true">
-    <Position X="19" Y="1.75" Width="1.5" />
+    <Position X="12" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAgAAAAAAAAAA=</HashCode>
       <FileName>Company\Product.cs</FileName>
