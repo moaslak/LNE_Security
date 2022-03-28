@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LNE_Security.Screens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,51 +10,51 @@ namespace LNE_Security
 {
     public class CompanyScreen : ScreenHandler
     {
-        
-        static string BACK = "Back";
-        static string NEW = "New Company";
         private Company company { get; set; }
-        private CompanyDetails details { get; set; }
+        
         public CompanyScreen(Company Company) : base(Company)
         {
             this.company = Company;
         }
-
-        
-
         protected override void Draw()
-        {
-             //Clean the screen
-            
+        {            
             ListPage<Company> CompanyListPage = new ListPage<Company>();
-            ListPage<String> selectModeListPage = new ListPage<String>();
-            ListPage<CompanyDetails> companyDetails = new ListPage<CompanyDetails>();
+
             CompanyListPage.Add(company);
-            companyDetails.Add(details);
-            selectModeListPage.Add(NEW);
-            selectModeListPage.Add(BACK);
-            //string selectMode = selectModeListPage.Select();
-            Company selected;
-            do
+            
+            Title = company.CompanyName + " Company Screen";
+            Clear(this);
+            CompanyListPage.AddColumn("Company name", "CompanyName");
+            CompanyListPage.AddColumn("Country", "Country");
+            CompanyListPage.AddColumn("Currency", "Currency");
+            Console.WriteLine("Choose company");
+            Company selected = CompanyListPage.Select();
+            Console.WriteLine("Selection: " + selected.CompanyName);
+            Console.WriteLine("F1 - New company");
+            Console.WriteLine("F2 - Edit");
+            Console.WriteLine("F10 - To Main menu");
+            Console.WriteLine("Esc - Close App");
+            switch (Console.ReadKey().Key)
             {
-                Title = "Company Screen";
-                Clear(this);
-                CompanyListPage.AddColumn("Company name", "CompanyName");
-                CompanyListPage.AddColumn("Country", "Country");
-                CompanyListPage.AddColumn("Currency", "Currency");
-                selected = CompanyListPage.Select(); // TODO: Der bruges dobbelt ENTER tryk. Ét bør være rigeligt.
-            } while(!(Console.ReadKey().Key == ConsoleKey.Enter));
-
-
-            switch (selected.CompanyName)
-            {
-                case "LNE Security":
-                    Console.WriteLine("Selection: " + selected.CompanyName);
-                    break;
-                case "New Company":
+                case ConsoleKey.F1:
                     Console.WriteLine("IMPLEMENT NEW COMPANY");
                     break;
-                case "Back":
+                case ConsoleKey.F2:
+                    EditCompnayScreen editScreen = new EditCompnayScreen(company);
+                    ScreenHandler.Display(editScreen);
+                    break;
+
+
+                case ConsoleKey.F11:
+                    CompanyDetailsScreen details = new CompanyDetailsScreen(selected);
+                    ScreenHandler.Display(details);
+                    break;
+                
+                case ConsoleKey.F10:
+                    MainMenuScreen menu = new MainMenuScreen(company);
+                    ScreenHandler.Display(menu);
+                    break;
+                case ConsoleKey.Escape:
                     Environment.Exit(0);
                     break;
             }

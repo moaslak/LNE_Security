@@ -7,15 +7,16 @@ namespace LNE_Security
 {
     public class OrderLine
     {
-
-        public Product? Product { get; set; }
+        public Product Product = new Product();
 
         public UInt16 Quantity { get; set; }
-
-        public double Price { get; set; }   
-        //public double CalculateLinePrice()
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        
+        public double CalculateLinePrice(Product product)
+        {
+            if(product == null || product.SalesPrice < 0)
+                return 0;
+            else
+                return product.SalesPrice * Quantity;
+        }
     }
 }

@@ -14,10 +14,13 @@ namespace LNE_Security
             }
         }
         // MOCK DATA
-        static Company company = new Company("LNE Security", "Navn Gade 1", "Denmark");
+        static Company lne = new Company("LNE Security", "Navn Gade", "1b", "1337", "Aalborg", "Denmark");
         static SalesOrder salesOrder = new SalesOrder();
+
+        static List<Company> companyList = new List<Company>();
         public static void Main(string[] args)
         {
+
             //InvoiceMockTest(salesOrder);   
             
             if (company.Country == "Denmark")
@@ -48,6 +51,7 @@ namespace LNE_Security
         //    return orderLine;
         //}
 
+
         // private static void InvoiceMockTest(SalesOrder salesOrder)
         //{
             
@@ -73,5 +77,6 @@ namespace LNE_Security
         //    Console.WriteLine("CustomerID: " + invoice.CustomerID);
         //    Console.ReadKey();
         //}
+
     }
 }
