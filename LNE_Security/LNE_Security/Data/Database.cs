@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LNE_Security
 {
-    public class Database : Product
+    public partial class Database : Product
     {
         // TODO: implementér singleton
         public static Company Instance { get; private set; }
