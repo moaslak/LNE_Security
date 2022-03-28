@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LNE_Security.Screens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,12 +36,13 @@ namespace LNE_Security
                 productListPage.AddColumn("Profit In Percent", "CalculateProfit");
             } while (!(Console.ReadKey().Key == ConsoleKey.Enter));
 
-            switch (selectedProduct.ProductName)
+            switch (Console.ReadKey().Key)
             {
-                case "Sweet Pickles":
-                    Console.WriteLine("Selected: " + selectedProduct.ProductName);
+                case ConsoleKey.Enter:
+                    ProductDetailsScreen detailsScreen = new ProductDetailsScreen(product);
+                    ScreenHandler.Display(detailsScreen);
                     break;
-                case "Back":
+                case ConsoleKey.Escape:
                     Environment.Exit(0);
                     break;
             }

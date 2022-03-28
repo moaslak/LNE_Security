@@ -22,6 +22,8 @@ namespace LNE_Security
         public double AmountInStorage { get; set; }
         public UInt32 ID { get; set; }
 
+        // TODO: Location af produkt?
+        // TODO: Enhed?
         public string? Description { get; set; }
 
         /// <summary>
