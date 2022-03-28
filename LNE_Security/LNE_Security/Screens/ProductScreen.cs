@@ -21,7 +21,7 @@ namespace LNE_Security
             ListPage<Product> productListPage = new ListPage<Product>();
             ListPage<String> selectedList = new ListPage<String>();
             productListPage.Add(product);
-            Product selectedProduct;
+            Product selectedProduct = new Product();
 
             do
             {
