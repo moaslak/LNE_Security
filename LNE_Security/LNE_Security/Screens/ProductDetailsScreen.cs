@@ -29,6 +29,8 @@ namespace LNE_Security.Screens
             ProductListPage.AddColumn("Description", "Description");
             ProductListPage.AddColumn("Cost Price", "CostPrice");
             ProductListPage.AddColumn("Sales Price", "SalesPrice");
+            // TODO: Lokation af product
+            // TODO: Enhed
             ProductListPage.AddColumn("Amount In Storage", "AmountInStorage");
             ProductListPage.AddColumn("Calculate Profit Percent", "CalculateProfitPercent");
             ProductListPage.AddColumn("Calculate Profit", "CalculateProfit");
