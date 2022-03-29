@@ -20,18 +20,38 @@ namespace LNE_Security
         static List<Company> companyList = new List<Company>();
         public static void Main(string[] args)
         {
-            Database database = new Database();
-            companyList = database.GetCompanies(database.SetSqlConnection());
-            //InvoiceMockTest(salesOrder);
-            companyList.Add(lne);
-            foreach(Company company in companyList)
-            {
-                if (company.Country == "Denmark")
-                    company.Currency = Company.Currencies.DKK;
-                else
-                    company.Currency = Company.Currencies.USD;
-            }
+
+            //InvoiceMockTest(salesOrder);   
+            /*
+            if (company.Country == "Denmark")
+                company.Currency = Company.Currencies.DKK;
+            else
+                company.Currency = Company.Currencies.USD;
+            */
+            //CompanyScreen companyScreen = new CompanyScreen(company);
+            //CompanyDetails details = new CompanyDetails(company);
+            //ProductScreen productScreen = new();
+            MainMenuScreen mainMenu = new MainMenuScreen(lne);
+            ScreenHandler.Display(mainMenu);
             
+        }
+
+        // private static OrderLine orderLinesMockTest()
+        //{
+        //    OrderLine orderLine = new OrderLine();
+        //    Product product = new Product();
+        //    product.ProductNumber = 1;
+        //    product.ProductName = "string";
+        //    product.SalesPrice = 1;
+        //    product.ID = 1;
+        //    product.Description = "Test";
+        //    product.CompanyPrice = 2;
+        //    product.AmountInStorage = 3;
+        //    orderLine.Product = product;
+        //    orderLine.Price = 2;
+        //    orderLine.Quantity = 3;
+        //    return orderLine;
+        //}
 
             MainMenuScreen mainMenuScreen = new MainMenuScreen(lne);
             ScreenHandler.Display(mainMenuScreen);
