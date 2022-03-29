@@ -8,6 +8,8 @@ namespace LNE_Security;
 
 public class Company
 {
+    private SqlConnection sqlConnection;
+
     public Storage Storage
     {
         get => default;
@@ -79,7 +81,7 @@ public class Company
     List<Company>? CompanyList { get; set; }
     public Company RemoveCompany(Company company)
     {
-
+        SqlConnection sqlRemoveCompany = SetSqlConnection(Id);
         CompanyName = null;
         StreetName = null;
         HouseNumber = null;
@@ -89,5 +91,10 @@ public class Company
         CVR = null;
         return this;
     }
-    
+
+    private SqlConnection SetSqlConnection(ushort id)
+    {
+        sqlConnection.Database.Remove(id);
+        return sqlConnection;
+    }
 }
