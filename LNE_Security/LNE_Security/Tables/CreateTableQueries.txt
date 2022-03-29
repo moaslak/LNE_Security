@@ -11,5 +11,9 @@ LocationString varchar(8),
 Unit nchar(3),
 Description varchar(128),
 Profit money,
-ProfitPersent decimal(5,2)
+ProfitPersent decimal(5,2),
+PRIMARY KEY(Id)
+)
+
+CREATE TABLE Address(
 )
