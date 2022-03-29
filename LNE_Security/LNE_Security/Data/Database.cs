@@ -113,12 +113,14 @@ public partial class Database : Product
         sqlConnection.Database.Remove(id);
         return sqlConnection;
     }
-    private Person person { get; set; } 
+    private Person person { get; set; }
+    Address address = new Address();
+    ContactInfo contactInfo = new ContactInfo();
     public List<Person> GetCustomers(SqlConnection sqlConnection)
     {
-       List<Person> persons = new List<Person>();
+        List<Person> persons = new List<Person>();
         sqlConnection.Open();
-        string query = @"SELECT *, FROM [dbo].[Customer]";
+        string query = "SELECT *, FROM [dbo].[Customer]";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         SqlDataReader reader = cmd.ExecuteReader();
 
@@ -144,10 +146,43 @@ public partial class Database : Product
         }
 
         reader.Close();
+
+        sqlConnection.Close();
+
+        return persons;
     }
-    /*static Company()
+    public List<Person> InsertCustomer(SqlConnection sqlConnection)
     {
-        Instance = new Company();
-        
-    }*/
+        List<Person> persons = new List<Person>();
+        string query = "INSERT INTO dbo.Customer(id, firstname, lastname," +
+            " phonenumber, email, streetname, housenumber, city, zipcode, country) " +
+            "VALUES(@id, @firstname, @lastname, @phonenumber, @email, @streetname," +
+            " @housenumber, @city, @zipcode, @country";
+        using(SqlCommand cmd = new SqlCommand(query, sqlConnection))
+        {
+            cmd.Parameters.AddWithValue("@id", ID);
+            cmd.Parameters.AddWithValue("@firstname", person.ContactInfo.FirstName);
+            cmd.Parameters.AddWithValue("@lastname", person.ContactInfo.LastName);
+            cmd.Parameters.AddWithValue("@phonenumber", person.ContactInfo.PhoneNumber);
+            cmd.Parameters.AddWithValue("@email", person.ContactInfo.Email);
+            cmd.Parameters.AddWithValue("@streetname", person.Address.StreetName);
+            cmd.Parameters.AddWithValue("@housenumber", person.Address.HouseNumber);
+            cmd.Parameters.AddWithValue("@city", person.Address.City);
+            cmd.Parameters.AddWithValue("@zipcode", person.Address.ZipCode);
+            cmd.Parameters.AddWithValue("@country", person.Address.Country);
+
+            sqlConnection.Open();
+            int result = cmd.ExecuteNonQuery();
+        }
+        return persons;
+    }
+    public List<Person> UpdateCustomer(SqlConnection sqlConnection)
+    {
+        List<Person> people = new List<Person>();
+        string query = "UPDATE Customer(id, firstname, lastname," +
+            " phonenumber, email, streetname, housenumber, city, zipcode, country) " +
+            "VALUES(@id, @firstname, @lastname, @phonenumber, @email, @streetname," +
+            " @housenumber, @city, @zipcode, @country";
+        return people;
+    }
 }
