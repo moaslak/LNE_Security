@@ -40,7 +40,7 @@ namespace LNE_Security
             {
                 case ConsoleKey.Enter:
                     ProductDetailsScreen detailsScreen = new ProductDetailsScreen(product);
-                    ScreenHandler.Display(detailsScreen);
+                    ScreenHandler.Display(detailsScreen); // kunne man kalde ProductDetailsScreen direkte i Display()? ScreenHandler.Display(new ProdcuctDetailsScreen(product)); Erklæring er måske ikke nødvendig.
                     break;
                 case ConsoleKey.Escape:
                     Environment.Exit(0);

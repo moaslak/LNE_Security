@@ -37,7 +37,7 @@ namespace LNE_Security.Screens
 
             Product selected = ProductListPage.Select();
 
-            Console.WriteLine("Selection" + selected.ProductName);
+            Console.WriteLine("Selection" + selected.ProductName); // bliver strengen ikke til "Selection'selected.ProductName'". Burde der ikke være mellemrum og kolon efter "Selection"? "Selection: "
             Console.WriteLine("F1 - Back");
 
             ProductScreen productScreen = new ProductScreen(selected);
@@ -45,7 +45,7 @@ namespace LNE_Security.Screens
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.F1:
-                    ScreenHandler.Display(productScreen);
+                    ScreenHandler.Display(productScreen); // Er det nødvendigt med erklæring af objektet? Kan der ikke kaldes direkte i Display();
                     break;
                 default:
                     break;
