@@ -62,8 +62,8 @@ namespace LNE_Security.Screens
                     case "YEN":
                         company.Currency = Company.Currencies.YEN;
                         break;
-                    case "EURO":
-                        company.Currency = Company.Currencies.EURO;
+                    case "EUR":
+                        company.Currency = Company.Currencies.EUR;
                         break;
                     default:
                         break;
@@ -130,8 +130,8 @@ namespace LNE_Security.Screens
                     case "YEN":
                         company.Currency = Company.Currencies.YEN;
                         break;
-                    case "EURO":
-                        company.Currency = Company.Currencies.EURO;
+                    case "EUR":
+                        company.Currency = Company.Currencies.EUR;
                         break;
                     default:
                         break;
