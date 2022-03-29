@@ -12,7 +12,14 @@ namespace LNE_Security;
 public class CompanyScreen : ScreenHandler
 {
     private Company company { get; set; }
-    
+    private Company companyName { get; set; }
+    private Company streetName { get; set; }
+    private Company houseNumber { get; set; }
+    private Company zipCode { get; set; }
+    private Company city { get; set; }
+    private Company country { get; set; }
+
+
     public CompanyScreen(Company Company) : base(Company)
     {
 
@@ -142,6 +149,9 @@ public class CompanyScreen : ScreenHandler
             case ConsoleKey.F10:
                 MainMenuScreen menu = new MainMenuScreen(company);
                 ScreenHandler.Display(menu);
+                break;
+            case ConsoleKey.F5:
+                ScreenHandler.Display(selected.RemoveCompany(company));
                 break;
             case ConsoleKey.Escape:
                 Environment.Exit(0);
