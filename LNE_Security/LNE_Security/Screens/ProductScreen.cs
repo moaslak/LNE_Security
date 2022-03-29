@@ -38,13 +38,6 @@ public class ProductScreen : ScreenHandler
         Console.WriteLine("F5 - Product Details");
         Console.WriteLine("ESCAPE - Back");
 
-        switch (Console.ReadKey().Key)
-        {
-            ListPage<Product> productListPage = new ListPage<Product>();
-            ListPage<String> selectedList = new ListPage<String>();
-            productListPage.Add(product);
-            Product selectedProduct = new Product();
-
             do
             {
                 Title = "Product";
@@ -59,10 +52,6 @@ public class ProductScreen : ScreenHandler
 
             switch (Console.ReadKey().Key)
             {
-                case ConsoleKey.Enter:
-                    ProductDetailsScreen detailsScreen = new ProductDetailsScreen(product);
-                    ScreenHandler.Display(detailsScreen); // kunne man kalde ProductDetailsScreen direkte i Display()? ScreenHandler.Display(new ProdcuctDetailsScreen(product)); Erklæring er måske ikke nødvendig.
-                    break;
                 case ConsoleKey.Escape:
                     Environment.Exit(0);
                     break;
@@ -78,7 +67,7 @@ public class ProductScreen : ScreenHandler
                     break;
             }
             
-        }
+        
     }
 
 

@@ -128,9 +128,6 @@ public class EditCompnayScreen : ScreenHandler
                 listPage.Add(new Options(cur.ToString(), cur.ToString()));
 
                 List<Company.Currencies> currencies = currenciesToList();
-
-                ListPage<Options> listPage = new ListPage<Options>();
-                listPage.AddColumn("Currency", "Option");
                 foreach (Company.Currencies cur in currencies)
                 {
                     listPage.Add(new Options(cur.ToString(), cur.ToString()));
@@ -156,23 +153,6 @@ public class EditCompnayScreen : ScreenHandler
 
             }
 
-            switch (selected.Value)
-            {
-                case "DKK":
-                    company.Currency = Company.Currencies.DKK;
-                    break;
-                case "USD":
-                    company.Currency = Company.Currencies.USD;
-                    break;
-                case "YEN":
-                    company.Currency = Company.Currencies.YEN;
-                    break;
-                case "EURO":
-                    company.Currency = Company.Currencies.EURO;
-                    break;
-                default:
-                    break;
-            }
         }
 
         switch (selected.Option)

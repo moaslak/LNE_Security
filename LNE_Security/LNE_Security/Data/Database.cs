@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace LNE_Security;
 
@@ -104,8 +105,46 @@ public partial class Database : Product
 
         return companies;
     }
+    public SqlConnection RemoveSqlCompany(ushort id)
+    {
+        Company company = new Company();
+        company.Id = id;
+        SqlConnection sqlConnection = new SqlConnection();
+        sqlConnection.Database.Remove(id);
+        return sqlConnection;
+    }
+    private Person person { get; set; } 
+    public List<Person> GetCustomers(SqlConnection sqlConnection)
+    {
+       List<Person> persons = new List<Person>();
+        sqlConnection.Open();
+        string query = @"SELECT *, FROM [dbo].[Customer]";
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        SqlDataReader reader = cmd.ExecuteReader();
 
-    
+        StringBuilder stringBuilder = new StringBuilder();
+        while (reader.Read())
+        {
+            for (int i = 0; i <= reader.FieldCount - 1; i++)
+            {
+                stringBuilder.Append(reader.GetValue(i));
+            }
+            stringBuilder.Append("/n");
+            person.ID = (ushort)(Convert.ToUInt16(stringBuilder[0]) - 48);
+            person.ContactInfo.FirstName = stringBuilder[1].ToString();
+            person.ContactInfo.LastName = stringBuilder[2].ToString();
+            person.ContactInfo.PhoneNumber = stringBuilder[3].ToString();
+            person.ContactInfo.Email = stringBuilder[4].ToString();
+            person.Address.StreetName = stringBuilder[5].ToString();
+            person.Address.HouseNumber = stringBuilder[6].ToString();
+            person.Address.City = stringBuilder[7].ToString();
+            person.Address.ZipCode.ToString();
+            person.Address.Country = stringBuilder[9].ToString();
+            persons.Add(person);
+        }
+
+        reader.Close();
+    }
     /*static Company()
     {
         Instance = new Company();
