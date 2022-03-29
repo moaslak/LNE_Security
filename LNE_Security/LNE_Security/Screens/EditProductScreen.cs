@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TECHCOOL.UI;
+using static LNE_Security.Screens.EditCompnayScreen;
 
 namespace LNE_Security.Screens
 {
-    public class EditProductScreen : ScreenHandler
-    {        
+public class EditProductScreen : ScreenHandler
+{
         public class Options
         {
             public string Option { get; set; }
@@ -19,7 +20,7 @@ namespace LNE_Security.Screens
                 Option = option;
             }
         }
-        private Product product;
+    private Product product;
         public EditProductScreen(Product Product) : base(Product)
         {
             this.product = Product;
@@ -31,9 +32,9 @@ namespace LNE_Security.Screens
             return list;
         }
 
-        private void EditProduct(Options selected)
-        {
-            string newValue = "";
+    private void EditProduct(Options selected)
+    {
+        string newValue = "";
             UInt16 newInt = 0;
             double newDouble = 0;
             if (selected.Option == "Unit")
@@ -94,32 +95,32 @@ namespace LNE_Security.Screens
                 Double.TryParse(newValue, out newDouble);
             }
 
-            if (newValue == null)
-                newValue = "";
+        if (newValue == null)
+            newValue = "";
 
             // location og unit mangler
-            switch (selected.Option)
-            {
+        switch (selected.Option)
+        {
                 case "Product Name":
-                    this.product.ProductName = newValue;
-                    break;
+                this.product.ProductName = newValue;
+                break;
                 case "Product Number":
                     this.product.ProductNumber = newInt;
-                    break;
+                break;
                 case "Sales Price":
                     this.product.SalesPrice = newDouble;
-                    break;
+                break;
                 case "Cost Price":
                     this.product.CostPrice = newDouble;
-                    break;
+                break;
                 case "Amount In Storage":
                     this.product.AmountInStorage = newDouble;
-                    break;
+                break;
                 case "Description":
                     this.product.Description = newValue;
-                    break;
-                default:
-                    break;
+                break;
+            default:
+                break;
             }
         }       
         protected override void Draw()
@@ -179,7 +180,7 @@ namespace LNE_Security.Screens
                 else
                 {
                     break;
-                }
+        }
                 Console.WriteLine("Press ESC to return to Product screen");
 
             } while ((Console.ReadKey().Key != ConsoleKey.Escape));
