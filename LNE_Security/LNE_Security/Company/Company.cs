@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -7,6 +8,8 @@ namespace LNE_Security;
 
 public class Company
 {
+    private SqlConnection sqlConnection;
+
     public Storage Storage
     {
         get => default;
@@ -32,34 +35,25 @@ public class Company
     }
 
 
-    public string CompanyName { get; set; }
-    public string Country { get; set; }
-    public string StreetName { get; set; }
-    public enum Currencies { DKK, USD, EURO, YEN }
-    public Currencies Currency { get; set; }
-    public string CVR { get; set; }        
-    public string CompanyName { get; set; }
-    public string Country { get; set; }
-    public string StreetName { get; set; }
+    public string? CompanyName { get; set; }
+    public string? Country { get; set; }
+    public string? StreetName { get; set; }
     public enum Currencies { DKK, USD, EUR, YEN }
-    public Currencies Currency { get; set; }
-    public string CVR { get; set; }        
+    public Currencies? Currency { get; set; }
+    public string? CVR { get; set; }        
+    public string? HouseNumber { get; set; }
+
+    public string? ZipCode { get; set; }
 
 
-    public string HouseNumber { get; set; }
+    public string? City { get; set; }
 
-    public string ZipCode { get; set; }
+    public UInt16 Id { get; set; }
 
+    public Company()
+    {
 
-    public string City { get; set; }
-
-        public string City { get; set; }
-        public UInt16 Id { get; set; }
-
-        public Company()
-        {
-
-        }
+    }
 
 
     public Company(string companyName, string streetName, string country)
@@ -85,6 +79,22 @@ public class Company
     }
 
     List<Company>? CompanyList { get; set; }
+    public Company RemoveCompany(Company company)
+    {
+        sqlConnection = SetSqlConnection(Id);
+        CompanyName = null;
+        StreetName = null;
+        HouseNumber = null;
+        ZipCode = null;
+        City = null;
+        Country = null;
+        CVR = null;
+        return this;
+    }
 
-    
+    private SqlConnection SetSqlConnection(ushort id)
+    {
+        sqlConnection.Database.Remove(id);
+        return sqlConnection;
+    }
 }
