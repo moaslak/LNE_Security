@@ -20,6 +20,8 @@ namespace LNE_Security
         static List<Company> companyList = new List<Company>();
         public static void Main(string[] args)
         {
+            Database database = new Database();
+            companyList = database.GetCompanies(database.SetSqlConnection());
             //InvoiceMockTest(salesOrder);
             companyList.Add(lne);
             foreach(Company company in companyList)

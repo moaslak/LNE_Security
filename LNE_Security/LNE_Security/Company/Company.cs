@@ -34,7 +34,7 @@ namespace LNE_Security
         public string CompanyName { get; set; }
         public string Country { get; set; }
         public string StreetName { get; set; }
-        public enum Currencies { DKK, USD, EURO, YEN }
+        public enum Currencies { DKK, USD, EUR, YEN }
         public Currencies Currency { get; set; }
         public string CVR { get; set; }        
 
@@ -43,6 +43,12 @@ namespace LNE_Security
         public string ZipCode { get; set; }
 
         public string City { get; set; }
+        public UInt16 Id { get; set; }
+
+        public Company()
+        {
+
+        }
 
         public Company(string companyName, string streetName, string country)
         {
