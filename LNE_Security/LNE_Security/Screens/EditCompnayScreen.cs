@@ -5,40 +5,52 @@ using System.Text;
 using System.Threading.Tasks;
 using TECHCOOL.UI;
 
-namespace LNE_Security.Screens
+namespace LNE_Security.Screens;
+
+public class EditCompnayScreen : ScreenHandler
 {
-    public class EditCompnayScreen : ScreenHandler
+    public class Options
     {
-        public class Options
+        public string Option { get; set; }
+        public string Value { get; set; }
+        public Options(string option, string value)
         {
-            public string Option { get; set; }
-            public string Value { get; set; }
-            public Options(string option, string value)
-            {
-                Value = value;
-                Option = option;
-            }
+            Value = value;
+            Option = option;
         }
-        private Company company;
-        public EditCompnayScreen(Company Company) : base(Company)
-        {
-            this.company = Company;
-        }
+    }
+    private Company company;
+    public EditCompnayScreen(Company Company) : base(Company)
+    {
+        this.company = Company;
+    }
 
-        private List<Company.Currencies> currenciesToList()
-        {
-            List<Company.Currencies> list = Enum.GetValues(typeof(Company.Currencies)).Cast<Company.Currencies>().ToList();
-            return list;
-        }
+    private List<Company.Currencies> currenciesToList()
+    {
+        List<Company.Currencies> list = Enum.GetValues(typeof(Company.Currencies)).Cast<Company.Currencies>().ToList();
+        return list;
+    }
 
-        private void EditCompany(Options selected)
+    private void EditCompany(Options selected)
+    {
+        string newValue = "";
+        if(selected.Option != "Currency")
         {
-            string newValue = "";
-            if(selected.Option != "Currency")
+            Console.Write("New value: ");
+            newValue = Console.ReadLine();
+        }
+        else
+        {
+            List<Company.Currencies> currencies = currenciesToList();
+            
+            ListPage<Options> listPage = new ListPage<Options>();
+            listPage.AddColumn("Currency", "Option");
+            foreach(Company.Currencies cur in currencies)
             {
-                Console.Write("New value: ");
-                newValue = Console.ReadLine();
+                listPage.Add(new Options(cur.ToString(), cur.ToString()));
             }
+            selected = listPage.Select();
+
             else
             {
                 List<Company.Currencies> currencies = currenciesToList();
@@ -69,46 +81,74 @@ namespace LNE_Security.Screens
                         break;
                 }
 
-            }
 
-            if (newValue == null)
-                newValue = "";
-            switch (selected.Option)
+            switch (selected.Value)
             {
-                case "Company name":
-                    this.company.CompanyName = newValue;
+                case "DKK":
+                    company.Currency = Company.Currencies.DKK;
                     break;
-                case "Street name":
-                    this.company.StreetName = newValue;
+                case "USD":
+                    company.Currency = Company.Currencies.USD;
                     break;
-                case "House number":
-                    this.company.HouseNumber = newValue;
+                case "YEN":
+                    company.Currency = Company.Currencies.YEN;
                     break;
-                case "Zip code":
-                    this.company.ZipCode = newValue;
-                    break;
-                case "City":
-                    this.company.City = newValue;
-                    break;
-                case "Country": 
-                    this.company.Country = newValue;
+                case "EURO":
+                    company.Currency = Company.Currencies.EURO;
                     break;
                 default:
                     break;
-            }   
+            }
+
         }
 
-        /// <summary>
-        /// Modified version of EditCompany().
-        /// Only used for unit test
-        /// </summary>
-        /// <param name="selected"></param>
-        public void EditCompanyTesting(Options selected)
+        if (newValue == null)
+            newValue = "";
+        switch (selected.Option)
         {
-            string newValue = selected.Value;
+            case "Company name":
+                this.company.CompanyName = newValue;
+                break;
+            case "Street name":
+                this.company.StreetName = newValue;
+                break;
+            case "House number":
+                this.company.HouseNumber = newValue;
+                break;
+            case "Zip code":
+                this.company.ZipCode = newValue;
+                break;
+            case "City":
+                this.company.City = newValue;
+                break;
+            case "Country": 
+                this.company.Country = newValue;
+                break;
+            default:
+                break;
+        }   
+    }
 
-            if (selected.Option == "Currency")
+    /// <summary>
+    /// Modified version of EditCompany().
+    /// Only used for unit test
+    /// </summary>
+    /// <param name="selected"></param>
+    public void EditCompanyTesting(Options selected)
+    {
+        string newValue = selected.Value;
+
+        if (selected.Option == "Currency")
+        {
+
+            List<Company.Currencies> currencies = currenciesToList();
+
+
+            ListPage<Options> listPage = new ListPage<Options>();
+            listPage.AddColumn("Currency", "Option");
+            foreach (Company.Currencies cur in currencies)
             {
+                listPage.Add(new Options(cur.ToString(), cur.ToString()));
 
                 List<Company.Currencies> currencies = currenciesToList();
 
@@ -136,80 +176,99 @@ namespace LNE_Security.Screens
                     default:
                         break;
                 }
+
             }
 
-            switch (selected.Option)
+            switch (selected.Value)
             {
-                case "Company name":
-                    this.company.CompanyName = newValue;
+                case "DKK":
+                    company.Currency = Company.Currencies.DKK;
                     break;
-                case "Street name":
-                    this.company.StreetName = newValue;
+                case "USD":
+                    company.Currency = Company.Currencies.USD;
                     break;
-                case "House number":
-                    this.company.HouseNumber = newValue;
+                case "YEN":
+                    company.Currency = Company.Currencies.YEN;
                     break;
-                case "Zip code":
-                    this.company.ZipCode = newValue;
-                    break;
-                case "City":
-                    this.company.City = newValue;
-                    break;
-                case "Country":
-                    this.company.Country = newValue;
+                case "EURO":
+                    company.Currency = Company.Currencies.EURO;
                     break;
                 default:
                     break;
             }
         }
-        protected override void Draw()
+
+        switch (selected.Option)
         {
-            do
-            {
-                Title = company.CompanyName + " Edit company screen";
-                Clear(this);
-                ListPage<Company> CompanyListPage = new ListPage<Company>();
-
-                CompanyListPage.AddColumn("Company name", "CompanyName");
-                CompanyListPage.AddColumn("Street name", "StreetName");
-                CompanyListPage.AddColumn("House number", "HouseNumber");
-                CompanyListPage.AddColumn("Zip code", "ZipCode");
-                CompanyListPage.AddColumn("City", "City");
-                CompanyListPage.AddColumn("Country", "Country");
-                CompanyListPage.AddColumn("Currency", "Currency");
-                CompanyListPage.Add(company);
-                CompanyListPage.Draw();
-
-                ListPage<Options> optionsListPage = new ListPage<Options>();
-
-                optionsListPage.AddColumn("Edit", "Option");
-                optionsListPage.Add(new Options("Company name", company.CompanyName));
-                optionsListPage.Add(new Options("Street name", company.StreetName));
-                optionsListPage.Add(new Options("House number", company.HouseNumber));
-                optionsListPage.Add(new Options("Zip code", company.ZipCode));
-                optionsListPage.Add(new Options("City", company.City));
-                optionsListPage.Add(new Options("Country", company.Country));
-                optionsListPage.Add(new Options("Currency", company.Currency.ToString()));
-                optionsListPage.Add(new Options("Back", "NO EDIT"));
-                Options selected = optionsListPage.Select();
-                
-                if(selected.Value != "NO EDIT")
-                {
-                    EditCompany(selected);
-                    Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
-                    
-                }
-                else
-                {
-                    break;
-                }
-                Console.WriteLine("Press ESC to return to Company screen");
-
-            } while ((Console.ReadKey().Key != ConsoleKey.Escape));
-
-            CompanyScreen companyScreen = new CompanyScreen(company);
-            ScreenHandler.Display(companyScreen);
-            
+            case "Company name":
+                this.company.CompanyName = newValue;
+                break;
+            case "Street name":
+                this.company.StreetName = newValue;
+                break;
+            case "House number":
+                this.company.HouseNumber = newValue;
+                break;
+            case "Zip code":
+                this.company.ZipCode = newValue;
+                break;
+            case "City":
+                this.company.City = newValue;
+                break;
+            case "Country":
+                this.company.Country = newValue;
+                break;
+            default:
+                break;
         }
+    }
+    protected override void Draw()
+    {
+        do
+        {
+            Title = company.CompanyName + " Edit company screen";
+            Clear(this);
+            ListPage<Company> CompanyListPage = new ListPage<Company>();
+
+            CompanyListPage.AddColumn("Company name", "CompanyName");
+            CompanyListPage.AddColumn("Street name", "StreetName");
+            CompanyListPage.AddColumn("House number", "HouseNumber");
+            CompanyListPage.AddColumn("Zip code", "ZipCode");
+            CompanyListPage.AddColumn("City", "City");
+            CompanyListPage.AddColumn("Country", "Country");
+            CompanyListPage.AddColumn("Currency", "Currency");
+            CompanyListPage.Add(company);
+            CompanyListPage.Draw();
+
+            ListPage<Options> optionsListPage = new ListPage<Options>();
+
+            optionsListPage.AddColumn("Edit", "Option");
+            optionsListPage.Add(new Options("Company name", company.CompanyName));
+            optionsListPage.Add(new Options("Street name", company.StreetName));
+            optionsListPage.Add(new Options("House number", company.HouseNumber));
+            optionsListPage.Add(new Options("Zip code", company.ZipCode));
+            optionsListPage.Add(new Options("City", company.City));
+            optionsListPage.Add(new Options("Country", company.Country));
+            optionsListPage.Add(new Options("Currency", company.Currency.ToString()));
+            optionsListPage.Add(new Options("Back", "NO EDIT"));
+            Options selected = optionsListPage.Select();
+            
+            if(selected.Value != "NO EDIT")
+            {
+                EditCompany(selected);
+                Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
+                
+            }
+            else
+            {
+                break;
+            }
+            Console.WriteLine("Press ESC to return to Company screen");
+
+        } while ((Console.ReadKey().Key != ConsoleKey.Escape));
+
+        CompanyScreen companyScreen = new CompanyScreen(company);
+        ScreenHandler.Display(companyScreen);
+        
     }
 }
