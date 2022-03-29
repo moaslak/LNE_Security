@@ -44,7 +44,7 @@ public class CompanyScreen : ScreenHandler
         newCompany.CVR = Console.ReadLine();
         do
         {
-            Console.Write("Choose currency DKK, USD, EUR, YEN");
+            Console.Write("Choose currency DKK, USD, EUR or YEN: ");
             cur = Console.ReadLine();
             switch (cur)
             {
@@ -130,21 +130,13 @@ public class CompanyScreen : ScreenHandler
                 EditCompnayScreen editScreen = new EditCompnayScreen(company);
                 ScreenHandler.Display(editScreen);
                 break;
-
-
-
-        case ConsoleKey.F11:
-            CompanyDetailsScreen details = new CompanyDetailsScreen(selected);
-            ScreenHandler.Display(details);
-            break;
-            
-        case ConsoleKey.F10:
-            MainMenuScreen menu = new MainMenuScreen(company);
-            ScreenHandler.Display(menu);
-            break;
-        case ConsoleKey.Escape:
-            Environment.Exit(0);
-            break;
+            case ConsoleKey.F10:
+                MainMenuScreen menu = new MainMenuScreen(company);
+                ScreenHandler.Display(menu);
+                break;
+            case ConsoleKey.Escape:
+                Environment.Exit(0);
+                break;
         }
     }
 }
