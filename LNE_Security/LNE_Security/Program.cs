@@ -19,23 +19,21 @@ class Program
 
 
     static List<Company> companyList = new List<Company>();
+    static Company company = new Company();
+       
     public static void Main(string[] args)
     {
-
-        static List<Company> companyList = new List<Company>();
-        public static void Main(string[] args)
+        Database database = new Database();
+        companyList = database.GetCompanies(database.SetSqlConnection());
+        //InvoiceMockTest(salesOrder);
+        companyList.Add(lne);
+        foreach(Company company in companyList)
         {
-            Database database = new Database();
-            companyList = database.GetCompanies(database.SetSqlConnection());
-            //InvoiceMockTest(salesOrder);
-            companyList.Add(lne);
-            foreach(Company company in companyList)
-            {
-                if (company.Country == "Denmark")
-                    company.Currency = Company.Currencies.DKK;
-                else
-                    company.Currency = Company.Currencies.USD;
-            }
+            if (company.Country == "Denmark")
+                company.Currency = Company.Currencies.DKK;
+            else
+                company.Currency = Company.Currencies.USD;
+        }
             
 
 
@@ -45,10 +43,8 @@ class Program
             company.Currency = Company.Currencies.DKK;
         else
             company.Currency = Company.Currencies.USD;
-        CompanyScreen companyScreen = new CompanyScreen(company);
-        CompanyDetails details = new CompanyDetails(company);
-        ProductScreen productScreen = new();
-        ScreenHandler.Display(productScreen);
+        MainMenuScreen mainMenuScreen = new MainMenuScreen(company);
+        ScreenHandler.Display(mainMenuScreen);
         
     }
 
