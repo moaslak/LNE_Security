@@ -27,4 +27,9 @@ public class ScreenHandler : Screen
     {
         
     }
+
+    protected static void Display(Company company)
+    {
+        throw new NotImplementedException();
+    }
 }

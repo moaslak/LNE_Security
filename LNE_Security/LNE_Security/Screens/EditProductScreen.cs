@@ -3,31 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TECHCOOL.UI;
 using static LNE_Security.Screens.EditCompnayScreen;
 
-namespace LNE_Security.Screens;
+namespace LNE_Security;
 
 public class EditProductScreen : ScreenHandler
 {
-    private Options options;
     private Product product;
-    public EditProductScreen(Product Product, Options options) : base(Product)
+
+    private void EditProduct(Options selected)
     {
-        this.options = options;
-        this.product = Product;
-    }
+        string newValue = "";
 
-    string newValue = "";
 
-     if (newValue == null)
+        if (newValue == null)
             newValue = "";
         switch (selected.Option)
         {
+            case "Product Number":
+                this.product.ProductNumber = newValue;
+                break;
             case "Product name":
                 this.product.ProductName = newValue;
                 break;
-            case "Street name":
-                this.company.StreetName = newValue;
+            case "Description":
+                this.product.Description = newValue;
                 break;
             case "House number":
                 this.company.HouseNumber = newValue;
@@ -38,9 +39,11 @@ public class EditProductScreen : ScreenHandler
             case "City":
                 this.company.City = newValue;
                 break;
-            case "Country": 
+            case "Country":
                 this.company.Country = newValue;
                 break;
             default:
                 break;
         }
+    }
+}

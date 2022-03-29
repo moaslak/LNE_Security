@@ -50,37 +50,13 @@ public class EditCompnayScreen : ScreenHandler
                 listPage.Add(new Options(cur.ToString(), cur.ToString()));
             }
             selected = listPage.Select();
-
-            else
-            {
-                List<Company.Currencies> currencies = currenciesToList();
                 
-                ListPage<Options> listPage = new ListPage<Options>();
-                listPage.AddColumn("Currency", "Option");
-                foreach(Company.Currencies cur in currencies)
-                {
-                    listPage.Add(new Options(cur.ToString(), cur.ToString()));
-                }
-                selected = listPage.Select();
-
-                switch (selected.Value)
-                {
-                    case "DKK":
-                        company.Currency = Company.Currencies.DKK;
-                        break;
-                    case "USD":
-                        company.Currency = Company.Currencies.USD;
-                        break;
-                    case "YEN":
-                        company.Currency = Company.Currencies.YEN;
-                        break;
-                    case "EUR":
-                        company.Currency = Company.Currencies.EUR;
-                        break;
-                    default:
-                        break;
-                }
-
+            listPage.AddColumn("Currency", "Option");
+            foreach(Company.Currencies cur in currencies)
+            {
+                listPage.Add(new Options(cur.ToString(), cur.ToString()));
+            }
+            selected = listPage.Select();
 
             switch (selected.Value)
             {
@@ -93,12 +69,13 @@ public class EditCompnayScreen : ScreenHandler
                 case "YEN":
                     company.Currency = Company.Currencies.YEN;
                     break;
-                case "EURO":
-                    company.Currency = Company.Currencies.EURO;
+                case "EUR":
+                    company.Currency = Company.Currencies.EUR;
                     break;
                 default:
                     break;
             }
+
 
         }
 
