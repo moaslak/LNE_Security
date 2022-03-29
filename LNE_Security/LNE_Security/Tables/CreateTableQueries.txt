@@ -17,3 +17,6 @@ PRIMARY KEY(Id)
 
 CREATE TABLE Address(
 )
+
+CREATE TABLE Person(
+)
