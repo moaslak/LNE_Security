@@ -28,6 +28,10 @@ namespace LNE_Security.Screens
         {
             this.company = Company;
         }
+        public MainMenuScreen(Product Product) : base(Product)
+        {
+            this.product = Product;
+        }
 
         protected override void Draw()
         {

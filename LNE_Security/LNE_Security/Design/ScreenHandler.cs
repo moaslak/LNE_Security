@@ -19,6 +19,11 @@ namespace LNE_Security
         {
             product = Product;
         }
+        public ScreenHandler(Product Product, Company Company)
+        {
+            product= Product;
+            company = Company;
+        }
         public Person Person { get; set; }
         
         

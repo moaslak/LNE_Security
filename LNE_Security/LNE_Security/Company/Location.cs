@@ -7,28 +7,26 @@ namespace LNE_Security
 {
     public class Location
     {
-        public char Section
+        public char Section { get; set; }
+        
+        public byte Shelve { get; set; }
+
+        public UInt16 Row { get; set; }
+
+        public Location(char section, byte shelve, UInt16 Row)
         {
-            get => default;
-            set
-            {
-            }
+            this.Section = section;
+            this.Shelve = shelve;
+            this.Row = Row;
         }
 
-        public byte Shelve
+        public Location()
         {
-            get => default;
-            set
-            {
-            }
         }
 
-        public UInt16 Row
+        public string Location2String(Location location)
         {
-            get => default;
-            set
-            {
-            }
+            return (location.Row.ToString() + location.Section.ToString() + location.Shelve.ToString());
         }
     }
 }
