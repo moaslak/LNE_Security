@@ -44,11 +44,39 @@ public class ProductDetailsScreen : ScreenHandler
 
         switch (Console.ReadKey().Key)
         {
-            case ConsoleKey.F1:
-                ScreenHandler.Display(productScreen);
-                break;
-            default:
-                break;
+            ListPage<Product> ProductListPage = new ListPage<Product>();
+            ProductListPage.Add(product);
+
+            Title = product.ProductName + "Product Screen";
+            Clear(this);
+
+            ProductListPage.AddColumn("Product Number", "ProductNumber");
+            ProductListPage.AddColumn("Product Name", "ProductName");
+            ProductListPage.AddColumn("Description", "Description");
+            ProductListPage.AddColumn("Cost Price", "CostPrice");
+            ProductListPage.AddColumn("Sales Price", "SalesPrice");
+            // TODO: Lokation af product
+            // TODO: Enhed
+            ProductListPage.AddColumn("Amount In Storage", "AmountInStorage");
+            ProductListPage.AddColumn("Calculate Profit Percent", "CalculateProfitPercent");
+            ProductListPage.AddColumn("Calculate Profit", "CalculateProfit");
+
+            Product selected = ProductListPage.Select();
+
+            Console.WriteLine("Selection" + selected.ProductName); // bliver strengen ikke til "Selection'selected.ProductName'". Burde der ikke være mellemrum og kolon efter "Selection"? "Selection: "
+            Console.WriteLine("F1 - Back");
+
+            ProductScreen productScreen = new ProductScreen(selected);
+
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.F1:
+                    ScreenHandler.Display(productScreen); // Er det nødvendigt med erklæring af objektet? Kan der ikke kaldes direkte i Display();
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

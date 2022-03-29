@@ -29,22 +29,27 @@ class Program
         companyList.Add(lne);
         foreach(Company company in companyList)
         {
+
+
+
+            //InvoiceMockTest(salesOrder);   
+            /*
+
             if (company.Country == "Denmark")
                 company.Currency = Company.Currencies.DKK;
             else
                 company.Currency = Company.Currencies.USD;
-        }
+
+            */
+            //CompanyScreen companyScreen = new CompanyScreen(company);
+            //CompanyDetails details = new CompanyDetails(company);
+            //ProductScreen productScreen = new();
+            MainMenuScreen mainMenu = new MainMenuScreen(lne);
+            ScreenHandler.Display(mainMenu);
             
+        }
 
 
-        //InvoiceMockTest(salesOrder);   
-        
-        if (company.Country == "Denmark")
-            company.Currency = Company.Currencies.DKK;
-        else
-            company.Currency = Company.Currencies.USD;
-        MainMenuScreen mainMenuScreen = new MainMenuScreen(company);
-        ScreenHandler.Display(mainMenuScreen);
         
     }
 
