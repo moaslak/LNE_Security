@@ -22,7 +22,7 @@ namespace LNE_Security.Screens
             }
         }
         private Company company { get; set; }
-
+        private Product product { get; set; }
         
         public MainMenuScreen(Company Company) : base(Company)
         {
@@ -39,7 +39,7 @@ namespace LNE_Security.Screens
             MenuOptions.Add(new Options("Company screen", "F1"));
             MenuOptions.Add(new Options("Customer screen", "F2"));
             MenuOptions.Add(new Options("Employee screen", "F3"));
-            MenuOptions.Add(new Options("Storage screen", "F4"));
+            MenuOptions.Add(new Options("Product screen", "F4"));
             MenuOptions.Add(new Options("Close App", "ESC"));
 
             Options selected = MenuOptions.Select();
@@ -57,7 +57,8 @@ namespace LNE_Security.Screens
                     Console.WriteLine("NOT IMPLEMENTET");
                     break;
                 case "F4":
-                    Console.WriteLine("NOT IMPLEMENTET");
+                    ProductScreen productScreen = new ProductScreen(product);
+                    ScreenHandler.Display(productScreen);
                     break;
                 case "ESC":
                     Environment.Exit(0);
