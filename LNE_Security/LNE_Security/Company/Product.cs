@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LNE_Security
+namespace LNE_Security;
+
+public enum UnitPrice
 {
-    public enum UnitPrice
-    {
-        Hour,
-        Meter
-    }
-    public class Product
-    {
-        public int ProductNumber { get; set; }
-        public string? ProductName { get; set; }
+    Hour,
+    Meter
+}
+public class Product
+{
+    public int ProductNumber { get; set; }
+    public string? ProductName { get; set; }
 
         public double SalesPrice { get; set; }
         public double CostPrice { get; set; }
@@ -40,27 +40,26 @@ namespace LNE_Security
         {
             if(CostPrice <= 0 || SalesPrice <= 0) return 0;
 
-            return (SalesPrice/ CostPrice)*100;    
-        }
-
-        public double CalculateProfit(double SalesPrice, double CostPrice)
-        {
-            return SalesPrice - CostPrice; 
-        }
-
-        public void CalculateProfit()
-        {
-            Console.Write($"Indtast:{UnitPrice.Hour} {UnitPrice.Meter}");
-            var unitPrice = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Vælg mængden: ");
-            var amount = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine(unitPrice * amount);
-            var percent = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine((percent / SalesPrice) * 100);
-        }
-
-        public List<Product>? products = new List<Product>();
-
-
+        return (SalesPrice/ CostPrice)*100;    
     }
+
+    public double CalculateProfit(double SalesPrice, double CostPrice)
+    {
+        return SalesPrice - CostPrice; 
+    }
+
+    public void CalculateProfit()
+    {
+        Console.Write($"Indtast:{UnitPrice.Hour} {UnitPrice.Meter}");
+        var unitPrice = Convert.ToDouble(Console.ReadLine());
+        Console.Write("Vælg mængden: ");
+        var amount = Convert.ToDouble(Console.ReadLine());
+        Console.WriteLine(unitPrice * amount);
+        var percent = Convert.ToDouble(Console.ReadLine());
+        Console.WriteLine((percent / SalesPrice) * 100);
+    }
+
+    public List<Product>? products = new List<Product>();
+
+
 }

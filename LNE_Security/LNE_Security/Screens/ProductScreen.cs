@@ -13,10 +13,10 @@ namespace LNE_Security
         private Product product { get; set; }
         private Company company { get; set; }
 
-        public ProductScreen(Product product) : base(product)
-        {
-            this.product = product;
-        }
+    public ProductScreen(Product product) : base(product)
+    {
+        this.product = product;
+    }
 
         protected override void Draw()
         {
@@ -56,16 +56,16 @@ namespace LNE_Security
                 case ConsoleKey.Enter:
                     ScreenHandler.Display(new ProductDetailsScreen(selectedProduct)); // kunne man kalde ProductDetailsScreen direkte i Display()? ScreenHandler.Display(new ProdcuctDetailsScreen(product)); Erklæring er måske ikke nødvendig.
                     break;
-                case ConsoleKey.F10:
-                    ScreenHandler.Display(new MainMenuScreen(company));
-                    break;
                 case ConsoleKey.Escape:
                     Environment.Exit(0);
                     break;
+                case ConsoleKey.F10:
+                    ScreenHandler.Display(new MainMenuScreen(company));
+                    break;
+                default:
+                    break;
             }
+            
         }
-
-
-
     }
 }
