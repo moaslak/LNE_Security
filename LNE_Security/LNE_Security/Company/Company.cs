@@ -37,7 +37,7 @@ public class Company
     public string StreetName { get; set; }
     public enum Currencies { DKK, USD, EUR, YEN }
     public Currencies Currency { get; set; }
-    public string CVR { get; set; }             
+    public string CVR { get; set; }
 
 
     public string HouseNumber { get; set; }
@@ -70,7 +70,7 @@ public class Company
         string city, string country)
     {
         CompanyName = companyName;
-        StreetName= streetName;
+        StreetName = streetName;
         HouseNumber = houseNumber;
         ZipCode = zipCode;
         City = city;
@@ -79,5 +79,5 @@ public class Company
 
     List<Company>? CompanyList { get; set; }
 
-    
+
 }

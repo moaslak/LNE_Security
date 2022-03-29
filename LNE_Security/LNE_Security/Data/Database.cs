@@ -45,66 +45,64 @@ public partial class Database : Product
         return this;
 
     }
-
-        public SqlConnection SetSqlConnection()
+        /*static Company()
         {
-            SqlConnectionStringBuilder SqlConnectionStringBuilder = new SqlConnectionStringBuilder();
-
-            SqlConnectionStringBuilder.DataSource = ".";
-            SqlConnectionStringBuilder.ConnectTimeout = 5;
-
-            SqlConnectionStringBuilder["Trusted_Connection"] = true;
-
-            SqlConnectionStringBuilder.InitialCatalog = "LNE_Security";
-            SqlConnection SqlConnection = new SqlConnection(SqlConnectionStringBuilder.ConnectionString);
-            return SqlConnection;
-        }
-
-        public List<Company> GetCompanies(SqlConnection sqlConnection)
-        {
-            List<Company> companies = new List<Company>();
-            Company company = new Company();
-            sqlConnection.Open();
-            string query = "SELECT * FROM [dbo].[Company]";
-            SqlCommand cmd = new SqlCommand(query, sqlConnection);
-
-            SqlDataReader reader = cmd.ExecuteReader();
-            //execute the SQLCommand
+            Instance = new Company();
             
+        }*/
 
-            StringBuilder stringBuilder = new StringBuilder();
-            while (reader.Read()) // each loop reads a row from the query.
-            {
-                for (int i = 0; i <= reader.FieldCount - 1; i++) // used to read through each column.
-                {
-                    stringBuilder.Append(reader.GetValue(i)); // get the name and value for the columns.
-                }
-                stringBuilder.Append("\n");
-                company.Id = (ushort)(Convert.ToUInt16(stringBuilder[0]) - 48);
-                company.CompanyName = stringBuilder[1].ToString();
-                company.Country = stringBuilder[2].ToString();
-                company.StreetName = stringBuilder[3].ToString();
-                company.HouseNumber = stringBuilder[4].ToString();
-                company.City = stringBuilder[5].ToString();
-                company.ZipCode = stringBuilder[6].ToString();
-                company.Currency = Company.Currencies.DKK; // TODO: Orden denne
-                company.CVR = stringBuilder[8].ToString();
-                companies.Add(company);
-            }
-            
-            reader.Close();
-
-            //close connection
-            sqlConnection.Close();
-
-            return companies;
-        }
-    /*static Company()
+    public SqlConnection SetSqlConnection()
     {
-        Instance = new Company();
-        
-    }*/
+        SqlConnectionStringBuilder SqlConnectionStringBuilder = new SqlConnectionStringBuilder();
+
+        SqlConnectionStringBuilder.DataSource = ".";
+        SqlConnectionStringBuilder.ConnectTimeout = 5;
+
+        SqlConnectionStringBuilder["Trusted_Connection"] = true;
+
+        SqlConnectionStringBuilder.InitialCatalog = "LNE_Security";
+        SqlConnection SqlConnection = new SqlConnection(SqlConnectionStringBuilder.ConnectionString);
+        return SqlConnection;
+    }
+
+    public List<Company> GetCompanies(SqlConnection sqlConnection)
+    {
+        List<Company> companies = new List<Company>();
+        Company company = new Company();
+        sqlConnection.Open();
+        string query = "SELECT * FROM [dbo].[Company]";
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+        //execute the SQLCommand
+            
+
+        StringBuilder stringBuilder = new StringBuilder();
+        while (reader.Read()) // each loop reads a row from the query.
+        {
+            for (int i = 0; i <= reader.FieldCount - 1; i++) // used to read through each column.
+            {
+                stringBuilder.Append(reader.GetValue(i)); // get the name and value for the columns.
+            }
+            stringBuilder.Append("\n");
+            company.Id = (ushort)(Convert.ToUInt16(stringBuilder[0]) - 48);
+            company.CompanyName = stringBuilder[1].ToString();
+            company.Country = stringBuilder[2].ToString();
+            company.StreetName = stringBuilder[3].ToString();
+            company.HouseNumber = stringBuilder[4].ToString();
+            company.City = stringBuilder[5].ToString();
+            company.ZipCode = stringBuilder[6].ToString();
+            company.Currency = Company.Currencies.DKK; // TODO: Orden denne
+            company.CVR = stringBuilder[8].ToString();
+            companies.Add(company);
+        }
+            
+        reader.Close();
+
+        //close connection
+        sqlConnection.Close();
+
+        return companies;
+    }
 
 }
-    
-

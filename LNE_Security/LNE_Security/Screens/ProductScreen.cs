@@ -60,7 +60,8 @@ namespace LNE_Security
                     Environment.Exit(0);
                     break;
                 case ConsoleKey.F10:
-                    ScreenHandler.Display(new MainMenuScreen(company));
+                    ProductScreen productScreen = new ProductScreen(product);
+                    ScreenHandler.Display(productScreen);
                     break;
                 default:
                     break;
