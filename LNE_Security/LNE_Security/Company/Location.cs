@@ -3,32 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LNE_Security
+namespace LNE_Security;
+
+public class Location
 {
-    public class Location
+    public char Section
     {
-        public char Section
+        get => default;
+        set
         {
-            get => default;
-            set
-            {
-            }
         }
+    }
 
-        public byte Shelve
+    public byte Shelve
+    {
+        get => default;
+        set
         {
-            get => default;
-            set
-            {
-            }
         }
+    }
 
-        public UInt16 Row
+    public UInt16 Row
+    {
+        get => default;
+        set
         {
-            get => default;
-            set
-            {
-            }
         }
     }
 }
