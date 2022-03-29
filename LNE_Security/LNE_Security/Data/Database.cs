@@ -43,8 +43,8 @@ public partial class Database : Product
         product.ID--;
         productsDb.Remove(product);
         return this;
-    }
 
+    }
         /*static Company()
         {
             Instance = new Company();
@@ -105,10 +105,4 @@ public partial class Database : Product
         return companies;
     }
 
-    
-    /*static Company()
-    {
-        Instance = new Company();
-        
-    }*/
 }
