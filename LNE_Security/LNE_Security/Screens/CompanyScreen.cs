@@ -11,9 +11,9 @@ namespace LNE_Security;
 
 public class CompanyScreen : ScreenHandler
 {
-    private Company company { get; set; }
+    private Person company { get; set; }
     
-    public CompanyScreen(Company Company) : base(Company)
+    public CompanyScreen(Person Company) : base(Company)
     {
 
         this.company = Company;
@@ -21,7 +21,7 @@ public class CompanyScreen : ScreenHandler
     private void newCompany()
     {
         Database database = new Database();
-        Company newCompany = new Company();
+        Person newCompany = new Person();
             
         SqlConnection sqlConnection = database.SetSqlConnection();
 
@@ -49,19 +49,19 @@ public class CompanyScreen : ScreenHandler
             switch (cur)
             {
                 case "DKK":
-                    newCompany.Currency = Company.Currencies.DKK;
+                    newCompany.Currency = Person.Currencies.DKK;
                     curOK = true;
                     break;
                 case "USD":
-                    newCompany.Currency = Company.Currencies.USD;
+                    newCompany.Currency = Person.Currencies.USD;
                     curOK = true;
                     break;
                 case "EUR":
-                    newCompany.Currency = Company.Currencies.EUR;
+                    newCompany.Currency = Person.Currencies.EUR;
                     curOK = true;
                     break;
                 case "YEN":
-                    newCompany.Currency = Company.Currencies.YEN;
+                    newCompany.Currency = Person.Currencies.YEN;
                     curOK = true;
                     break;
                 default:
@@ -103,7 +103,7 @@ public class CompanyScreen : ScreenHandler
     }
     protected override void Draw()
     {            
-        ListPage<Company> CompanyListPage = new ListPage<Company>();
+        ListPage<Person> CompanyListPage = new ListPage<Person>();
 
         CompanyListPage.Add(company);
             
@@ -113,7 +113,7 @@ public class CompanyScreen : ScreenHandler
         CompanyListPage.AddColumn("Country", "Country");
         CompanyListPage.AddColumn("Currency", "Currency");
         Console.WriteLine("Choose company");
-        Company selected = CompanyListPage.Select();
+        Person selected = CompanyListPage.Select();
             
         Console.WriteLine("Selection: " + selected.CompanyName);
         Console.WriteLine("F1 - New company");

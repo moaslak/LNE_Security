@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
+using LNE_Security;
 
 namespace LNE_Security;
 
 public partial class Database : Product
 {
     // TODO: implementér singleton
-    public static Company Instance { get; private set; }
+    public static Person Instance { get; private set; }
     Product product = new Product();
     List<Product> productsDb = new List<Product>();
     List<Database> databases = new List<Database>();
@@ -66,10 +67,9 @@ public partial class Database : Product
         return SqlConnection;
     }
 
-    public List<Company> GetCompanies(SqlConnection sqlConnection)
+    public List<Person> GetCompanies(SqlConnection sqlConnection, Person company)
     {
-        List<Company> companies = new List<Company>();
-        Company company = new Company();
+        List<Person> companies = new List<Person>();
         sqlConnection.Open();
         string query = "SELECT * FROM [dbo].[Company]";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
@@ -93,7 +93,7 @@ public partial class Database : Product
             company.HouseNumber = stringBuilder[4].ToString();
             company.City = stringBuilder[5].ToString();
             company.ZipCode = stringBuilder[6].ToString();
-            company.Currency = Company.Currencies.DKK; // TODO: Orden denne
+            company.Currency = Person.Currencies.DKK; // TODO: Orden denne
             company.CVR = stringBuilder[8].ToString();
             companies.Add(company);
         }
@@ -105,14 +105,14 @@ public partial class Database : Product
 
         return companies;
     }
-    public SqlConnection RemoveSqlCompany(ushort id)
-    {
-        Company company = new Company();
-        company.Id = id;
-        SqlConnection sqlConnection = new SqlConnection();
-        sqlConnection.Database.Remove(id);
-        return sqlConnection;
-    }
+    //public SqlConnection RemoveSqlCompany(ushort id, Company company)
+    //{
+        
+    //    company.Id = id;
+    //    SqlConnection sqlConnection = new SqlConnection();
+    //    sqlConnection.Database.Remove(id);
+    //    return sqlConnection;
+    //}
     private Person person { get; set; }
     Address address = new Address();
     ContactInfo contactInfo = new ContactInfo();

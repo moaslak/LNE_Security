@@ -11,7 +11,7 @@ namespace LNE_Security
     public class ProductScreen : ScreenHandler
     {
         private Product product { get; set; }
-        private Company company { get; set; }
+        private Person company { get; set; }
 
     public ProductScreen(Product product) : base(product)
     {
