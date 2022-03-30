@@ -9,9 +9,11 @@ namespace LNE_Security
 
     public class ScreenHandler : Screen
     {
-        static Person company { get; set; }
+        private Company company1;
+
+        static Company company { get; set; }
         static Product product { get; set; }
-        public ScreenHandler(Person Company)
+        public ScreenHandler(Company Company)
         {
             company = Company;
         }
@@ -19,7 +21,7 @@ namespace LNE_Security
         {
             product = Product;
         }
-        public ScreenHandler(Product Product, Person Company)
+        public ScreenHandler(Product Product, Company Company)
         {
             product = Product;
             company = Company;

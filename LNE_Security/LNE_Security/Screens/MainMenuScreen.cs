@@ -20,10 +20,11 @@ public class MainMenuScreen : ScreenHandler
 
             }
         }
-        private Person company { get; set; }
+        private Company company { get; set; }
         private Product product { get; set; }
+        private Person person { get; set; }
         
-        public MainMenuScreen(Person Company) : base(Company)
+        public MainMenuScreen(Company Company) : base(Company)
         {
             this.company = Company;
         }

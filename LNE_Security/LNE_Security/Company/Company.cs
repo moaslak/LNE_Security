@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LNE_Security;
 
-public class Person
+public class Company
 {
     private SqlConnection sqlConnection;
 
@@ -52,7 +52,7 @@ public class Person
 
     public Person()
     {
-
+        return;
     }
 
 
@@ -61,10 +61,12 @@ public class Person
         CompanyName = companyName;
         StreetName = streetName;
         Country = country;
+
     }
     public Person(string companyName)
     {
         CompanyName = companyName;
+
     }
 
     public Person(string companyName, string streetName, string houseNumber, string zipCode,
@@ -79,7 +81,7 @@ public class Person
     }
 
     List<Person>? CompanyList { get; set; }
-    public Person RemoveCompany(Person company)
+    public Company RemoveCompany(Company company)
     {
         SqlConnection sqlConnection = SetSqlConnection(Id);
         CompanyName = null;

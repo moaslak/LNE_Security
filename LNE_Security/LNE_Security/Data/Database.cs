@@ -67,9 +67,9 @@ public partial class Database : Product
         return SqlConnection;
     }
 
-    public List<Person> GetCompanies(SqlConnection sqlConnection, Person company)
+    public List<Company> GetCompanies(SqlConnection sqlConnection, Company company)
     {
-        List<Person> companies = new List<Person>();
+        List<Company> companies = new List<Company>();
         sqlConnection.Open();
         string query = "SELECT * FROM [dbo].[Company]";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
@@ -93,7 +93,7 @@ public partial class Database : Product
             company.HouseNumber = stringBuilder[4].ToString();
             company.City = stringBuilder[5].ToString();
             company.ZipCode = stringBuilder[6].ToString();
-            company.Currency = Person.Currencies.DKK; // TODO: Orden denne
+            company.Currency = Company.Currencies.DKK; // TODO: Orden denne
             company.CVR = stringBuilder[8].ToString();
             companies.Add(company);
         }

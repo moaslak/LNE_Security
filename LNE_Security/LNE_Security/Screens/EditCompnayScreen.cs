@@ -19,15 +19,15 @@ public class EditCompnayScreen : ScreenHandler
             Option = option;
         }
     }
-    private Person company;
-    public EditCompnayScreen(Person Company) : base(Company)
+    private Company company;
+    public EditCompnayScreen(Company Company) : base(Company)
     {
         this.company = Company;
     }
 
-    private List<Person.Currencies> currenciesToList()
+    private List<Company.Currencies> currenciesToList()
     {
-        List<Person.Currencies> list = Enum.GetValues(typeof(Person.Currencies)).Cast<Person.Currencies>().ToList();
+        List<Company.Currencies> list = Enum.GetValues(typeof(Company.Currencies)).Cast<Company.Currencies>().ToList();
         return list;
     }
 
@@ -41,11 +41,11 @@ public class EditCompnayScreen : ScreenHandler
         }
         else
         {
-            List<Person.Currencies> currencies = currenciesToList();
+            List<Company.Currencies> currencies = currenciesToList();
             
             ListPage<Options> listPage = new ListPage<Options>();
             listPage.AddColumn("Currency", "Option");
-            foreach(Person.Currencies cur in currencies)
+            foreach(Company.Currencies cur in currencies)
             {
                 listPage.Add(new Options(cur.ToString(), cur.ToString()));
             }
@@ -54,16 +54,16 @@ public class EditCompnayScreen : ScreenHandler
             switch (selected.Value)
             {
                 case "DKK":
-                    company.Currency = Person.Currencies.DKK;
+                    company.Currency = Company.Currencies.DKK;
                     break;
                 case "USD":
-                    company.Currency = Person.Currencies.USD;
+                    company.Currency = Company.Currencies.USD;
                     break;
                 case "YEN":
-                    company.Currency = Person.Currencies.YEN;
+                    company.Currency = Company.Currencies.YEN;
                     break;
                 case "EUR":
-                    company.Currency = Person.Currencies.EUR;
+                    company.Currency = Company.Currencies.EUR;
                     break;
                 default:
                     break;
@@ -109,18 +109,18 @@ public class EditCompnayScreen : ScreenHandler
         if (selected.Option == "Currency")
         {
 
-            List<Person.Currencies> currencies = currenciesToList();
+            List<Company.Currencies> currencies = currenciesToList();
 
 
             ListPage<Options> listPage = new ListPage<Options>();
             listPage.AddColumn("Currency", "Option");
-            foreach (Person.Currencies cur in currencies)
+            foreach (Company.Currencies cur in currencies)
             {
                 listPage.Add(new Options(cur.ToString(), cur.ToString()));
 
 <<<<<<< HEAD
-                List<Person.Currencies> currencies = currenciesToList();
-                foreach (Person.Currencies cur in currencies)
+                List<Company.Currencies> currencies = currenciesToList();
+                foreach (Company.Currencies cur in currencies)
                 {
                     listPage.Add(new Options(cur.ToString(), cur.ToString()));
                 }
@@ -128,16 +128,16 @@ public class EditCompnayScreen : ScreenHandler
                 switch (selected.Value)
                 {
                     case "DKK":
-                        company.Currency = Person.Currencies.DKK;
+                        company.Currency = Company.Currencies.DKK;
                         break;
                     case "USD":
-                        company.Currency = Person.Currencies.USD;
+                        company.Currency = Company.Currencies.USD;
                         break;
                     case "YEN":
-                        company.Currency = Person.Currencies.YEN;
+                        company.Currency = Company.Currencies.YEN;
                         break;
                     case "EUR":
-                        company.Currency = Person.Currencies.EUR;
+                        company.Currency = Company.Currencies.EUR;
                         break;
                     default:
                         break;
@@ -198,7 +198,7 @@ public class EditCompnayScreen : ScreenHandler
         {
             Title = company.CompanyName + " Edit company screen";
             Clear(this);
-            ListPage<Person> CompanyListPage = new ListPage<Person>();
+            ListPage<Company> CompanyListPage = new ListPage<Company>();
 
             CompanyListPage.AddColumn("Company name", "CompanyName");
             CompanyListPage.AddColumn("Street name", "StreetName");
