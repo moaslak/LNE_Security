@@ -8,6 +8,8 @@ namespace LNE_Security;
 public class Customer : Person
 {
     Person _person;
+
+    public UInt16 CID { get; set; }
     public override Person NewPerson(ContactInfo contactInfo,
         Database database, Address address)
     {
@@ -39,5 +41,10 @@ public class Customer : Person
         database = new Database();
         address = new Address();
         return _person;
+    }
+
+    public string FullName(string FirstName, string LastName)
+    {
+        return FirstName + " " + LastName;
     }
 }

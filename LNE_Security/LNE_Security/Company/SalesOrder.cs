@@ -15,10 +15,12 @@ public class SalesOrder
 
     public double TotalPrice { get; set; }
 
-    public DateTime OrderTime { get; set; }
+    public DateTime? OrderTime { get; set; }
     public DateTime CompletionTime { get; set; }
 
     public OrderLine? orderLine { get; set; }
+    public UInt16? CID {get; set; }
+    public string FullName { get; set; }
 
     /// <summary>
     /// Adds the VATS to the total price

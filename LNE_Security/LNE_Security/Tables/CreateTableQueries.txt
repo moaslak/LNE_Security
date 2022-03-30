@@ -15,8 +15,29 @@ ProfitPersent decimal(5,2),
 PRIMARY KEY(Id)
 )
 
+CREATE TABLE SalesOrder(
+Id int IDENTITY(1,1),
+Date DATETIME,
+CID int,
+FullName VARCHAR(64),
+Price money,
+PRIMARY KEY(Id)
+)
+
 CREATE TABLE Address(
 )
 
 CREATE TABLE Person(
+)
+
+CREATE TABLE Customer(
+Id int IDENTITY(1,1),
+FirstName VARCHAR(32),
+LastName VARCHAR(32),
+StreetName VARCHAR(128),
+HouseNumer VARCHAR(16),
+ZipCode VARCHAR(8),
+City VARCHAR(64),
+Country VARCHAR(64)
+PRIMARY KEY(Id)
 )

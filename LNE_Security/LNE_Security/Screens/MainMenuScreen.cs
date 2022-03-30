@@ -18,19 +18,24 @@ public class MainMenuScreen : ScreenHandler
             KeyPress = keyPress;
             Option = option;
 
-            }
         }
-        private Company company { get; set; }
-        private Product product { get; set; }
+    }
+    private Company company { get; set; }
+    private Product product { get; set; }
+    private Customer customer = new Customer();
         
-        public MainMenuScreen(Company Company) : base(Company)
-        {
-            this.company = Company;
-        }
-        public MainMenuScreen(Product Product) : base(Product)
-        {
-            this.product = Product;
-        }
+    public MainMenuScreen(Company Company) : base(Company)
+    {
+        this.company = Company;
+    }
+    public MainMenuScreen(Product Product) : base(Product)
+    {
+        this.product = Product;
+    }
+    public MainMenuScreen(Customer Customer) : base(Customer)
+    {
+        this.customer = Customer;
+    }
 
     protected override void Draw()
     {
@@ -63,7 +68,7 @@ public class MainMenuScreen : ScreenHandler
                 ScreenHandler.Display(new ProductScreen(product));
                 break;
             case "F5":
-                ScreenHandler.Display(new SalesOrderScreen(company));
+                ScreenHandler.Display(new SalesOrderScreen(company, customer));
                 break;
             case "ESC":
                 Environment.Exit(0);

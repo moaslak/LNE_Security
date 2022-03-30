@@ -105,4 +105,71 @@ public partial class Database : Product
         return companies;
     }
 
+    public List<Customer> GetCustomers(SqlConnection sqlConnection)
+    {
+        List<Customer> customers = new List<Customer>();
+        
+        string query = @"SELECT * FROM [dbo].[Customer]";
+        sqlConnection.Open();
+        
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        SqlDataReader reader = cmd.ExecuteReader();
+        
+        while (reader.Read())
+        {
+            Customer customer = new Customer();
+            customer.Address = new Address();
+            customer.ID = Convert.ToUInt16(reader.GetValue(0).ToString());
+            customer.FirstName = reader.GetValue(1).ToString();
+            customer.LastName = reader.GetValue(2).ToString();
+            customer.Address.StreetName = reader.GetValue(3).ToString();
+            customer.Address.HouseNumber = reader.GetValue(4).ToString();
+            customer.Address.ZipCode = reader.GetValue(5).ToString();
+            customer.Address.City = reader.GetValue(6).ToString();
+            customer.Address.Country = reader.GetValue(7).ToString();
+            customers.Add(customer);
+        }
+        reader.Close();
+        sqlConnection.Close();
+        return customers;
+
+    }
+
+    public List<SalesOrder> GetSalesOrders(SqlConnection sqlConnection, Customer customer)
+    {
+        List<SalesOrder> salesOrders = new List<SalesOrder>();
+        SalesOrder salesOrder = new SalesOrder();
+        string dateTimeString = "";
+        DateTime dateTime = new DateTime();
+        string query = @"SELECT * FROM [dbo].[SalesOrder]";
+        query = query + "WHERE CID = " + customer.ID;
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            salesOrder.OrderID = Convert.ToUInt16(reader.GetValue(0).ToString());
+            dateTimeString = reader.GetValue(1).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.OrderTime = dateTime;
+            }
+            catch (Exception ex)
+            {
+                salesOrder.OrderTime = null;
+            }
+            
+            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(2)));
+            salesOrder.FullName = reader.GetValue(3).ToString();
+            salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(4));
+            salesOrders.Add(salesOrder);
+        }
+        reader.Close();
+        sqlConnection.Close();
+        return salesOrders;
+    }
+
 }
