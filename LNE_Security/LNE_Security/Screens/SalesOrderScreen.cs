@@ -56,7 +56,7 @@ public class SalesOrderScreen : ScreenHandler
         // TODO: SQL query
         // select * from salesorder
         // to customerList
-        List<Customer> Customers = database.GetCustomers(sqlConnection);
+        List<Customer> Customers = database.GetCustomers();
         
         ListPage<Customer> customerListPage = new ListPage<Customer>();
 

@@ -151,6 +151,36 @@ public partial class Database : Product
 
         return persons;
     }
+    public List<Customer> GetCustomers()
+    {
+        SqlConnection sqlConnection = SetSqlConnection();
+        List<Customer> customers = new List<Customer>();
+
+        string query = @"SELECT * FROM [dbo].[Customer]";
+        sqlConnection.Open();
+
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Customer customer = new Customer();
+            customer.Address = new Address();
+            customer.ID = Convert.ToUInt16(reader.GetValue(0).ToString());
+            customer.FirstName = reader.GetValue(1).ToString();
+            customer.LastName = reader.GetValue(2).ToString();
+            customer.Address.StreetName = reader.GetValue(3).ToString();
+            customer.Address.HouseNumber = reader.GetValue(4).ToString();
+            customer.Address.ZipCode = reader.GetValue(5).ToString();
+            customer.Address.City = reader.GetValue(6).ToString();
+            customer.Address.Country = reader.GetValue(7).ToString();
+            customers.Add(customer);
+        }
+        reader.Close();
+        sqlConnection.Close();
+        return customers;
+
+    }
     public List<Person> InsertCustomer(SqlConnection sqlConnection)
     {
         List<Person> persons = new List<Person>();
@@ -176,35 +206,7 @@ public partial class Database : Product
         return persons;
     }
     
-    public List<Customer> GetCustomers(SqlConnection sqlConnection)
-    {
-        List<Customer> customers = new List<Customer>();
-        
-        string query = @"SELECT * FROM [dbo].[Customer]";
-        sqlConnection.Open();
-        
-        SqlCommand cmd = new SqlCommand(query, sqlConnection);
-        SqlDataReader reader = cmd.ExecuteReader();
-        
-        while (reader.Read())
-        {
-            Customer customer = new Customer();
-            customer.Address = new Address();
-            customer.ID = Convert.ToUInt16(reader.GetValue(0).ToString());
-            customer.FirstName = reader.GetValue(1).ToString();
-            customer.LastName = reader.GetValue(2).ToString();
-            customer.Address.StreetName = reader.GetValue(3).ToString();
-            customer.Address.HouseNumber = reader.GetValue(4).ToString();
-            customer.Address.ZipCode = reader.GetValue(5).ToString();
-            customer.Address.City = reader.GetValue(6).ToString();
-            customer.Address.Country = reader.GetValue(7).ToString();
-            customers.Add(customer);
-        }
-        reader.Close();
-        sqlConnection.Close();
-        return customers;
-
-    }
+    
 
     public List<SalesOrder> GetSalesOrders(SqlConnection sqlConnection, Customer customer)
     {
