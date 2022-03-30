@@ -1,0 +1,22 @@
+﻿use LNE_Security
+
+CREATE TABLE Product(
+Id int IDENTITY(1,1),
+ProdectNumber int,
+ProductName varchar(64),
+SalesPrice money,
+CostPrice money,
+AmountInStorage decimal(8,2),
+LocationString varchar(8),
+Unit nchar(3),
+Description varchar(128),
+Profit money,
+ProfitPersent decimal(5,2),
+PRIMARY KEY(Id)
+)
+
+CREATE TABLE Address(
+)
+
+CREATE TABLE Person(
+)
