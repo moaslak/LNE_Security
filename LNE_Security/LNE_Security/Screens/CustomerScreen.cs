@@ -17,6 +17,10 @@ public class CustomerScreen : ScreenHandler
         this.Person = person;
     }
 
+    public CustomerScreen()
+    {
+    }
+
     protected override void Draw()
     {
         ListPage<Person> PersonListPage = new ListPage<Person>();

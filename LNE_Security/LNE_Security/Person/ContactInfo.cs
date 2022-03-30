@@ -7,6 +7,7 @@ namespace LNE_Security;
 
 public class ContactInfo
 {
+    Address address = new Address();
     public UInt16 ID { get; private set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -22,6 +23,23 @@ public class ContactInfo
         {
             FirstName = value;
             LastName = value;
+        }
+    }
+    public string FullAddress 
+    {
+        get
+        {
+
+            return address.StreetName + "" + address.HouseNumber + "" + address.City + "" + address.ZipCode + "" + address.Country;
+        }
+        set
+        {
+            string zipCode = address.ZipCode.ToString();
+            address.StreetName = value;
+            address.HouseNumber = value;
+            address.City = value;
+            zipCode = value;
+            address.Country = value;
         }
     }
 }

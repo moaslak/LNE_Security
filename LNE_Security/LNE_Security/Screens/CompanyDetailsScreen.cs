@@ -4,16 +4,16 @@ using TECHCOOL.UI;
 namespace LNE_Security;
 public class CompanyDetailsScreen : ScreenHandler
 {
-	private Person company { get; set; }
+	private Company company { get; set; }
 	
-	public CompanyDetailsScreen(Person Company) : base(Company)
+	public CompanyDetailsScreen(Company Company) : base(Company)
 	{
 		this.company = Company;
 	}
 
 	protected override void Draw()
     {
-		ListPage<Person> CompanylistPage = new ListPage<Person>();
+		ListPage<Company> CompanylistPage = new ListPage<Company>();
 		CompanylistPage.Add(company);
 
 		ListPage<string> SelectedList = new ListPage<string>();
@@ -28,7 +28,7 @@ public class CompanyDetailsScreen : ScreenHandler
 		CompanylistPage.AddColumn("City", "City");
 		CompanylistPage.AddColumn("Country", "Country");
 		CompanylistPage.AddColumn("Currency", "Currency");
-		Person selected = CompanylistPage.Select();
+		Company selected = CompanylistPage.Select();
 		
 		Console.WriteLine("Selection: " + selected.CompanyName);
 		Console.WriteLine("F1 - Back");
