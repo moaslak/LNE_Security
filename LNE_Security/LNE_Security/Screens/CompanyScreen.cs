@@ -97,9 +97,6 @@ public class CompanyScreen : ScreenHandler
 
         //close connection
         sqlConnection.Close();
-
-
-        //return newCompany;
     }
     protected override void Draw()
     {            

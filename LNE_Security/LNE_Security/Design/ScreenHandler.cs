@@ -11,6 +11,7 @@ namespace LNE_Security
     {
         static Company company { get; set; }
         static Product product { get; set; }
+        static Customer customer { get; set; }
         public ScreenHandler(Company Company)
         {
             company = Company;
@@ -23,6 +24,10 @@ namespace LNE_Security
         {
             product = Product;
             company = Company;
+        }
+        public ScreenHandler(Customer Customer)
+        {
+            customer = Customer;
         }
         public Person Person { get; set; }
 
