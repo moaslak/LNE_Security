@@ -50,13 +50,6 @@ public class EditCompnayScreen : ScreenHandler
                 listPage.Add(new Options(cur.ToString(), cur.ToString()));
             }
             selected = listPage.Select();
-                
-            listPage.AddColumn("Currency", "Option");
-            foreach(Company.Currencies cur in currencies)
-            {
-                listPage.Add(new Options(cur.ToString(), cur.ToString()));
-            }
-            selected = listPage.Select();
 
             switch (selected.Value)
             {
@@ -75,8 +68,6 @@ public class EditCompnayScreen : ScreenHandler
                 default:
                     break;
             }
-
-
         }
 
         if (newValue == null)
@@ -127,32 +118,25 @@ public class EditCompnayScreen : ScreenHandler
             {
                 listPage.Add(new Options(cur.ToString(), cur.ToString()));
 
-                List<Company.Currencies> currencies = currenciesToList();
-                foreach (Company.Currencies cur in currencies)
-                {
-                    listPage.Add(new Options(cur.ToString(), cur.ToString()));
-                }
-
-                switch (selected.Value)
-                {
-                    case "DKK":
-                        company.Currency = Company.Currencies.DKK;
-                        break;
-                    case "USD":
-                        company.Currency = Company.Currencies.USD;
-                        break;
-                    case "YEN":
-                        company.Currency = Company.Currencies.YEN;
-                        break;
-                    case "EUR":
-                        company.Currency = Company.Currencies.EUR;
-                        break;
-                    default:
-                        break;
-                }
-
             }
 
+            switch (selected.Value)
+            {
+                case "DKK":
+                    company.Currency = Company.Currencies.DKK;
+                    break;
+                case "USD":
+                    company.Currency = Company.Currencies.USD;
+                    break;
+                case "YEN":
+                    company.Currency = Company.Currencies.YEN;
+                    break;
+                case "EUR":
+                    company.Currency = Company.Currencies.EUR;
+                    break;
+                default:
+                    break;
+            }   
         }
 
         switch (selected.Option)

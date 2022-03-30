@@ -18,15 +18,19 @@ public class MainMenuScreen : ScreenHandler
             KeyPress = keyPress;
             Option = option;
 
+            }
         }
-    }
-    private Company company { get; set; }
-    private Product product { get; set; }
-    
-    public MainMenuScreen(Company Company) : base(Company)
-    {
-        this.company = Company;
-    }
+        private Company company { get; set; }
+        private Product product { get; set; }
+        
+        public MainMenuScreen(Company Company) : base(Company)
+        {
+            this.company = Company;
+        }
+        public MainMenuScreen(Product Product) : base(Product)
+        {
+            this.product = Product;
+        }
 
     protected override void Draw()
     {

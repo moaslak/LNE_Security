@@ -12,20 +12,12 @@ namespace LNE_Security;
 public class CompanyScreen : ScreenHandler
 {
     private Company company { get; set; }
-    private Company companyName { get; set; }
-    private Company streetName { get; set; }
-    private Company houseNumber { get; set; }
-    private Company zipCode { get; set; }
-    private Company city { get; set; }
-    private Company country { get; set; }
-
-
+    
     public CompanyScreen(Company Company) : base(Company)
     {
 
         this.company = Company;
-    }
-   
+    }        
     private void newCompany()
     {
         Database database = new Database();
@@ -52,7 +44,7 @@ public class CompanyScreen : ScreenHandler
         newCompany.CVR = Console.ReadLine();
         do
         {
-            Console.Write("Choose currency DKK, USD, EUR, YEN");
+            Console.Write("Choose currency DKK, USD, EUR or YEN: ");
             cur = Console.ReadLine();
             switch (cur)
             {
@@ -110,11 +102,11 @@ public class CompanyScreen : ScreenHandler
         //return newCompany;
     }
     protected override void Draw()
-    {
+    {            
         ListPage<Company> CompanyListPage = new ListPage<Company>();
 
         CompanyListPage.Add(company);
-
+            
         Title = company.CompanyName + " Company Screen";
         Clear(this);
         CompanyListPage.AddColumn("Company name", "CompanyName");
@@ -122,7 +114,7 @@ public class CompanyScreen : ScreenHandler
         CompanyListPage.AddColumn("Currency", "Currency");
         Console.WriteLine("Choose company");
         Company selected = CompanyListPage.Select();
-
+            
         Console.WriteLine("Selection: " + selected.CompanyName);
         Console.WriteLine("F1 - New company");
         Console.WriteLine("F2 - Edit");
@@ -138,24 +130,13 @@ public class CompanyScreen : ScreenHandler
                 EditCompnayScreen editScreen = new EditCompnayScreen(company);
                 ScreenHandler.Display(editScreen);
                 break;
-
-
-
-            case ConsoleKey.F11:
-                CompanyDetailsScreen details = new CompanyDetailsScreen(selected);
-                ScreenHandler.Display(details);
-                break;
-
             case ConsoleKey.F10:
                 MainMenuScreen menu = new MainMenuScreen(company);
                 ScreenHandler.Display(menu);
-                break;
-            case ConsoleKey.F5:
-                ScreenHandler.Display(selected.RemoveCompany(company));
                 break;
             case ConsoleKey.Escape:
                 Environment.Exit(0);
                 break;
         }
     }
-   }
+}
