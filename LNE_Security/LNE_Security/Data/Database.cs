@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace LNE_Security;
 
@@ -104,5 +105,92 @@ public partial class Database : Product
 
         return companies;
     }
+    public SqlConnection RemoveSqlCompany(ushort id)
+    {
+        Company company = new Company();
+        company.Id = id;
+        SqlConnection sqlConnection = new SqlConnection();
+        sqlConnection.Database.Remove(id);
+        return sqlConnection;
+    }
+    private Person person { get; set; }
+    Address address = new Address();
+    ContactInfo contactInfo = new ContactInfo();
+    public List<Person> GetCustomers(SqlConnection sqlConnection)
+    {
+        List<Person> persons = new List<Person>();
+        sqlConnection.Open();
+        string query = "SELECT *, FROM [dbo].[Customer]";
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        SqlDataReader reader = cmd.ExecuteReader();
 
+        StringBuilder stringBuilder = new StringBuilder();
+        while (reader.Read())
+        {
+            for (int i = 0; i <= reader.FieldCount - 1; i++)
+            {
+                stringBuilder.Append(reader.GetValue(i));
+            }
+            stringBuilder.Append("/n");
+            person.ID = (ushort)(Convert.ToUInt16(stringBuilder[0]) - 48);
+            person.ContactInfo.FirstName = stringBuilder[1].ToString();
+            person.ContactInfo.LastName = stringBuilder[2].ToString();
+            person.ContactInfo.PhoneNumber = stringBuilder[3].ToString();
+            person.ContactInfo.Email = stringBuilder[4].ToString();
+            person.Address.StreetName = stringBuilder[5].ToString();
+            person.Address.HouseNumber = stringBuilder[6].ToString();
+            person.Address.City = stringBuilder[7].ToString();
+            person.Address.ZipCode.ToString();
+            person.Address.Country = stringBuilder[9].ToString();
+            persons.Add(person);
+        }
+
+        reader.Close();
+
+        sqlConnection.Close();
+
+        return persons;
+    }
+    public List<Person> InsertCustomer(SqlConnection sqlConnection)
+    {
+        List<Person> persons = new List<Person>();
+        string query = "INSERT INTO dbo.Customer(id, firstname, lastname," +
+            " phonenumber, email, streetname, housenumber, city, zipcode, country) " +
+            "VALUES(@id, @firstname, @lastname, @phonenumber, @email, @streetname," +
+            " @housenumber, @city, @zipcode, @country";
+        using(SqlCommand cmd = new SqlCommand(query, sqlConnection))
+        {
+            cmd.Parameters.AddWithValue("@id", ID);
+            cmd.Parameters.AddWithValue("@firstname", person.ContactInfo.FirstName);
+            cmd.Parameters.AddWithValue("@lastname", person.ContactInfo.LastName);
+            cmd.Parameters.AddWithValue("@phonenumber", person.ContactInfo.PhoneNumber);
+            cmd.Parameters.AddWithValue("@email", person.ContactInfo.Email);
+            cmd.Parameters.AddWithValue("@streetname", person.Address.StreetName);
+            cmd.Parameters.AddWithValue("@housenumber", person.Address.HouseNumber);
+            cmd.Parameters.AddWithValue("@city", person.Address.City);
+            cmd.Parameters.AddWithValue("@zipcode", person.Address.ZipCode);
+            cmd.Parameters.AddWithValue("@country", person.Address.Country);
+
+            sqlConnection.Open();
+            int result = cmd.ExecuteNonQuery();
+        }
+        return persons;
+    }
+    public List<Person> UpdateCustomer(SqlConnection sqlConnection)
+    {
+        List<Person> people = new List<Person>();
+        string query = "UPDATE Customer(id, firstname, lastname," +
+            " phonenumber, email, streetname, housenumber, city, zipcode, country) " +
+            "VALUES(@id, @firstname, @lastname, @phonenumber, @email, @streetname," +
+            " @housenumber, @city, @zipcode, @country";
+        return people;
+    }
+
+    public SqlConnection DeleteCustomer(ushort id, Person person)
+    {
+        person.ID = id;
+        SqlConnection sqlConnection = new SqlConnection();
+        sqlConnection.Database.Remove(id);
+        return sqlConnection;
+    }
 }

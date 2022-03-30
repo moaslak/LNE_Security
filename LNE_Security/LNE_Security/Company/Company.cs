@@ -81,7 +81,7 @@ public class Company
     List<Company>? CompanyList { get; set; }
     public Company RemoveCompany(Company company)
     {
-        sqlConnection = SetSqlConnection(Id);
+        SqlConnection sqlConnection = SetSqlConnection(Id);
         CompanyName = null;
         StreetName = null;
         HouseNumber = null;
