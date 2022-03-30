@@ -185,4 +185,12 @@ public partial class Database : Product
             " @housenumber, @city, @zipcode, @country";
         return people;
     }
+
+    public SqlConnection DeleteCustomer(ushort id, Person person)
+    {
+        person.ID = id;
+        SqlConnection sqlConnection = new SqlConnection();
+        sqlConnection.Database.Remove(id);
+        return sqlConnection;
+    }
 }
