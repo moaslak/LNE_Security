@@ -47,10 +47,6 @@ public class CustomerScreen : ScreenHandler
                
                 Console.WriteLine("IMPLEMENT NEW COMPANY");
                 break;
-            case ConsoleKey.F2:
-                EditCompnayScreen editScreen = new EditCompnayScreen(person);
-                ScreenHandler.Display(editScreen);
-                break;
             case ConsoleKey.F10:
                 MainMenuScreen menu = new MainMenuScreen(person);
                 ScreenHandler.Display(menu);

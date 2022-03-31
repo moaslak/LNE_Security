@@ -34,11 +34,15 @@ public class CustomerDetails : ScreenHandler
 		Console.WriteLine("F1 - Back");
 		Console.WriteLine("F2 - Edit");
 		CustomerScreen customerScreen = new CustomerScreen();
+		EditCustomerScreen editCustomerScreen = new EditCustomerScreen();
 
 		switch (Console.ReadKey().Key)
 		{
 			case ConsoleKey.F1:
 				ScreenHandler.Display(customerScreen);
+				break;
+			case ConsoleKey.F2:
+				ScreenHandler.Display(editCustomerScreen);
 				break;
 			default:
 				break;

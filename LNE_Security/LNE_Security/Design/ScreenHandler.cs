@@ -35,7 +35,10 @@ namespace LNE_Security
         {
             contact = contactInfo;
         }
+        public ScreenHandler()
+        {
 
+        }
         public Person Person { get; set; }
 
 
