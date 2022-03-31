@@ -211,7 +211,7 @@ public partial class Database : Product
     public List<SalesOrder> GetSalesOrders(SqlConnection sqlConnection, Customer customer)
     {
         List<SalesOrder> salesOrders = new List<SalesOrder>();
-        SalesOrder salesOrder = new SalesOrder();
+        
         string dateTimeString = "";
         DateTime dateTime = new DateTime();
         string query = @"SELECT * FROM [dbo].[SalesOrder]";
@@ -223,6 +223,7 @@ public partial class Database : Product
 
         while (reader.Read())
         {
+            SalesOrder salesOrder = new SalesOrder();
             salesOrder.OrderID = Convert.ToUInt16(reader.GetValue(0).ToString());
             dateTimeString = reader.GetValue(1).ToString();
             try
