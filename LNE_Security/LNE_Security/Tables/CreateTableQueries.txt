@@ -25,6 +25,13 @@ PRIMARY KEY(Id)
 )
 
 CREATE TABLE Address(
+Id int IDENTITY(1,1),
+StreetName VARCHAR(128),
+HouseNumber VARCHAR(16),
+City VARCHAR(64),
+ZipCode VARCHAR(8),
+Country VARCHAR(64),
+PRIMARY KEY(Id)
 )
 
 CREATE TABLE Person(
