@@ -9,14 +9,7 @@ public abstract class Person
 {
     Address address1 = new Address();
     ContactInfo contactInfo1 = new ContactInfo();
-    public ContactInfo ContactInfo
-    {
-        get => default;
-        set
-        {
-            ContactInfo = value;
-        }
-    }
+    public ContactInfo ContactInfo { get; set; }
 
     public Database Database
     {
@@ -26,27 +19,15 @@ public abstract class Person
             Database = value;
         }
     }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
 
-    public Address Address
-    {
-        get => default;
-        set
-        {
-            Address = value;
-        }
-    }
+    public Address Address { get; set; }
 
     public UInt16 ID { get; set; } // TODO: Lav id generator
 
-
-    public Enum Type
-    {
-        get => default;
-        set
-        {
-            Type = value;
-        }
-    }
+    public enum Types { Customer, Employee }
+    public Types type  { get; set; }
 
     public virtual Person NewPerson(
         ContactInfo contactInfo, Database database,
