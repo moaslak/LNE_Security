@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
+using LNE_Security;
 
 namespace LNE_Security;
 
 public partial class Database : Product
 {
     // TODO: implementér singleton
-    public static Company Instance { get; private set; }
+    public static Person Instance { get; private set; }
     Product product = new Product();
     List<Product> productsDb = new List<Product>();
     List<Database> databases = new List<Database>();
@@ -66,10 +67,9 @@ public partial class Database : Product
         return SqlConnection;
     }
 
-    public List<Company> GetCompanies(SqlConnection sqlConnection)
+    public List<Company> GetCompanies(SqlConnection sqlConnection, Company company)
     {
         List<Company> companies = new List<Company>();
-        Company company = new Company();
         sqlConnection.Open();
         string query = "SELECT * FROM [dbo].[Company]";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
@@ -105,14 +105,14 @@ public partial class Database : Product
 
         return companies;
     }
-    public SqlConnection RemoveSqlCompany(ushort id)
-    {
-        Company company = new Company();
-        company.Id = id;
-        SqlConnection sqlConnection = new SqlConnection();
-        sqlConnection.Database.Remove(id);
-        return sqlConnection;
-    }
+    //public SqlConnection RemoveSqlCompany(ushort id, Company company)
+    //{
+        
+    //    company.Id = id;
+    //    SqlConnection sqlConnection = new SqlConnection();
+    //    sqlConnection.Database.Remove(id);
+    //    return sqlConnection;
+    //}
     private Person person { get; set; }
     Address address = new Address();
     ContactInfo contactInfo = new ContactInfo();

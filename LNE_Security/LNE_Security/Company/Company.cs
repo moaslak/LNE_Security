@@ -50,24 +50,26 @@ public class Company
 
     public UInt16 Id { get; set; }
 
-    public Company()
+    public Person()
     {
-
+        return;
     }
 
 
-    public Company(string companyName, string streetName, string country)
+    public Person(string companyName, string streetName, string country)
     {
         CompanyName = companyName;
         StreetName = streetName;
         Country = country;
+
     }
-    public Company(string companyName)
+    public Person(string companyName)
     {
         CompanyName = companyName;
+
     }
 
-    public Company(string companyName, string streetName, string houseNumber, string zipCode,
+    public Person(string companyName, string streetName, string houseNumber, string zipCode,
         string city, string country)
     {
         CompanyName = companyName;
@@ -78,7 +80,7 @@ public class Company
         Country = country;
     }
 
-    List<Company>? CompanyList { get; set; }
+    List<Person>? CompanyList { get; set; }
     public Company RemoveCompany(Company company)
     {
         SqlConnection sqlConnection = SetSqlConnection(Id);

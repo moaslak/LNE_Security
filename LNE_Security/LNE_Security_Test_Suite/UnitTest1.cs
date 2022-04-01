@@ -7,7 +7,7 @@ namespace LNE_Security_Test_Suite
 {
     public class EditCompanyTestCase
     {
-        static Company company = new Company("LNE Security", "Navn Gade", "1b", "1337", "Aalborg", "Denmark");
+        static Person company = new Person("LNE Security", "Navn Gade", "1b", "1337", "Aalborg", "Denmark");
         EditCompnayScreen editCompanyScreen = new EditCompnayScreen(company);
         EditCompnayScreen.Options options = new EditCompnayScreen.Options("Option", "Value");
 

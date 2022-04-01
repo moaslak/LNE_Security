@@ -9,8 +9,8 @@ namespace LNE_Security.Screens;
     public class StorageScreen : ScreenHandler
     {
 
-	private Company company;
-	public StorageScreen(Company Company) : base(Company)
+	private Person company;
+	public StorageScreen(Person Company) : base(Company)
 	{
 		this.company = Company;
 	}
