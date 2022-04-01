@@ -98,9 +98,6 @@ public class CompanyScreen : ScreenHandler
 
         //close connection
         sqlConnection.Close();
-
-
-        //return newCompany;
     }
     protected override void Draw()
     {            
@@ -115,7 +112,6 @@ public class CompanyScreen : ScreenHandler
         CompanyListPage.AddColumn("Currency", "Currency");
         Console.WriteLine("Choose company");
         Company selected = CompanyListPage.Select();
-            
         Console.WriteLine("Selection: " + selected.CompanyName);
         Console.WriteLine("F1 - New company");
         Console.WriteLine("F2 - Edit");

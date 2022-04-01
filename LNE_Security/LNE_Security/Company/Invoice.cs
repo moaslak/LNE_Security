@@ -11,7 +11,7 @@ public class Invoice : Sales
 {
     public UInt32 OrderID { get; set; }
 
-    public DateTime OrderTime {  get; set; }
+    public DateTime? OrderTime {  get; set; }
     public DateTime CompletionTime { get; set; }
     public ushort CustomerID { get; set; }
     public enum States { None, Created, Confirmed, Packed, Done};
@@ -19,7 +19,7 @@ public class Invoice : Sales
     public double TotalPrice { get; set; }
     public List<OrderLine> OrderLines { get; set; }
 
-    public Invoice(UInt32 orderID, DateTime orderTime, DateTime completionTime,
+    public Invoice(UInt32 orderID, DateTime? orderTime, DateTime completionTime,
         double totalPrice, ushort customerID)
     {
         OrderID = orderID;

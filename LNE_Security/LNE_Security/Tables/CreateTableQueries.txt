@@ -1,0 +1,61 @@
+﻿use LNE_Security
+
+CREATE TABLE Product(
+Id int IDENTITY(1,1),
+ProdectNumber int,
+ProductName varchar(64),
+SalesPrice money,
+CostPrice money,
+AmountInStorage decimal(8,2),
+LocationString varchar(8),
+Unit nchar(3),
+Description varchar(128),
+Profit money,
+ProfitPersent decimal(5,2),
+PRIMARY KEY(Id)
+)
+
+CREATE TABLE SalesOrder(
+Id int IDENTITY(1,1),
+Date DATETIME,
+CID int,
+FullName VARCHAR(64),
+Price money,
+PRIMARY KEY(Id)
+)
+
+CREATE TABLE Address(
+Id int IDENTITY(1,1),
+StreetName VARCHAR(128),
+HouseNumber VARCHAR(16),
+City VARCHAR(64),
+ZipCode VARCHAR(8),
+Country VARCHAR(64),
+PRIMARY KEY(Id)
+)
+
+CREATE TABLE ContactInfo(
+Id int IDENTITY(1,1),
+FirstName VARCHAR(64),
+LastName VARCHAR(64),
+Email VARCHAR(64),
+PhoneNumber VARCHAR(16)
+PRIMARY KEY(Id)
+)
+
+CREATE TABLE Person(
+Id int IDENTITY(1,1),
+FirstName VARCHAR(64),
+LastName VARCHAR(64),
+Address VARCHAR(128),
+Type CHAR(8),
+PRIMARY KEY(Id)
+)
+
+CREATE TABLE Customer(
+Id int IDENTITY(1,1),
+FirstName VARCHAR(32),
+LastName VARCHAR(32),
+Address VARCHAR(128),
+PRIMARY KEY(Id)
+)
