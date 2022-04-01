@@ -18,21 +18,26 @@ public class MainMenuScreen : ScreenHandler
             KeyPress = keyPress;
             Option = option;
 
-            }
         }
-        private Company company { get; set; }
-        private Product product { get; set; }
-        private Person person { get; set; }
-        
-        public MainMenuScreen(Company Company) : base(Company)
-        {
-            this.company = Company;
-        }
-        public MainMenuScreen(Product Product) : base(Product)
-        {
-            this.product = Product;
-        }
+    }
+    private Company company { get; set; }
+    private Product product { get; set; }
+    private Person person { get; set; }
 
+    public MainMenuScreen(Company Company) : base(Company)
+    {
+        this.company = Company;
+    }
+    public MainMenuScreen(Product Product) : base(Product)
+    {
+        this.product = Product;
+    }
+
+    public MainMenuScreen(Person person) : base(person)
+    {
+        this.person = person;
+    }
+   
     protected override void Draw()
     {
         Title = "ERP System";

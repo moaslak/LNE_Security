@@ -14,23 +14,23 @@ class Program
         }
     }
     // MOCK DATA
-    static Person lne = new Person("LNE Security", "Navn Gade", "1b", "1337", "Aalborg", "Denmark");
+    static Company lne = new Company("LNE Security", "Navn Gade", "1b", "1337", "Aalborg", "Denmark");
     static SalesOrder salesOrder = new SalesOrder();
 
 
-    static List<Person> companyList = new List<Person>();
+    static List<Company> companyList = new List<Company>();
 
     public static void Main(string[] args)
     {
 
         //InvoiceMockTest(salesOrder);   
 
-        foreach (Person company in companyList)
+        foreach (Company company in companyList)
         {
             if (company.Country == "Denmark")
-                company.Currency = Person.Currencies.DKK;
+                company.Currency = Company.Currencies.DKK;
             else
-                company.Currency = Person.Currencies.USD;
+                company.Currency = Company.Currencies.USD;
         }
 
         MainMenuScreen mainMenu = new MainMenuScreen(lne);
