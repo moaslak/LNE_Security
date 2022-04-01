@@ -19,10 +19,14 @@ public class MainMenuScreen : ScreenHandler
             Option = option;
 
         }
+
+
+
     }
     private Company company { get; set; }
     private Product product { get; set; }
     private Customer customer = new Customer();
+
         
     public MainMenuScreen(Company Company) : base(Company)
     {

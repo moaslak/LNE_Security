@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TECHCOOL.UI;
 using System.Data.SqlClient;
+using LNE_Security;
 
 namespace LNE_Security;
 
