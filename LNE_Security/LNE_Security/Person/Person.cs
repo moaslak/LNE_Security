@@ -9,14 +9,7 @@ public abstract class Person
 {
     Address address1 = new Address();
     ContactInfo contactInfo1 = new ContactInfo();
-    public ContactInfo ContactInfo
-    {
-        get => default;
-        set
-        {
-            ContactInfo = value;
-        }
-    }
+    public ContactInfo ContactInfo { get; set; }
 
     public Database Database
     {
