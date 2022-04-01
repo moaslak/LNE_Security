@@ -38,7 +38,6 @@ public class SalesOrderScreen : ScreenHandler
         SqlConnection sqlConnection = database.SetSqlConnection();
         salesOrders = database.GetSalesOrders(sqlConnection, selectedCustomer);
         
-        // TODO: from sql
         foreach (SalesOrder salesOrder in salesOrders)
         {
             if(salesOrder.CID == selectedCustomer.ID)
@@ -52,10 +51,6 @@ public class SalesOrderScreen : ScreenHandler
         salesOrderListPage.AddColumn("Price", "TotalPrice", 20);
         salesOrderListPage.Draw();
 
-
-        // TODO: SQL query
-        // select * from salesorder
-        // to customerList
         List<Customer> Customers = database.GetCustomers();
         
         ListPage<Customer> customerListPage = new ListPage<Customer>();
