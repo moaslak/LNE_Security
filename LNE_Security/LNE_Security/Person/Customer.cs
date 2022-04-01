@@ -24,7 +24,7 @@ public class Customer : Person
         query = query + " VALUES(";
         query = query + "'" + contactInfo.FirstName + "'" + ",";
         query = query + "'" + contactInfo.LastName + "'" + ",";
-        query = query + "'" + address.StreetName + ", " + address.HouseNumber + ", " + address.ZipCode + ", " + address.City + ", " + address.Country + "')";
+        query = query + "'" + address.StreetName + "," + address.HouseNumber + "," + address.ZipCode + "," + address.City + "," + address.Country + "')";
         SqlCommand cmd = new SqlCommand(query, sqlconnection);
         sqlconnection.Open();
 
