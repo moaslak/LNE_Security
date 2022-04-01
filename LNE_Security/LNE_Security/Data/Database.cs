@@ -135,7 +135,7 @@ public partial class Database : Product
             person.ID = (ushort)(Convert.ToUInt16(stringBuilder[0]) - 48);
             person.ContactInfo.FirstName = stringBuilder[1].ToString();
             person.ContactInfo.LastName = stringBuilder[2].ToString();
-            person.ContactInfo.PhoneNumber = stringBuilder[3].ToString();
+            person.ContactInfo.PhoneNumber.Add(stringBuilder[3].ToString()); // TODO: implementér loop
             person.ContactInfo.Email = stringBuilder[4].ToString();
             person.Address.StreetName = stringBuilder[5].ToString();
             person.Address.HouseNumber = stringBuilder[6].ToString();
@@ -169,11 +169,12 @@ public partial class Database : Product
             customer.ID = Convert.ToUInt16(reader.GetValue(0).ToString());
             customer.FirstName = reader.GetValue(1).ToString();
             customer.LastName = reader.GetValue(2).ToString();
-            customer.Address.StreetName = reader.GetValue(3).ToString();
-            customer.Address.HouseNumber = reader.GetValue(4).ToString();
-            customer.Address.ZipCode = reader.GetValue(5).ToString();
-            customer.Address.City = reader.GetValue(6).ToString();
-            customer.Address.Country = reader.GetValue(7).ToString();
+            string[] addressString = reader.GetValue(3).ToString().Split(",");
+            customer.Address.StreetName = addressString[0];
+            customer.Address.HouseNumber = addressString[1];
+            customer.Address.ZipCode = addressString[2];
+            customer.Address.City = addressString[3];
+            customer.Address.Country = addressString[4];
             customers.Add(customer);
         }
         reader.Close();
