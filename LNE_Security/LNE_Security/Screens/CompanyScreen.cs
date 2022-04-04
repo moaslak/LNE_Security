@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TECHCOOL.UI;
 using System.Data.SqlClient;
 using LNE_Security;
+using LNE_Security.Data;
 
 namespace LNE_Security;
 
@@ -21,10 +22,9 @@ public class CompanyScreen : ScreenHandler
     }        
     private void newCompany()
     {
-        Database database = new Database();
         Company newCompany = new Company();
             
-        SqlConnection sqlConnection = database.SetSqlConnection();
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
 
         string cur = "";
         bool curOK = false;

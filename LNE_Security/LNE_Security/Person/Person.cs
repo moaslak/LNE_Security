@@ -19,6 +19,8 @@ public abstract class Person
             Database = value;
         }
     }
+
+    public ContactInfo ContactInfo = new ContactInfo();
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
 
@@ -30,8 +32,6 @@ public abstract class Person
 
     public enum Types { Customer, Employee }
     public Types type  { get; set; }
-
-    public ContactInfo ContactInfo = new ContactInfo();
 
     public string Email { get; set; }
 
@@ -116,4 +116,7 @@ public abstract class Person
         var efternavn = Convert.ToString(Console.ReadLine());
         Console.WriteLine($"{fornavn + efternavn}");
     }
+
+    
+
 }

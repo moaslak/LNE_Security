@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TECHCOOL.UI;
 using System.Data.SqlClient;
+using LNE_Security.Data;
 
 namespace LNE_Security;
 
@@ -28,15 +29,13 @@ public class SalesOrderScreen : ScreenHandler
     Customer selectedCustomer = new Customer();
     
     
-    Database database = new Database();
-    
     protected override void Draw()
     {
         Title = company.CompanyName + " Sales order screen";
         Clear(this);
         ListPage<SalesOrder> salesOrderListPage = new ListPage<SalesOrder>();
-        SqlConnection sqlConnection = database.SetSqlConnection();
-        salesOrders = database.GetSalesOrders(sqlConnection, selectedCustomer);
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+        salesOrders = Database.Instance.GetSalesOrders(selectedCustomer);
         
         foreach (SalesOrder salesOrder in salesOrders)
         {
@@ -51,7 +50,7 @@ public class SalesOrderScreen : ScreenHandler
         salesOrderListPage.AddColumn("Price", "TotalPrice", 20);
         salesOrderListPage.Draw();
 
-        List<Customer> Customers = database.GetCustomers();
+        List<Customer> Customers = Database.Instance.GetCustomers();
         
         ListPage<Customer> customerListPage = new ListPage<Customer>();
 
