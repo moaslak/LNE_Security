@@ -191,6 +191,7 @@ public class EditCompnayScreen : ScreenHandler
             optionsListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = optionsListPage.Select();
             
+           
             
             if(selected.Value != "NO EDIT")
             {
