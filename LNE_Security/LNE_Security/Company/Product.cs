@@ -5,11 +5,7 @@ using System.Text;
 
 namespace LNE_Security;
 
-public enum UnitPrice
-{
-    Hour,
-    Meter
-}
+
 public class Product
 {
     public int ProductNumber { get; set; }
@@ -24,7 +20,13 @@ public class Product
         public string LocationString { get; set; }
         public enum Units { piece, meter, hours }
         public Units Unit { get; set; }
-        public string? Description { get; set; }
+
+        public enum UnitPrice
+        {
+            Hour,
+            Meter
+        }
+    public string? Description { get; set; }
 
         public double ProfitPercent { get; set; }
         public double Profit { get; set; }
