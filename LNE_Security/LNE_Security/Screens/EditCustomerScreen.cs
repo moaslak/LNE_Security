@@ -51,7 +51,7 @@ public class EditCustomerScreen : ScreenHandler
                 this.address.City = newValue;
                 break;
             case "Phonenumber":
-                this.contact.PhoneNumber = newValue;
+                this.contact.PhoneNumber.Add(newValue);
                 break;
             case "Email":
                 this.contact.Email = newValue;
@@ -89,7 +89,13 @@ public class EditCustomerScreen : ScreenHandler
             OptionListPage.Add(new Options("Housenumber", address.HouseNumber));
             OptionListPage.Add(new Options("Zipcode", zipCode));
             OptionListPage.Add(new Options("City", address.City));
-            OptionListPage.Add(new Options("Phonenumber", contact.PhoneNumber));
+
+            string phoneNumbers = "";
+            foreach(string phonenumber in contact.PhoneNumber)
+            {
+                phoneNumbers = phoneNumbers + phonenumber + "\n";
+            }
+            OptionListPage.Add(new Options("Phonenumber", phoneNumbers));
             OptionListPage.Add(new Options("Email", contact.Email));
             Options selected = OptionListPage.Select();
 

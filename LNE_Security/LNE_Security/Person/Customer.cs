@@ -34,8 +34,6 @@ public class Customer : Person
 
         //close connection
         sqlconnection.Close();
-
-        
     }
 
     public override Person DeletePerson(ContactInfo contactInfo, Database database, Address address)
@@ -61,7 +59,7 @@ public class Customer : Person
         return _person;
     }
 
-    public string FullName(string FirstName, string LastName)
+    public string CreateFullName(string FirstName, string LastName)
     {
         return FirstName + " " + LastName;
     }

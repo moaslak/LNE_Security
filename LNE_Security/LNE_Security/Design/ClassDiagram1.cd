@@ -23,7 +23,7 @@
   <Class Name="LNE_Security.Database" Collapsed="true">
     <Position X="11.25" Y="14" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAEAAAgAAAABAAAAQAACAAAEAAAAAQAAAABAAAAA=</HashCode>
+      <HashCode>AAQAAEAAAwAAIABABAAQAACAAAMCgAEAQAAAABCBAAA=</HashCode>
       <FileName>Data\Database.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -61,7 +61,7 @@
   <Class Name="LNE_Security.SalesOrder">
     <Position X="14.5" Y="12" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AJAAABAAEAAAACAAAEIAIAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AJAAABAAEAAAAKAAAEIAIAAAAAAAQAAAAAAAAAAAAEA=</HashCode>
       <FileName>Company\SalesOrder.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -71,7 +71,7 @@
   <Class Name="LNE_Security.ScreenHandler">
     <Position X="8.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAgAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <HashCode>AIAAAAABAgAAAkAAAAAAAACAAAACAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Design\ScreenHandler.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -116,12 +116,19 @@
   </Class>
   <Class Name="LNE_Security.Person">
     <Position X="4.75" Y="7.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="LNE_Security.Person.Types" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Person\Person.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AACAAAAAAEAAgAAAQAAAAAIEBAACIAACAQAAAAgAAAA=</HashCode>
+      <HashCode>AACAAEAAAGAAgIAAQAAAQAIEAAABIAACAAAAAAgAAAg=</HashCode>
       <FileName>Person\Person.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="ContactInfo" />
+      <Field Name="ContactInfo" />
       <Property Name="Database" />
       <Property Name="Address" />
     </ShowAsAssociation>
@@ -129,14 +136,14 @@
   <Class Name="LNE_Security.Address">
     <Position X="0.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgACAAAAAAAAAAEIAAAABAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgACIAAAAAAAAAEIAAAABAAAAAAAAAAA=</HashCode>
       <FileName>Person\Address.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LNE_Security.ContactInfo">
     <Position X="1.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAAACAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AAAAAEAAACAAgYAEAAAAQAAAAAAAAAACAAAAAAAAAAg=</HashCode>
       <FileName>Person\ContactInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -150,7 +157,7 @@
   <Class Name="LNE_Security.Customer">
     <Position X="5.75" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAAAAAQAAAABAAAAAAIAAAAAAAAAgAAAA=</HashCode>
+      <HashCode>AACCAAAAAIAAAAAAAAACABAAAAAAIAAAAAAAAAgAAAA=</HashCode>
       <FileName>Person\Customer.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -216,7 +223,7 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <HashCode>AAAAAAABAgAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Screens\MainMenuScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -230,8 +237,8 @@
   <Class Name="LNE_Security.SalesOrderScreen">
     <Position X="15" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>SalesOrderScreen.cs</FileName>
+      <HashCode>AAAQAAABAAAAAgBAAEAAIAAAAAAAIAAAAAAgACAAAAU=</HashCode>
+      <FileName>Screens\SalesOrderScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="LNE_Security.UnitPrice" Collapsed="true">

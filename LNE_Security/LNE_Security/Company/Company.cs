@@ -50,26 +50,26 @@ public class Company
 
     public UInt16 Id { get; set; }
 
-    public Person()
+    public Company() 
     {
         return;
     }
 
 
-    public Person(string companyName, string streetName, string country)
+    public Company(string companyName, string streetName, string country)
     {
         CompanyName = companyName;
         StreetName = streetName;
         Country = country;
 
     }
-    public Person(string companyName)
+    public Company(string companyName)
     {
         CompanyName = companyName;
 
     }
 
-    public Person(string companyName, string streetName, string houseNumber, string zipCode,
+    public Company(string companyName, string streetName, string houseNumber, string zipCode,
         string city, string country)
     {
         CompanyName = companyName;

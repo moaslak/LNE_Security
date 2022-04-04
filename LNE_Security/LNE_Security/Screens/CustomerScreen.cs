@@ -9,34 +9,69 @@ namespace LNE_Security.Screens;
 
 public class CustomerScreen : ScreenHandler
 {
+    Database database = new Database();
     ContactInfo contact { get; set; }
     Address address { get; set; }
-    private Person person { get; set; }
-    public CustomerScreen(Person person) : base(person)
+    private Customer Customer = new Customer();
+    public CustomerScreen(Customer customer) : base(customer)
     {
-        this.Person = person;
+        this.Customer = customer;
     }
 
     public CustomerScreen()
     {
     }
 
+    public void newCustomer()
+    {
+        Address address = new Address();
+        ContactInfo contactInfo = new ContactInfo();
+        Database database = new Database();
+        Console.Write("Enter first name: ");
+        contactInfo.FirstName = Console.ReadLine();
+        Console.Write("Enter last name: ");
+        contactInfo.LastName = Console.ReadLine();
+        Console.Write("Enter street name: ");
+        address.StreetName = Console.ReadLine();
+        Console.Write("Enter house number: ");
+        address.HouseNumber = Console.ReadLine();
+        Console.Write("Enter zip code: ");
+        address.ZipCode = Console.ReadLine();
+        Console.Write("Enter city: ");
+        address.City = Console.ReadLine();
+        Console.Write("Enter country: ");
+        address.Country = Console.ReadLine();
+        Customer newCustomer = new Customer();
+        newCustomer.NewCustomer(contactInfo, database, address);
+    }
+
     protected override void Draw()
     {
-        ListPage<Person> PersonListPage = new ListPage<Person>();
+        ListPage<Customer> CustomerListPage = new ListPage<Customer>();
         ListPage<ContactInfo> ContactListPage = new ListPage<ContactInfo>();
-        PersonListPage.Add(person);
-        string name = $"{person.ContactInfo.FirstName} {person.ContactInfo.LastName}";
-        Title = person.ContactInfo.FullName + " Customer name";
+        List<Customer> customers = database.GetCustomers();
+        
+        foreach(Customer customer in customers)
+        {
+            customer.FullName = customer.ContactInfo.FullName;
+            CustomerListPage.Add(customer);
+        }
+ 
+        //string name = $"{Customer.ContactInfo.FirstName} {Customer.ContactInfo.LastName}";
+        //Title = Customer.ContactInfo.FullName + " Customer name";
+        Title = "Customer screen";
         Clear(this);
-        ContactListPage.AddColumn("Customer ID", "ID");
-        ContactListPage.AddColumn("Customer Name", "FullName");
-        ContactListPage.AddColumn("Phonenumber", "Phonenumber");
-        ContactListPage.AddColumn("Email", "Email");
-        Console.WriteLine("Choose Customer");
-        ContactInfo selected = ContactListPage.Select();
 
-        Console.WriteLine("Selection: " + selected.FullName);
+
+        CustomerListPage.AddColumn("Customer ID", "ID");
+        CustomerListPage.AddColumn("Customer Name", "FullName");
+        CustomerListPage.AddColumn("Phonenumber", "PhoneNumbers");
+        CustomerListPage.AddColumn("Email", "Email");
+        Customer selected = CustomerListPage.Select();
+        Console.WriteLine("Choose Customer");
+        
+
+        Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
         Console.WriteLine("F1 - New Customer");
         Console.WriteLine("F2 - Edit");
         Console.WriteLine("F10 - To Main menu");
@@ -44,11 +79,11 @@ public class CustomerScreen : ScreenHandler
         switch (Console.ReadKey().Key)
         {
             case ConsoleKey.F1:
-               
-                Console.WriteLine("IMPLEMENT NEW COMPANY");
+
+                newCustomer();
                 break;
             case ConsoleKey.F10:
-                MainMenuScreen menu = new MainMenuScreen(person);
+                MainMenuScreen menu = new MainMenuScreen(Customer);
                 ScreenHandler.Display(menu);
                 break;
             case ConsoleKey.Escape:

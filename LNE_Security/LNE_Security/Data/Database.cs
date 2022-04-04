@@ -11,6 +11,7 @@ namespace LNE_Security;
 public partial class Database : Product
 {
     // TODO: implementér singleton
+    // TODO: getContactInfo(personID)
     public static Person Instance { get; private set; }
     Product product = new Product();
     List<Product> productsDb = new List<Product>();
@@ -116,6 +117,43 @@ public partial class Database : Product
     private Person person { get; set; }
     Address address = new Address();
     ContactInfo contactInfo = new ContactInfo();
+
+    public ContactInfo GetContactInfo(Person person, SqlConnection sqlConnection)
+    {
+        UInt16 personID = person.ID;
+        ContactInfo contactInfo = new ContactInfo();
+        sqlConnection.Open();
+
+        string query = "SELECT * FROM [dbo].[ContactInfo] WHERE PersonId = " + personID.ToString();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        while(reader.Read())
+        {
+            for(int i=0; i<=reader.FieldCount-1; i++)
+            {
+                stringBuilder.Append(reader.GetValue(i));
+            }
+            contactInfo.PersonId = stringBuilder[1]; // TODO: link to database
+            contactInfo.FirstName = stringBuilder[2].ToString();
+            contactInfo.LastName = stringBuilder[3].ToString();
+            contactInfo.FullName = contactInfo.FirstName + " " + contactInfo.LastName;
+            contactInfo.Address = address; // TODO: address id=?
+            contactInfo.Email = stringBuilder[4].ToString();
+
+            /*string[] Numbers = stringBuilder[5].ToString(); // TODO: to array
+            foreach (string phonenumber in Numbers)
+                contactInfo.PhoneNumber.Add(phonenumber);
+            */
+
+        }
+        reader.Close();
+
+        sqlConnection.Close();
+        return contactInfo;
+    }
+
     public List<Person> GetCustomers(SqlConnection sqlConnection)
     {
         List<Person> persons = new List<Person>();
@@ -133,6 +171,8 @@ public partial class Database : Product
             }
             stringBuilder.Append("/n");
             person.ID = (ushort)(Convert.ToUInt16(stringBuilder[0]) - 48);
+
+            person.ContactInfo = GetContactInfo(person, sqlConnection);
             person.ContactInfo.FirstName = stringBuilder[1].ToString();
             person.ContactInfo.LastName = stringBuilder[2].ToString();
             person.ContactInfo.PhoneNumber.Add(stringBuilder[3].ToString()); // TODO: implementér loop
@@ -167,14 +207,15 @@ public partial class Database : Product
             Customer customer = new Customer();
             customer.Address = new Address();
             customer.ID = Convert.ToUInt16(reader.GetValue(0).ToString());
-            customer.FirstName = reader.GetValue(1).ToString();
-            customer.LastName = reader.GetValue(2).ToString();
+            customer.ContactInfo.FirstName = reader.GetValue(1).ToString();
+            customer.ContactInfo.LastName = reader.GetValue(2).ToString();
             string[] addressString = reader.GetValue(3).ToString().Split(",");
-            customer.Address.StreetName = addressString[0];
-            customer.Address.HouseNumber = addressString[1];
-            customer.Address.ZipCode = addressString[2];
-            customer.Address.City = addressString[3];
-            customer.Address.Country = addressString[4];
+            
+            customer.ContactInfo.Address.StreetName = addressString[0];
+            customer.ContactInfo.Address.HouseNumber = addressString[1];
+            customer.ContactInfo.Address.ZipCode = addressString[2];
+            customer.ContactInfo.Address.City = addressString[3];
+            customer.ContactInfo.Address.Country = addressString[4];
             customers.Add(customer);
         }
         reader.Close();
