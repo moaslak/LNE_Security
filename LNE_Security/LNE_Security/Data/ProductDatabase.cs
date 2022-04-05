@@ -164,6 +164,36 @@ namespace LNE_Security
             return list;
         }
 
+        public void DeleteProduct(UInt32 ID)
+        {
+            SqlConnection sqlConnection = databaseConnection.SetSqlConnection();
+            string query = "DELETE FROM [dbo].[Product] WHERE Id = " + ID.ToString();
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+
+            //execute the SQLCommand
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+
+            //close connection
+            sqlConnection.Close();
+
+            if (SelectProduct(ID) == null)
+                Console.WriteLine("Product with ID = " + ID + " was succesfully deleted");
+            else
+                Console.WriteLine("Could not find product to delete");
+        }
+
+        public Product SelectProduct(UInt32 ID)
+        {
+            List<Product> products = new List<Product>();
+            foreach(Product product in products)
+            {
+                if(product.ID == ID) return product;
+            }
+            return null;
+        }
+
         public List<Product> GetProducts()
         {
             List<Product> products = new List<Product>();

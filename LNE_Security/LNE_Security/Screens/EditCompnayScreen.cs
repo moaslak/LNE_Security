@@ -205,7 +205,6 @@ public class EditCompnayScreen : ScreenHandler
             {
                 EditCompany(selected);
                 Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
-                
             }
             else
             {
