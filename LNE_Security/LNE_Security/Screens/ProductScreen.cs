@@ -11,7 +11,7 @@ namespace LNE_Security
     public class ProductScreen : ScreenHandler
     {
         private Product product { get; set; }
-        private Person company { get; set; }
+        private Company company { get; set; }
 
     public ProductScreen(Product product) : base(product)
     {
@@ -60,8 +60,8 @@ namespace LNE_Security
                     Environment.Exit(0);
                     break;
                 case ConsoleKey.F10:
-                    ProductScreen productScreen = new ProductScreen(product);
-                    ScreenHandler.Display(productScreen);
+                    
+                    ScreenHandler.Display(new MainMenuScreen(company));
                     break;
                 default:
                     break;

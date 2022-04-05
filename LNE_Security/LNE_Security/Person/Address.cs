@@ -13,4 +13,15 @@ public class Address
     public string City { get; set; }
     public string ZipCode { get; set; }
     public string Country { get; set; }
+
+    public string AddressLine(Person person)
+    {
+        return StreetName + " " + HouseNumber + ", " + ZipCode + " " + City + ", " + Country; 
+    }
+
+    public string commaSeperatedAddress(Person person)
+    {
+        string seperatedAddress = StreetName + ", " + HouseNumber + ", " + ZipCode + ", " + City + ", " + Country;
+        return seperatedAddress;
+    }
 }

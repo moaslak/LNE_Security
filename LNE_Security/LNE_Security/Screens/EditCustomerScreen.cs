@@ -14,6 +14,7 @@ public class EditCustomerScreen : ScreenHandler
     private ContactInfo contact { get; set; }
     private Address address { get; set; }
     private Options options { get; set; }
+    private Customer customer { get; set; }
     public EditCustomerScreen(Person person, ContactInfo contactInfo, Address address) : base(person)
     {
         this.person = person;
@@ -21,14 +22,18 @@ public class EditCustomerScreen : ScreenHandler
         this.address = address;
     }
 
-    public EditCustomerScreen()
+    public EditCustomerScreen(Customer Customer) : base(Customer)
     {
+        this.customer = Customer;
+        contact = customer.ContactInfo;
+        address = contact.Address;
     }
 
     private void EditCustomer(Options selected)
     {
         string newValue = "";
-        ListPage<Options> listPage = new ListPage<Options>();
+        Console.Write("Enter new " + selected.Option.ToString() + ": ");
+        newValue = Console.ReadLine();
         string zipcode = address.ZipCode.ToString();
         switch (selected.Option)
         {
@@ -51,7 +56,7 @@ public class EditCustomerScreen : ScreenHandler
                 this.address.City = newValue;
                 break;
             case "Phonenumber":
-                this.contact.PhoneNumber = newValue;
+                this.contact.PhoneNumber.Add(newValue);
                 break;
             case "Email":
                 this.contact.Email = newValue;
@@ -59,17 +64,29 @@ public class EditCustomerScreen : ScreenHandler
             default:
                 break;
         }
+        Customer customer = this.customer;
+        Database.Instance.EditCustomer(customer.ID, this.customer);
     }
     protected override void Draw()
     {
         do
         {
-            Title = contact.FullName + "Customer name";
+            Title = contact.FullName + " Edit Customer Screen";
             Clear(this);
 
             ListPage<Person> PersonListPage = new ListPage<Person>();
             ListPage<ContactInfo> ContactListPage = new ListPage<ContactInfo>();
             ListPage<Address> AddressListPage = new ListPage<Address>();
+
+            Console.WriteLine("Firstname: " + contact.FirstName);
+            Console.WriteLine("Lastname: " + contact.LastName);
+            Console.WriteLine("Streetname: " + contact.Address.StreetName);
+            Console.WriteLine("Housenumber: " + contact.Address.HouseNumber);
+            Console.WriteLine("Zipcode: " + contact.Address.ZipCode);
+            Console.WriteLine("City: " + contact.Address.City);
+            Console.WriteLine("Country: " + contact.Address.Country);
+            Console.WriteLine("Phonenumber: " + contact.PhoneNumber);
+            Console.WriteLine("Email: " + contact.Email);
 
             ContactListPage.AddColumn("Firstname", "FirstName");
             ContactListPage.AddColumn("Lastname", "LastName");
@@ -77,6 +94,7 @@ public class EditCustomerScreen : ScreenHandler
             AddressListPage.AddColumn("Housenumber", "HouseNumber");
             AddressListPage.AddColumn("Zipcode", "ZipCode");
             AddressListPage.AddColumn("City", "City");
+            AddressListPage.AddColumn("Country", "Country");
             ContactListPage.AddColumn("Phonenumber", "PhoneNumber");
             ContactListPage.AddColumn("Email", "Email");
 
@@ -87,10 +105,17 @@ public class EditCustomerScreen : ScreenHandler
             OptionListPage.Add(new Options("Lastname", contact.LastName));
             OptionListPage.Add(new Options("Streetname", address.StreetName));
             OptionListPage.Add(new Options("Housenumber", address.HouseNumber));
-            OptionListPage.Add(new Options("Zipcode", zipCode));
+            OptionListPage.Add(new Options("Zipcode", address.ZipCode));
             OptionListPage.Add(new Options("City", address.City));
-            OptionListPage.Add(new Options("Phonenumber", contact.PhoneNumber));
+            OptionListPage.Add(new Options("Country", address.Country));
+            string phoneNumbers = "";
+            foreach(string phonenumber in contact.PhoneNumber)
+            {
+                phoneNumbers = phoneNumbers + phonenumber + "\n";
+            }
+            OptionListPage.Add(new Options("Phonenumber", phoneNumbers));
             OptionListPage.Add(new Options("Email", contact.Email));
+            OptionListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = OptionListPage.Select();
 
             if(selected.Value != "NO EDIT")

@@ -40,6 +40,7 @@ public class MainMenuScreen : ScreenHandler
     {
         this.customer = Customer;
     }
+    
 
     protected override void Draw()
     {
@@ -63,27 +64,9 @@ public class MainMenuScreen : ScreenHandler
                 ScreenHandler.Display(new CompanyScreen(company));
                 break;
             case "F2":
-                Console.WriteLine("NOT IMPLEMENTET");
                 
-                Address address = new Address();
-                ContactInfo contactInfo = new ContactInfo();
-                Database database = new Database();
-                Console.Write("Enter first name: ");
-                contactInfo.FirstName = Console.ReadLine();
-                Console.Write("Enter last name: ");
-                contactInfo.LastName = Console.ReadLine();
-                Console.Write("Enter street name: ");
-                address.StreetName = Console.ReadLine();
-                Console.Write("Enter house number: ");
-                address.HouseNumber = Console.ReadLine();
-                Console.Write("Enter zip code: ");
-                address.ZipCode = Console.ReadLine();
-                Console.Write("Enter city: ");
-                address.City = Console.ReadLine();
-                Console.Write("Enter country: ");
-                address.Country = Console.ReadLine();
-                Customer newCustomer = new Customer();
-                newCustomer.NewCustomer(contactInfo, database, address);
+
+                ScreenHandler.Display(new CustomerScreen(customer));
                 break;
             case "F3":
                 Console.WriteLine("NOT IMPLEMENTET");
