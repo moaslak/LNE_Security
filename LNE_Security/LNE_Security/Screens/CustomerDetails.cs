@@ -34,7 +34,7 @@ public class CustomerDetails : ScreenHandler
 		Console.WriteLine("Selection: " + selected.FullName);
 		Console.WriteLine("F1 - Back");
 		Console.WriteLine("F2 - Edit");
-		Console.WriteLine("F5 - ?");
+		Console.WriteLine("F5 - Delete");
 		CustomerScreen customerScreen = new CustomerScreen();
 		EditCustomerScreen editCustomerScreen = new EditCustomerScreen();
 
@@ -47,6 +47,7 @@ public class CustomerDetails : ScreenHandler
 				ScreenHandler.Display(editCustomerScreen);
 				break;
 			case ConsoleKey.F5:
+				Database.Instance.DeleteCustomer(selected.ID);
 				break;
 			default:
 				break;
