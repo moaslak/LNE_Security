@@ -118,6 +118,10 @@ public class EditCompnayScreen : ScreenHandler
             {
                 listPage.Add(new Options(cur.ToString(), cur.ToString()));
 
+
+            }
+
+
                 switch (selected.Value)
                 {
                     case "DKK":
@@ -137,6 +141,7 @@ public class EditCompnayScreen : ScreenHandler
                 }
 
             }
+
         }
 
         switch (selected.Option)
