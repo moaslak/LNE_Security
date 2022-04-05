@@ -33,7 +33,7 @@ public class CompanyScreen : ScreenHandler
         Clear(this);
         CompanyListPage.AddColumn("Company name", "CompanyName");
         CompanyListPage.AddColumn("Country", "Country");
-        CompanyListPage.AddColumn("Currency", "Currency"); // TODO: denne tages ikke fra databasen
+        CompanyListPage.AddColumn("Currency", "Currency");
         Console.WriteLine("Choose company");
         Company selected = CompanyListPage.Select();
         Console.WriteLine("Selection: " + Database.Instance.SelectCompany(selected.Id));

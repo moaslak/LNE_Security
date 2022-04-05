@@ -44,6 +44,7 @@ namespace LNE_Security
             Console.WriteLine("Selection : " + selectedProduct.ProductName);
             Console.WriteLine("Enter - product details");
             Console.WriteLine("F1 - New product");
+            Console.WriteLine("F8 - Delete product");
             Console.WriteLine("F10 - Back");
             Console.WriteLine("Esc - Close app");
             switch (Console.ReadKey().Key)
@@ -57,8 +58,10 @@ namespace LNE_Security
                 case ConsoleKey.Escape:
                     Environment.Exit(0);
                     break;
+                case ConsoleKey.F8:
+                    Database.Instance.DeleteProduct(selectedProduct.ID);
+                    break;
                 case ConsoleKey.F10:
-                    
                     ScreenHandler.Display(new MainMenuScreen(company));
                     break;
                 default:
