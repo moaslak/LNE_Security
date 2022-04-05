@@ -140,7 +140,7 @@ public class EditCompnayScreen : ScreenHandler
                         break;
                 }
 
-            }
+            
 
         }
 

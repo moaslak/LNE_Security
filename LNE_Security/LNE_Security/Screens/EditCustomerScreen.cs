@@ -29,6 +29,10 @@ public class EditCustomerScreen : ScreenHandler
         address = contact.Address;
     }
 
+    public EditCustomerScreen()
+    {
+    }
+
     private void EditCustomer(Options selected)
     {
         string newValue = "";
