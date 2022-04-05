@@ -18,11 +18,6 @@ public partial class Database : Product
     {
         Instance = new Database();
     }
-
-    Product product = new Product();
-    List<Product> productsDb = new List<Product>();
-    List<Database> databases = new List<Database>();
-
    
     /*public Database(uint id, string productName)
     {

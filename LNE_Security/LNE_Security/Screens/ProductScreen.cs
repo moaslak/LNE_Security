@@ -22,26 +22,17 @@ namespace LNE_Security
         {
             Title = "Product";
             Clear(this);
-            //Mock product
-            Product product = new Product();
-            product.ProductNumber = 1;
-            product.ProductName = "Hest";
-            product.AmountInStorage = 1337;
-            product.CostPrice = 5;
-            product.SalesPrice = 12;
-            product.Location.Section = 'A';
-            product.Location.Shelve = 125;
-            product.Location.Row = 4;
-            product.Unit = Product.Units.piece;
-            double ProfitPercent = product.CalculateProfitPercent(product.SalesPrice, product.ProductNumber);
 
             ListPage<Product> productListPage = new ListPage<Product>();
             ListPage<String> selectedList = new ListPage<String>();
-            productListPage.Add(product);
+            List<Product> products = new List<Product>();
+            foreach(Product product in products)
+                productListPage.Add(product);
+
             Product selectedProduct = new Product();
 
-            productListPage.AddColumn("Product Number", "ProductNumber");
-            productListPage.AddColumn("Product Name", "ProductName");
+            productListPage.AddColumn("Product Number", "ProductNumber",10);
+            productListPage.AddColumn("Product Name", "ProductName", 25);
             productListPage.AddColumn("Amount In Storage", "AmountInStorage");
             productListPage.AddColumn("Cost Price", "CostPrice");
             productListPage.AddColumn("Sales Price", "SalesPrice");
