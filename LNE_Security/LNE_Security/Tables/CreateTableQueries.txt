@@ -2,7 +2,7 @@
 
 CREATE TABLE Product(
 Id int IDENTITY(1,1),
-ProdectNumber int,
+ProductNumber int,
 ProductName varchar(64),
 SalesPrice money,
 CostPrice money,

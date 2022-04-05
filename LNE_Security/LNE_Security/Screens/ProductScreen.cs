@@ -25,7 +25,7 @@ namespace LNE_Security
 
             ListPage<Product> productListPage = new ListPage<Product>();
             ListPage<String> selectedList = new ListPage<String>();
-            List<Product> products = new List<Product>();
+            List<Product> products = Database.Instance.GetProducts();
             foreach(Product product in products)
                 productListPage.Add(product);
 
@@ -36,16 +36,23 @@ namespace LNE_Security
             productListPage.AddColumn("Amount In Storage", "AmountInStorage");
             productListPage.AddColumn("Cost Price", "CostPrice");
             productListPage.AddColumn("Sales Price", "SalesPrice");
-            selectedProduct = productListPage.Select();
+            if (products.Count == 0)
+                productListPage.Draw();
+            else
+                selectedProduct = productListPage.Select();
 
             Console.WriteLine("Selection : " + selectedProduct.ProductName);
             Console.WriteLine("Enter - product details");
+            Console.WriteLine("F1 - New product");
             Console.WriteLine("F10 - Back");
             Console.WriteLine("Esc - Close app");
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.Enter:
                     ScreenHandler.Display(new ProductDetailsScreen(selectedProduct)); // kunne man kalde ProductDetailsScreen direkte i Display()? ScreenHandler.Display(new ProdcuctDetailsScreen(product)); Erklæring er måske ikke nødvendig.
+                    break;
+                case ConsoleKey.F1:
+                    Database.Instance.NewProduct();
                     break;
                 case ConsoleKey.Escape:
                     Environment.Exit(0);

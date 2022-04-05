@@ -41,16 +41,15 @@ public class ProductDetailsScreen : ScreenHandler
             ProductListPage.AddColumn("Location", "LocationString");
         }
 
-
         ProductListPage.AddColumn("Profit Percent", "ProfitPercent");
         ProductListPage.AddColumn("Profit", "Profit");
         ProductListPage.Draw();
 
-        Console.WriteLine("F1 - Back");
         Console.WriteLine("F2 - Edit product");
+        Console.WriteLine("F10 - Back");
         switch (Console.ReadKey().Key)
         {
-            case ConsoleKey.F1:
+            case ConsoleKey.F10:
                 ScreenHandler.Display(new ProductScreen(product));
                 break;
             case ConsoleKey.F2:
