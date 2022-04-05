@@ -7,18 +7,19 @@ namespace LNE_Security;
 
 public class ContactInfo
 {
-    Address address = new Address();
+    public Address Address = new Address();
     public UInt16 ID { get; private set; }
+
+    public UInt16 PersonId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string Email { get; set; }
-    public List<string> PhoneNumber { get; set; }
-
+    public string? Email { get; set; }
+    public List<string>? PhoneNumber = new List<string>();
     public string FullName 
     {
         get
         {
-            return FirstName + " " + LastName + " ";
+            return FirstName + " " + LastName;
         }
         set
         {
@@ -31,16 +32,16 @@ public class ContactInfo
         get
         {
 
-            return address.StreetName + "" + address.HouseNumber + "" + address.City + "" + address.ZipCode + "" + address.Country;
+            return Address.StreetName + "," + Address.HouseNumber + "," + Address.City + "," + Address.ZipCode + "," + Address.Country;
         }
         set
         {
-            string zipCode = address.ZipCode.ToString();
-            address.StreetName = value;
-            address.HouseNumber = value;
-            address.City = value;
+            string zipCode = Address.ZipCode.ToString();
+            Address.StreetName = value;
+            Address.HouseNumber = value;
+            Address.City = value;
             zipCode = value;
-            address.Country = value;
+            Address.Country = value;
         }
     }
 

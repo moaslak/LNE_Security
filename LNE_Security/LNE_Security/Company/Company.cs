@@ -50,7 +50,11 @@ public class Company
 
     public UInt16 Id { get; set; }
 
-    public Company()
+
+ 
+
+    public Company() 
+
     {
         return;
     }
