@@ -180,11 +180,11 @@ public class EditProductScreen : ScreenHandler
                 else
                 {
                     break;
-        }
+                }
                 Console.WriteLine("Press ESC to return to Product screen");
 
             } while ((Console.ReadKey().Key != ConsoleKey.Escape));
-
+            Database.Instance.EditProduct(product.ID, product);
             ScreenHandler.Display(new ProductDetailsScreen(product));
 
         }
