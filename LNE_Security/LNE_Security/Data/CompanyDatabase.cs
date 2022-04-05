@@ -10,8 +10,6 @@ namespace LNE_Security;
 
 partial class Database
 {
-    SqlConnection SqlConnection = new DatabaseConnection().SetSqlConnection();
-
     public Company SelectCompany(UInt16 Id)
     {
         List<Company> CompanyList = GetCompanies();
@@ -28,9 +26,9 @@ partial class Database
     {
         List<Company> companies = new List<Company>();
         
-        SqlConnection.Open();
+        sqlConnection.Open();
         string query = "SELECT * FROM [dbo].[Company]";
-        SqlCommand cmd = new SqlCommand(query, SqlConnection);
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
 
         SqlDataReader reader = cmd.ExecuteReader();
         //execute the SQLCommand
@@ -45,7 +43,26 @@ partial class Database
             company.HouseNumber = reader.GetValue(4).ToString();
             company.City = reader.GetValue(5).ToString();
             company.ZipCode = reader.GetValue(6).ToString();
-            company.Currency = Company.Currencies.DKK; // TODO: Orden denne
+
+            string cur = reader.GetValue(7).ToString();
+            switch (cur)
+            {
+                case "DKK":
+                    company.Currency = Company.Currencies.DKK;
+                    break;
+                case "USD":
+                    company.Currency = Company.Currencies.USD;
+                    break;
+                case "EUR":
+                    company.Currency = Company.Currencies.EUR;
+                    break;
+                case "YEN":
+                    company.Currency = Company.Currencies.YEN;
+                    break;
+                default:
+                    company.Currency = Company.Currencies.EUR;
+                    break;
+            }
             company.CVR = reader.GetValue(8).ToString();
             companies.Add(company);
         }
@@ -53,9 +70,32 @@ partial class Database
         reader.Close();
 
         //close connection
-        SqlConnection.Close();
+        sqlConnection.Close();
 
         return companies;
+    }
+
+    public void EditCompany(UInt16 ID, Company editedCompany)
+    {
+        SqlConnection sqlConnection = databaseConnection.SetSqlConnection();
+        string query = @"UPDATE [dbo].[Company]
+            SET[CompanyName] = '" + editedCompany.CompanyName + "'" +
+            ",[Country] = '" + editedCompany.Country + "'" +
+            ",[StreetName] = '" + editedCompany.StreetName + "'" +
+            ",[HouseNumber] = '" + editedCompany.HouseNumber + "'" +
+            ",[City] = '" + editedCompany.City + "'" +
+            ",[ZipCode] = '" + editedCompany.ZipCode + "'" +
+            ",[Currency] = '" + editedCompany.Currency + "'" +
+            ",[CVR] = '" + editedCompany.CVR + "' WHERE Id = " + editedCompany.Id;
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        sqlConnection.Open();
+
+        //execute the SQLCommand
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+
+        //close connection
+        sqlConnection.Close();
     }
 
     public void DeleteCompany(UInt16 ID)
@@ -79,6 +119,8 @@ partial class Database
 
     public void newCompany()
     {
+        Console.WriteLine();
+        Console.WriteLine("New company");
         Company newCompany = new Company();
 
         SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
