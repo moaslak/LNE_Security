@@ -13,7 +13,7 @@ class Program
         {
         }
     }
-
+    // TODO: TITLES!!!
     static List<Company> companyList = new List<Company>();
 
     public static void Main(string[] args)
@@ -21,13 +21,13 @@ class Program
         companyList = Database.Instance.GetCompanies();
         //InvoiceMockTest(salesOrder);   
 
-        foreach (Company company in companyList)
+        /*foreach (Company company in companyList)
         {
             if (company.Country == "Denmark")
                 company.Currency = Company.Currencies.DKK;
             else
                 company.Currency = Company.Currencies.USD;
-        }
+        }*/
 
         MainMenuScreen mainMenu = new MainMenuScreen(companyList[0]);
         ScreenHandler.Display(mainMenu);

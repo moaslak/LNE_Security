@@ -94,7 +94,10 @@ public class EditCompnayScreen : ScreenHandler
                 break;
             default:
                 break;
-        }   
+        }
+
+        Company editedCompany = this.company;
+        Database.Instance.EditCompany(editedCompany.Id, this.company);
     }
 
     /// <summary>

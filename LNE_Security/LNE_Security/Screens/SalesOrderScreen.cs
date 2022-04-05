@@ -5,6 +5,7 @@ using System.Text;
 using TECHCOOL.UI;
 using System.Data.SqlClient;
 using LNE_Security.Data;
+using LNE_Security.Screens;
 
 namespace LNE_Security;
 
@@ -26,7 +27,7 @@ public class SalesOrderScreen : ScreenHandler
     OrderLine orderLine2 = new OrderLine();
     List<OrderLine> orderLines = new List<OrderLine>();
 
-    Customer selectedCustomer = new Customer();
+    Customer selected= new Customer();
     
     
     protected override void Draw()
@@ -35,11 +36,11 @@ public class SalesOrderScreen : ScreenHandler
         Clear(this);
         ListPage<SalesOrder> salesOrderListPage = new ListPage<SalesOrder>();
         SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
-        salesOrders = Database.Instance.GetSalesOrders(selectedCustomer);
+        salesOrders = Database.Instance.GetSalesOrders(selected);
         
         foreach (SalesOrder salesOrder in salesOrders)
         {
-            if(salesOrder.CID == selectedCustomer.ID)
+            if(salesOrder.CID == selected.ID)
                 salesOrderListPage.Add(salesOrder);
         }
         
@@ -60,8 +61,30 @@ public class SalesOrderScreen : ScreenHandler
         }
 
         customerListPage.AddColumn("CID", "ID");
-        selectedCustomer = customerListPage.Select();
-        Console.WriteLine("Options???");
+        selected = customerListPage.Select();
 
+        Console.WriteLine("F1 - New Sales Order");
+        Console.WriteLine("F2 - Edit Sales Order");
+        Console.WriteLine("F8 - Delete Sales Order");
+        Console.WriteLine("F10 - Back");
+        Console.WriteLine("Esc - Close App");
+        switch (Console.ReadKey().Key)
+        {
+            case ConsoleKey.F1:
+                Database.Instance.NewSalesOrder(selected);
+                break;
+            case ConsoleKey.F2:
+                //ScreenHandler.Display(new EditSalesOrderScreen(selected));
+                break;
+            case ConsoleKey.F8:
+                //Database.Instance.DeleteSalesOrder(selected.Id);
+                break;
+            case ConsoleKey.F10:
+                ScreenHandler.Display(new MainMenuScreen(selected));
+                break;
+            case ConsoleKey.Escape:
+                Environment.Exit(0);
+                break;
+        }
     }
 }
