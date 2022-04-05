@@ -13,11 +13,10 @@ namespace LNE_Security
         private Product product { get; set; }
         private Company company { get; set; }
 
-    public ProductScreen(Product product) : base(product)
-    {
-        this.product = product;
-    }
-
+        public ProductScreen(Product product) : base(product)
+        {
+            this.product = product;
+        }
         protected override void Draw()
         {
             Title = "Product";
@@ -26,12 +25,12 @@ namespace LNE_Security
             ListPage<Product> productListPage = new ListPage<Product>();
             ListPage<String> selectedList = new ListPage<String>();
             List<Product> products = Database.Instance.GetProducts();
-            foreach(Product product in products)
+            foreach (Product product in products)
                 productListPage.Add(product);
 
             Product selectedProduct = new Product();
 
-            productListPage.AddColumn("Product Number", "ProductNumber",10);
+            productListPage.AddColumn("Product Number", "ProductNumber", 10);
             productListPage.AddColumn("Product Name", "ProductName", 25);
             productListPage.AddColumn("Amount In Storage", "AmountInStorage");
             productListPage.AddColumn("Cost Price", "CostPrice");
@@ -40,8 +39,9 @@ namespace LNE_Security
                 productListPage.Draw();
             else
                 selectedProduct = productListPage.Select();
-
             Console.WriteLine("Selection : " + selectedProduct.ProductName);
+
+
             Console.WriteLine("Enter - product details");
             Console.WriteLine("F1 - New product");
             Console.WriteLine("F8 - Delete product");

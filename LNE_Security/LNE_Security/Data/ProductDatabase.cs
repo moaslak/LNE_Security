@@ -129,7 +129,7 @@ namespace LNE_Security
             product.ProfitPercent = product.CalculateProfitPercent(product.SalesPrice, product.CostPrice);
 
             string query = @"INSERT INTO [dbo].[Product]
-           ([ProdectNumber]
+           ([ProductNumber]
            ,[ProductName]
            ,[SalesPrice]
            ,[CostPrice]

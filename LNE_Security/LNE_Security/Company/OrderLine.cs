@@ -8,7 +8,7 @@ namespace LNE_Security;
 public class OrderLine
 {
 
-    public UInt16 Quantity { get; set; }
+    public double Quantity { get; set; }
 
     public Product Product { get; set; }
 

@@ -19,15 +19,7 @@ public class SalesOrderScreen : ScreenHandler
         this.customer = Customer;
     }
 
-    // mock sales order
-    SalesOrder salesOrder = new SalesOrder();
-    SalesOrder salesOrder2 = new SalesOrder();
-    List<SalesOrder> salesOrders = new List<SalesOrder>();
-    OrderLine orderLine = new OrderLine();
-    OrderLine orderLine2 = new OrderLine();
-    List<OrderLine> orderLines = new List<OrderLine>();
-
-    Customer selected= new Customer();
+    Customer selected = new Customer();
     
     
     protected override void Draw()
@@ -36,7 +28,7 @@ public class SalesOrderScreen : ScreenHandler
         Clear(this);
         ListPage<SalesOrder> salesOrderListPage = new ListPage<SalesOrder>();
         SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
-        salesOrders = Database.Instance.GetSalesOrders(selected);
+        List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(selected);
         
         foreach (SalesOrder salesOrder in salesOrders)
         {

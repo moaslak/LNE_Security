@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using LNE_Security.Data;
+using LNE_Security.Screens;
+using TECHCOOL.UI;
 
 namespace LNE_Security;
 
@@ -19,11 +21,56 @@ partial class Database
         OrderLine orderline = new OrderLine();
 
         // TODO: List products and select from list
-        orderline.Product = productList[0];
-        orderline.Quantity = 3;
+        ListPage<Product> productListPage = new ListPage<Product>();
+        ListPage<String> selectedList = new ListPage<String>();
+        foreach (Product product in productList)
+            productListPage.Add(product);
+
+        Product selectedProduct = new Product();
+
+        productListPage.AddColumn("Product Number", "ProductNumber", 10);
+        productListPage.AddColumn("Product Name", "ProductName", 25);
+        productListPage.AddColumn("Amount In Storage", "AmountInStorage");
+        productListPage.AddColumn("Cost Price", "CostPrice");
+        productListPage.AddColumn("Sales Price", "SalesPrice");
+        if (productList.Count == 0)
+            productListPage.Draw();
+        else
+            selectedProduct = productListPage.Select();
+        Console.WriteLine("Selection : " + selectedProduct.ProductName);
+        orderline.Product = selectedProduct;
+        double quantity = 0;
+        do
+        {
+            Console.Write("How many: ");
+        } while (!(double.TryParse(Console.ReadLine(), out quantity)));
+        double amountInStore = selectedProduct.AmountInStorage;
+        if (quantity > amountInStore)
+        {
+            Console.WriteLine("Not enough in store.");
+            Console.WriteLine("Amount in store: " + amountInStore);
+
+            char choice = '0';
+            do
+            {
+                Console.WriteLine("Add available to orderline? (Y)es/(N)o");
+            } while (!(char.TryParse(Console.ReadLine(), out choice)) && Char.ToLower(choice) != 'y' || Char.ToLower(choice) != 'n');
+
+            switch (choice)
+            {
+                case 'y':
+                    quantity = amountInStore;
+                    orderline.Quantity = quantity;
+                    selectedProduct.AmountInStorage = amountInStore - quantity;
+                    Database.Instance.EditProduct(selectedProduct.ID, selectedProduct);
+                    break;
+                case 'n':
+                    orderline.Product = null;
+                    break;
+            }
+        }
 
         return orderline;
-        
     }
     public void NewSalesOrder(Customer customer)
     {
@@ -40,18 +87,42 @@ partial class Database
         do
         {
             salesOrder.OrderLines.Add(NewOrderLine());
-
+            Console.WriteLine("Press 'Esc' to stop adding orderlines");
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.Escape:
                     Done = true;
                     break;
                 default:
-                    Console.WriteLine("Press 'Esc' to stop adding orderlines");
+
                     break;
             }
         } while (!Done);
+
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        // TODO: QUERY FÆRDIGGØRES
+        string query = @"INSERT INTO[dbo].[SalesOrder]
+            ([Date]
+          ,[CID]
+          ,[FullName]
+          ,[Price])
+            VALUES
+           (< Date, datetime,>
+           ,< CID, int,>
+           ,< FullName, varchar(64),>
+           ,< Price, money,>)";
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        sqlConnection.Open();
+
+        //execute the SQLCommand
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+
+        //close connection
+        sqlConnection.Close();
     }
+
     public void EditSalesOrder(UInt32 orderId, Customer customer)
     {
         SalesOrder editedSalesOrder = SelectSalesOrder(orderId, customer);
@@ -71,7 +142,7 @@ partial class Database
         //close connection
         sqlConnection.Close();
     }
-        
+
     public SalesOrder SelectSalesOrder(UInt32 orderId, Customer customer)
     {
         List<SalesOrder> SalesOrderList = GetSalesOrders(customer);
@@ -122,3 +193,4 @@ partial class Database
         return salesOrders;
     }
 }
+

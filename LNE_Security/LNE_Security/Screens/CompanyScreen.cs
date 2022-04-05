@@ -29,7 +29,7 @@ public class CompanyScreen : ScreenHandler
         foreach(Company company in CompanyList)
             CompanyListPage.Add(company);
             
-        Title = company.CompanyName + " Company Screen";
+        Title = "Company Screen";
         Clear(this);
         CompanyListPage.AddColumn("Company name", "CompanyName");
         CompanyListPage.AddColumn("Country", "Country");
