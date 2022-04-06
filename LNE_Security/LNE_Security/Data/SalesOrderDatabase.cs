@@ -121,10 +121,9 @@ partial class Database
                     return orderline;
             }
         }
-            orderline.Quantity = quantity;
-            selectedProduct.AmountInStorage = amountInStore - quantity;
-            Database.Instance.EditProduct(selectedProduct.ID, selectedProduct);
-            
+        orderline.Quantity = quantity;
+        selectedProduct.AmountInStorage = amountInStore - quantity;
+        Database.Instance.EditProduct(selectedProduct.ID, selectedProduct);
 
         return orderline;
     }
