@@ -33,6 +33,7 @@ public class CompanyDetailsScreen : ScreenHandler
 		Console.WriteLine("Selection: " + selected.CompanyName);
 		Console.WriteLine("F1 - Back");
 		Console.WriteLine("F2 - Edit");
+		Console.WriteLine("F5 - Delete");
 		CompanyScreen companyScreen = new CompanyScreen(selected);
 		
 		switch (Console.ReadKey().Key)
@@ -42,6 +43,9 @@ public class CompanyDetailsScreen : ScreenHandler
 				break;
 			case ConsoleKey.F2:
 				Console.WriteLine("NOT IMPLEMENTET");
+				break;
+			case ConsoleKey.F5:
+				Database.Instance.DeleteCompany(selected.Id);
 				break;
 			default:
 				break;
