@@ -18,6 +18,8 @@ namespace LNE_Security
 
         static Customer customer { get; set; }
 
+        static List<SalesOrder> salesOrders { get; set; }
+
         public ScreenHandler(Company Company)
         {
             company = Company;
@@ -48,6 +50,11 @@ namespace LNE_Security
         {
             customer = Customer;
 
+        }
+
+        public ScreenHandler(List<SalesOrder> SalesOrders)
+        {
+            salesOrders = SalesOrders;
         }
         public Person Person { get; set; }
 

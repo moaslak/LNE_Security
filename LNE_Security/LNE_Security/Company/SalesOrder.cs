@@ -19,7 +19,7 @@ public class SalesOrder
     public DateTime CompletionTime { get; set; }
 
     public OrderLine? orderLine { get; set; }
-    public UInt16? CID {get; set; }
+    public UInt16 CID {get; set; }
     public string FullName { get; set; }
 
     /// <summary>

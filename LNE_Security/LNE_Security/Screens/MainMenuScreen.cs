@@ -41,7 +41,10 @@ public class MainMenuScreen : ScreenHandler
 
     protected override void Draw()
     {
-        Title = "ERP System";
+        if (company == null)
+            Title = "ERP System";
+        else
+            Title = company.CompanyName + " ERP System";
         Clear(this);
 
         ListPage<Options> MenuOptions = new ListPage<Options>();

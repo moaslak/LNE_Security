@@ -43,8 +43,6 @@ public class CompanyScreen : ScreenHandler
         Console.WriteLine("F10 - To Main menu");
         Console.WriteLine("Esc - Close App");
 
-
-
         switch (Console.ReadKey().Key)
         {
             case ConsoleKey.F1:

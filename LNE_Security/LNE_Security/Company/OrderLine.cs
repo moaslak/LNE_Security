@@ -10,7 +10,7 @@ public class OrderLine
 
     public double Quantity { get; set; }
 
-    public Product Product { get; set; }
+    public Product Product = new Product();
 
     public double CalculateLinePrice(Product product)
     {
