@@ -10,7 +10,7 @@ public class Customer : Person
 {
     private Person _person { get; set; }
 
-    //public UInt16 Id { get; set; }
+    public UInt16 CID { get; set; }
     
 
     public override Person DeletePerson(ContactInfo contactInfo, Database database, Address address)

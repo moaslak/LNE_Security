@@ -7,7 +7,7 @@ namespace LNE_Security;
 
 public class OrderLine
 {
-
+    public UInt16 OLID { get; set; } //TODO: orderLine ID
     public double Quantity { get; set; }
 
     public Product Product = new Product();
