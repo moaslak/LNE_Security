@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using LNE_Security.Data;
+using LNE_Security.Screens;
+using TECHCOOL.UI;
 
 namespace LNE_Security;
 
@@ -12,18 +14,118 @@ partial class Database
 {
     // TODO: finish sales order database
     SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+    public void DeleteSalesOrdersByCID(UInt16 CID)
+    {
+        string query = "DELETE FROM [dbo].[SalesOrder] WHERE CID = " + CID.ToString();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        List<SalesOrder> salesOrders = GetSalesOrders(CID);
+        sqlConnection.Open();
+        if (salesOrders.Count > 0)
+        {
+            Console.WriteLine(salesOrders.Count.ToString() + " entries will be deleted. This CANNOT be undone");
+        }
+        char choice = '0';
+        do
+        {
+            Console.WriteLine("Delete entries for customer " + CID +"? (Y)es/(N)o");
+        } while (!(char.TryParse(Console.ReadLine(), out choice)) && (Char.ToLower(choice) != 'y' || Char.ToLower(choice) != 'n'));
+
+        switch (choice)
+        {
+            case 'y':
+                //execute the SQLCommand
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Close();
+
+                //close connection
+                sqlConnection.Close();
+                Console.WriteLine("Entries deleted");
+                break;
+            case 'n':
+                Console.WriteLine("Delete aborted");
+                break;
+        }
+        Console.WriteLine("Press a key to continue");
+        Console.ReadKey();
+    }
+
+    public void DeleteSalesOrder(UInt32 ID, Customer customer)
+    {
+        string query = "DELETE FROM [dbo].[SalesOrder] WHERE Id = " + ID.ToString();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        sqlConnection.Open();
+
+        //execute the SQLCommand
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+
+        //close connection
+        sqlConnection.Close();
+        SalesOrder salesOrder = SelectSalesOrder(ID, customer);
+        if (salesOrder.OrderID == 0 && salesOrder.OrderLines.Count == 0)
+            Console.WriteLine("Sales order with ID = " + ID + " was succesfully deleted");
+        else
+            Console.WriteLine("Could not find sales order to delete");
+    }
 
     private OrderLine NewOrderLine()
     {
+        Console.Clear();
         List<Product> productList = Database.Instance.GetProducts();
         OrderLine orderline = new OrderLine();
 
         // TODO: List products and select from list
-        orderline.Product = productList[0];
-        orderline.Quantity = 3;
+        ListPage<Product> productListPage = new ListPage<Product>();
+        ListPage<String> selectedList = new ListPage<String>();
+        foreach (Product product in productList)
+            productListPage.Add(product);
+
+        Product selectedProduct = new Product();
+
+        productListPage.AddColumn("Product Number", "ProductNumber", 10);
+        productListPage.AddColumn("Product Name", "ProductName", 25);
+        productListPage.AddColumn("Amount In Storage", "AmountInStorage");
+        productListPage.AddColumn("Cost Price", "CostPrice");
+        productListPage.AddColumn("Sales Price", "SalesPrice");
+        if (productList.Count == 0)
+            productListPage.Draw();
+        else
+            selectedProduct = productListPage.Select();
+        Console.WriteLine("Selection : " + selectedProduct.ProductName);
+        orderline.Product = selectedProduct;
+        double quantity = 0;
+        do
+        {
+            Console.Write("How many: ");
+        } while (!(double.TryParse(Console.ReadLine(), out quantity)));
+        double amountInStore = selectedProduct.AmountInStorage;
+        if (quantity > amountInStore)
+        {
+            Console.WriteLine("Not enough in store.");
+            Console.WriteLine("Amount in store: " + amountInStore);
+
+            char choice = '0';
+            do
+            {
+                Console.WriteLine("Add available to orderline? (Y)es/(N)o");
+            } while (!(char.TryParse(Console.ReadLine(), out choice)) && (Char.ToLower(choice) != 'y' || Char.ToLower(choice) != 'n'));
+
+            switch (choice)
+            {
+                case 'y':
+                    quantity = amountInStore;
+                    break;
+                case 'n':
+                    orderline.Product = null;
+                    return orderline;
+            }
+        }
+        orderline.Quantity = quantity;
+        selectedProduct.AmountInStorage = amountInStore - quantity;
+        Database.Instance.EditProduct(selectedProduct.ID, selectedProduct);
 
         return orderline;
-        
     }
     public void NewSalesOrder(Customer customer)
     {
@@ -34,27 +136,52 @@ partial class Database
         salesOrder.OrderTime = DateTime.Now;
         salesOrder.CID = customer.ID;
         salesOrder.FullName = customer.ContactInfo.FullName;
-
+        
         // TODO: add products
         bool Done = false;
         do
         {
             salesOrder.OrderLines.Add(NewOrderLine());
-
+            Console.WriteLine("Press 'Esc' to stop adding orderlines");
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.Escape:
                     Done = true;
                     break;
                 default:
-                    Console.WriteLine("Press 'Esc' to stop adding orderlines");
                     break;
             }
         } while (!Done);
+
+        salesOrder.TotalPrice = salesOrder.CalculateTotalPrice(salesOrder.OrderLines);
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        // TODO: QUERY FÆRDIGGØRES
+        string query = @"INSERT INTO[dbo].[SalesOrder]
+            ([Date]
+          ,[CID]
+          ,[FullName]
+          ,[Price])
+            VALUES
+           (" + "'" + salesOrder.OrderTime.ToString() +
+           "','" + salesOrder.CID.ToString() +
+           "','" + salesOrder.FullName +
+           "','" + salesOrder.CalculateTotalPrice(salesOrder.OrderLines) + "')";
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        sqlConnection.Open();
+
+        //execute the SQLCommand
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+
+        //close connection
+        sqlConnection.Close();
     }
-    public void EditSalesOrder(UInt32 orderId, Customer customer)
+
+    public void EditSalesOrder(SalesOrder editedSalesOrder, UInt32 orderId)
     {
-        SalesOrder editedSalesOrder = SelectSalesOrder(orderId, customer);
+        //SalesOrder editedSalesOrder = SelectSalesOrder(orderId, customer);
+        editedSalesOrder.TotalPrice = editedSalesOrder.CalculateTotalPrice(editedSalesOrder.OrderLines);
         string query = @"UPDATE [dbo].[SalesOrder]
                 SET [Date] = '" + editedSalesOrder.OrderTime + "'" +
             ",[CID] = '" + editedSalesOrder.CID + "'" +
@@ -71,7 +198,7 @@ partial class Database
         //close connection
         sqlConnection.Close();
     }
-        
+
     public SalesOrder SelectSalesOrder(UInt32 orderId, Customer customer)
     {
         List<SalesOrder> SalesOrderList = GetSalesOrders(customer);
@@ -121,4 +248,43 @@ partial class Database
         sqlConnection.Close();
         return salesOrders;
     }
+
+    public List<SalesOrder> GetSalesOrders(UInt16 CID)
+    {
+        List<SalesOrder> salesOrders = new List<SalesOrder>();
+
+        string dateTimeString = "";
+        DateTime dateTime = new DateTime();
+        string query = @"SELECT * FROM [dbo].[SalesOrder]";
+        query = query + "WHERE CID = " + CID;
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            SalesOrder salesOrder = new SalesOrder();
+            salesOrder.OrderID = Convert.ToUInt16(reader.GetValue(0).ToString());
+            dateTimeString = reader.GetValue(1).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.OrderTime = dateTime;
+            }
+            catch (Exception ex)
+            {
+                salesOrder.OrderTime = null;
+            }
+
+            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(2)));
+            salesOrder.FullName = reader.GetValue(3).ToString();
+            salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(4));
+            salesOrders.Add(salesOrder);
+        }
+        reader.Close();
+        sqlConnection.Close();
+        return salesOrders;
+    }
 }
+

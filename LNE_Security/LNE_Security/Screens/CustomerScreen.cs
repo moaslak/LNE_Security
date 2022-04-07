@@ -74,13 +74,13 @@ public class CustomerScreen : ScreenHandler
         Title = "Customer screen";
         Clear(this);
 
-
+        Console.WriteLine("Choose Customer");
         CustomerListPage.AddColumn("Customer ID", "ID");
         CustomerListPage.AddColumn("Customer Name", "FullName");
         CustomerListPage.AddColumn("Phonenumber", "PhoneNumbers");
         CustomerListPage.AddColumn("Email", "Email");
         Customer selected = CustomerListPage.Select();
-        Console.WriteLine("Choose Customer");
+        
 
         Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
         Console.WriteLine("F1 - New Customer");
@@ -95,6 +95,7 @@ public class CustomerScreen : ScreenHandler
         {
             case ConsoleKey.F1:
                 newCustomer();
+                Console.WriteLine("Press enter to continue");
                 break;
             case ConsoleKey.F2:
                 ScreenHandler.Display(new EditCustomerScreen(selected));

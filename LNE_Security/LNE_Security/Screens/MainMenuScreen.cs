@@ -20,18 +20,20 @@ public class MainMenuScreen : ScreenHandler
 
             }
         }
-        private Company company { get; set; }
-        private Product product { get; set; }
-        private Person person { get; set; }
+    }
+    private Company company { get; set; }
+    private Product product { get; set; }
+    private Customer customer = new Customer();
+
         
-        public MainMenuScreen(Company Company) : base(Company)
-        {
-            this.company = Company;
-        }
-        public MainMenuScreen(Product Product) : base(Product)
-        {
-            this.product = Product;
-        }
+    public MainMenuScreen(Company Company) : base(Company)
+    {
+        this.company = Company;
+    }
+    public MainMenuScreen(Product Product) : base(Product)
+    {
+        this.product = Product;
+    }
 
     public MainMenuScreen(Person person) : base(person)
     {
@@ -40,7 +42,10 @@ public class MainMenuScreen : ScreenHandler
 
     protected override void Draw()
     {
-        Title = "ERP System";
+        if (company == null)
+            Title = "ERP System";
+        else
+            Title = company.CompanyName + " ERP System";
         Clear(this);
 
         ListPage<Options> MenuOptions = new ListPage<Options>();
@@ -60,8 +65,6 @@ public class MainMenuScreen : ScreenHandler
                 ScreenHandler.Display(new CompanyScreen(company));
                 break;
             case "F2":
-                
-
                 ScreenHandler.Display(new CustomerScreen(customer));
                 break;
             case "F3":
@@ -71,7 +74,10 @@ public class MainMenuScreen : ScreenHandler
                 ScreenHandler.Display(new ProductScreen(product));
                 break;
             case "F5":
-                ScreenHandler.Display(new SalesOrderScreen(company, customer));
+                if (company == null)
+                    Console.WriteLine("Select company first");
+                else
+                    ScreenHandler.Display(new SalesOrderScreen(company, customer));
                 break;
             case "ESC":
                 Environment.Exit(0);
