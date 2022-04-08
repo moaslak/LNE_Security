@@ -22,18 +22,18 @@ namespace LNE_Security
             }
         }
 
-        public void EditProduct(UInt32 ID, Product editedProduct)
+        public void EditProduct(UInt32 PID, Product editedProduct)
         {
-            SqlConnection sqlConnection = databaseConnection.SetSqlConnection();
+            SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
             string query = @"UPDATE [dbo].[Product]
             SET[ProductNumber] = " + editedProduct.ProductNumber.ToString() + 
-            ",[ProductName] = '" + editedProduct.ProductName + "'" +
+                ",[ProductName] = '" + editedProduct.ProductName + "'" +
                 ",[SalesPrice] = " + editedProduct.SalesPrice.ToString().Replace(',','.') +
                 ",[CostPrice] = " + editedProduct.CostPrice.ToString().Replace(',', '.') + 
                 ",[AmountInStorage] = " + editedProduct.AmountInStorage.ToString().Replace(',', '.') +
-                ",[LocationString] = '" + editedProduct.LocationString + "'" +
+                ",[LocationString] = '" + editedProduct.LocationString.ToString() + "'" +
                 ",[Unit] = '" + editedProduct.Unit.ToString() + "' " +
-                ",[Description] = '" + editedProduct.Description.ToString() + "' WHERE Id = " + ID.ToString();
+                ",[Description] = '" + editedProduct.Description.ToString() + "' WHERE PID = " + PID.ToString();
             SqlCommand cmd = new SqlCommand(query, sqlConnection);
             sqlConnection.Open();
 
@@ -50,7 +50,7 @@ namespace LNE_Security
             Console.WriteLine("New product");
             Product product = new Product();
 
-            SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+            SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
             int number = 0;
             do
@@ -148,12 +148,23 @@ namespace LNE_Security
            
             query = query + VALUES;
             SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            SqlDataReader reader;
             sqlConnection.Open();
-
-            //execute the SQLCommand
-            SqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
-
+            try
+            {
+                reader = cmd.ExecuteReader();
+                reader.Close();
+            }
+            catch(ArithmeticException ex)
+            {
+                Console.WriteLine("Arithmetic exception");
+                Console.WriteLine("No changes");
+                Console.WriteLine("Press key to continue");
+                Console.ReadKey();
+                reader = null;
+                reader.Close();
+            }
+            
             //close connection
             sqlConnection.Close();
         }
@@ -164,10 +175,10 @@ namespace LNE_Security
             return list;
         }
 
-        public void DeleteProduct(UInt32 ID)
+        public void DeleteProduct(UInt32 PID)
         {
-            SqlConnection sqlConnection = databaseConnection.SetSqlConnection();
-            string query = "DELETE FROM [dbo].[Product] WHERE Id = " + ID.ToString();
+            SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+            string query = "DELETE FROM [dbo].[Product] WHERE PID = " + PID.ToString();
             SqlCommand cmd = new SqlCommand(query, sqlConnection);
             sqlConnection.Open();
 
@@ -178,8 +189,8 @@ namespace LNE_Security
             //close connection
             sqlConnection.Close();
 
-            if (SelectProduct(ID) == null)
-                Console.WriteLine("Product with ID = " + ID + " was succesfully deleted");
+            if (SelectProduct(PID) == null)
+                Console.WriteLine("Product with PID = " + PID + " was succesfully deleted");
             else
                 Console.WriteLine("Could not find product to delete");
         }
@@ -189,7 +200,7 @@ namespace LNE_Security
             List<Product> products = new List<Product>();
             foreach(Product product in products)
             {
-                if(product.ID == ID) return product;
+                if(product.PID == ID) return product;
             }
             return null;
         }
@@ -208,7 +219,7 @@ namespace LNE_Security
             while (reader.Read()) // each loop reads a row from the query.
             {
                 Product product = new Product();
-                product.ID = Convert.ToUInt32(reader.GetValue(0));
+                product.PID = Convert.ToUInt32(reader.GetValue(0));
                 product.ProductNumber = Convert.ToInt32(reader.GetValue(1));
                 product.ProductName = reader.GetValue(2).ToString();
                 product.SalesPrice = Convert.ToDouble(reader.GetValue(3));

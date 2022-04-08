@@ -22,23 +22,28 @@ public class CompanyScreen : ScreenHandler
     }        
     
     protected override void Draw()
-    {            
-        ListPage<Company> CompanyListPage = new ListPage<Company>();
-        List<Company> CompanyList = Database.Instance.GetCompanies();
-
-        foreach(Company company in CompanyList)
-            CompanyListPage.Add(company);
-            
+    {
         Title = "Company Screen";
         Clear(this);
-        CompanyListPage.AddColumn("Company name", "CompanyName");
-        CompanyListPage.AddColumn("Country", "Country");
-        CompanyListPage.AddColumn("Currency", "Currency");
-        Console.WriteLine("Choose company");
-        Company selected = CompanyListPage.Select();
-        Console.WriteLine("Selection: " + Database.Instance.SelectCompany(selected.Id));
-        Console.WriteLine("F1 - New company");
-        Console.WriteLine("F2 - Edit");
+        ListPage<Company> CompanyListPage = new ListPage<Company>();
+        List<Company> CompanyList = Database.Instance.GetCompanies();
+        Company selected = new Company();
+        if(CompanyList.Count > 0)
+        {
+            foreach (Company company in CompanyList)
+                CompanyListPage.Add(company);
+            CompanyListPage.AddColumn("Company name", "CompanyName");
+            CompanyListPage.AddColumn("Country", "Country");
+            CompanyListPage.AddColumn("Currency", "Currency");
+            Console.WriteLine("Choose Company");
+            selected = CompanyListPage.Select();
+            Console.WriteLine("Selection: " + Database.Instance.SelectCompany(selected.CompanyID).CompanyName);
+        }
+        
+            
+        
+        Console.WriteLine("F1 - New Company");
+        Console.WriteLine("F2 - Edit Company");
         Console.WriteLine("F8 - Delete Company");
         Console.WriteLine("F10 - To Main menu");
         Console.WriteLine("Esc - Close App");
@@ -52,7 +57,7 @@ public class CompanyScreen : ScreenHandler
                 ScreenHandler.Display(new EditCompnayScreen(selected));
                 break;
             case ConsoleKey.F8:
-                Database.Instance.DeleteCompany(selected.Id);
+                Database.Instance.DeleteCompany(selected.CompanyID);
                 break;
             case ConsoleKey.F10:
                 MainMenuScreen menu = new MainMenuScreen(selected);

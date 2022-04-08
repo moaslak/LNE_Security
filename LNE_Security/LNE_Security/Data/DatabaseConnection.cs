@@ -9,7 +9,7 @@ namespace LNE_Security.Data
 {
     public class DatabaseConnection
     {
-        public SqlConnection SetSqlConnection()
+        public SqlConnection SetSqlConnection(String database)
         {
             SqlConnectionStringBuilder SqlConnectionStringBuilder = new SqlConnectionStringBuilder();
 
@@ -18,7 +18,7 @@ namespace LNE_Security.Data
 
             SqlConnectionStringBuilder["Trusted_Connection"] = true;
 
-            SqlConnectionStringBuilder.InitialCatalog = "LNE_Security";
+            SqlConnectionStringBuilder.InitialCatalog = database;
             SqlConnection SqlConnection = new SqlConnection(SqlConnectionStringBuilder.ConnectionString);
             return SqlConnection;
         }

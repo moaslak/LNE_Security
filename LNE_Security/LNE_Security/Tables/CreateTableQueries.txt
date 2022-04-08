@@ -1,7 +1,27 @@
 ﻿use LNE_Security
 
+CREATE TABLE Address(
+AddressID int IDENTITY(1,1),
+StreetName VARCHAR(128),
+HouseNumber VARCHAR(16),
+City VARCHAR(64),
+ZipCode VARCHAR(8),
+Country VARCHAR(64),
+PRIMARY KEY(Id)
+)
+
+CREATE TABLE ContactInfo(
+ContactInfoID int IDENTITY(1,1),
+FirstName VARCHAR(64),
+LastName VARCHAR(64),
+Email VARCHAR(64),
+PhoneNumber VARCHAR(16)
+AddressID int FOREIGN REFERENCES Address(AddressID),
+PRIMARY KEY(Id)
+)
+
 CREATE TABLE Product(
-Id int IDENTITY(1,1),
+PID int IDENTITY(1,1),
 ProductNumber int,
 ProductName varchar(64),
 SalesPrice money,
@@ -15,47 +35,49 @@ ProfitPersent decimal(5,2),
 PRIMARY KEY(Id)
 )
 
+CREATE TABLE Orderline(
+OLID int IDENTITY(1,1),
+PID int FOREIGN KEY REFERENCES Product(PID),
+Quantity decimal(1000000,2)
+PRIMARY KEY(OLID)
+)
+
 CREATE TABLE SalesOrder(
-Id int IDENTITY(1,1),
-Date DATETIME,
-CID int,
-FullName VARCHAR(64),
+OrderID int IDENTITY(1,1),
+OrderTime DATETIME,
+CompletionTime DATETIME,
+OLID int FOREIGN KEY REFERENCES Orderline(OLID),
+ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
+CID int FOREIGN KEY REFERENCES Customer(CID),
+CompanyID int FOREIGN KEY REFERENCES Company(CompanyID),
 Price money,
-PRIMARY KEY(Id)
+PRIMARY KEY(OrderID)
 )
 
-CREATE TABLE Address(
-Id int IDENTITY(1,1),
-StreetName VARCHAR(128),
-HouseNumber VARCHAR(16),
-City VARCHAR(64),
-ZipCode VARCHAR(8),
-Country VARCHAR(64),
-PRIMARY KEY(Id)
-)
-
-CREATE TABLE ContactInfo(
-Id int IDENTITY(1,1),
-FirstName VARCHAR(64),
-LastName VARCHAR(64),
-Email VARCHAR(64),
-PhoneNumber VARCHAR(16)
-PRIMARY KEY(Id)
+CREATE TABLE Company(
+CompanyID int IDENTITY(1,1),
+CompanyName varchar(128),
+Currency char(3),
+CVR varchar(32),
+ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
+PRIMARY KEY(CompanyID)
 )
 
 CREATE TABLE Person(
-Id int IDENTITY(1,1),
-FirstName VARCHAR(64),
-LastName VARCHAR(64),
-Address VARCHAR(128),
+PersonID int IDENTITY(1,1),
 Type CHAR(8),
+ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
 PRIMARY KEY(Id)
 )
 
 CREATE TABLE Customer(
-Id int IDENTITY(1,1),
-FirstName VARCHAR(32),
-LastName VARCHAR(32),
-Address VARCHAR(128),
-PRIMARY KEY(Id)
+CID int IDENTITY(1,1),
+ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
+PRIMARY KEY(CID)
+)
+
+CREATE TABLE Employee(
+EID int IDENTITY(1,1),
+ContactInfoID int FOREIGN KEY REFERNECES ContactInfo(ContactInfoID),
+PRIMARY KEY(EID)
 )

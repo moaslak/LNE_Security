@@ -17,6 +17,10 @@ namespace LNE_Security
         {
             this.product = product;
         }
+        public ProductScreen(Company Company) : base(Company)
+        {
+            this.company = Company;
+        }
         protected override void Draw()
         {
             Title = "Product";
@@ -25,24 +29,25 @@ namespace LNE_Security
             ListPage<Product> productListPage = new ListPage<Product>();
             ListPage<String> selectedList = new ListPage<String>();
             List<Product> products = Database.Instance.GetProducts();
-            foreach (Product product in products)
-                productListPage.Add(product);
-
             Product selectedProduct = new Product();
+            if (products.Count > 0)
+            {
+                foreach (Product product in products)
+                    productListPage.Add(product);
 
-            productListPage.AddColumn("Product Number", "ProductNumber", 10);
-            productListPage.AddColumn("Product Name", "ProductName", 25);
-            productListPage.AddColumn("Amount In Storage", "AmountInStorage");
-            productListPage.AddColumn("Cost Price", "CostPrice");
-            productListPage.AddColumn("Sales Price", "SalesPrice");
-            if (products.Count == 0)
-                productListPage.Draw();
-            else
-                selectedProduct = productListPage.Select();
-            Console.WriteLine("Selection : " + selectedProduct.ProductName);
-
-
-            Console.WriteLine("Enter - product details");
+                productListPage.AddColumn("Product Number", "ProductNumber", 10);
+                productListPage.AddColumn("Product Name", "ProductName", 25);
+                productListPage.AddColumn("Amount In Storage", "AmountInStorage");
+                productListPage.AddColumn("Cost Price", "CostPrice");
+                productListPage.AddColumn("Sales Price", "SalesPrice");
+                if (products.Count == 0)
+                    productListPage.Draw();
+                else
+                    selectedProduct = productListPage.Select();
+                Console.WriteLine("Selection : " + selectedProduct.ProductName);
+                Console.WriteLine("Enter - product details");
+            }
+     
             Console.WriteLine("F1 - New product");
             Console.WriteLine("F2 - Edit product");
             Console.WriteLine("F8 - Delete product");
@@ -63,10 +68,10 @@ namespace LNE_Security
                     Environment.Exit(0);
                     break;
                 case ConsoleKey.F8:
-                    Database.Instance.DeleteProduct(selectedProduct.ID);
+                    Database.Instance.DeleteProduct(selectedProduct.PID);
                     break;
                 case ConsoleKey.F10:
-                    ScreenHandler.Display(new MainMenuScreen(company));
+                    ScreenHandler.Display(new MainMenuScreen(this.company));
                     break;
                 default:
                     break;

@@ -13,7 +13,7 @@ namespace LNE_Security;
 partial class Database
 {
     // TODO: finish sales order database
-    SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+    SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
     public void DeleteSalesOrdersByCID(UInt16 CID)
     {
         string query = "DELETE FROM [dbo].[SalesOrder] WHERE CID = " + CID.ToString();
@@ -52,7 +52,7 @@ partial class Database
 
     public void DeleteSalesOrder(UInt32 ID, Customer customer)
     {
-        string query = "DELETE FROM [dbo].[SalesOrder] WHERE Id = " + ID.ToString();
+        string query = "DELETE FROM [dbo].[SalesOrder] WHERE OrderID = " + ID.ToString();
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
 
@@ -63,8 +63,14 @@ partial class Database
         //close connection
         sqlConnection.Close();
         SalesOrder salesOrder = SelectSalesOrder(ID, customer);
-        if (salesOrder.OrderID == 0 && salesOrder.OrderLines.Count == 0)
+        if (salesOrder == null)
+        {
             Console.WriteLine("Sales order with ID = " + ID + " was succesfully deleted");
+            Console.WriteLine("Press a key to continue");
+            Console.ReadKey();
+        }
+            
+        
         else
             Console.WriteLine("Could not find sales order to delete");
     }
@@ -74,7 +80,7 @@ partial class Database
         Console.Clear();
         List<Product> productList = Database.Instance.GetProducts();
         OrderLine orderline = new OrderLine();
-
+        List<UInt16> OLIDs = new List<UInt16>();
         // TODO: List products and select from list
         ListPage<Product> productListPage = new ListPage<Product>();
         ListPage<String> selectedList = new ListPage<String>();
@@ -122,22 +128,48 @@ partial class Database
             }
         }
         orderline.Quantity = quantity;
+
+        sqlConnection.Open();
+        string query = @"INSERT INTO [dbo].[Orderline]( [PID], [Quantity]) VALUES(
+        '" + selectedProduct.PID + "','" + quantity.ToString() + "')";
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+        query = "SELECT OLID FROM [Orderline]";
+        cmd = new SqlCommand(query, sqlConnection);
+        reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            OLIDs.Add(Convert.ToUInt16(reader.GetValue(0)));
+        }
+        sqlConnection.Close();
+
+        if (OLIDs.Count > 0 && OLIDs.Count > 1)
+        {
+            foreach (UInt16 id in OLIDs)
+            {
+                if (id > orderline.OLID)
+                    orderline.OLID = id;
+            }
+        }
+        else
+            orderline.OLID = 1;
+
         selectedProduct.AmountInStorage = amountInStore - quantity;
-        Database.Instance.EditProduct(selectedProduct.ID, selectedProduct);
+        Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
 
         return orderline;
     }
-    public void NewSalesOrder(Customer customer)
+    public void NewSalesOrder(Customer customer, UInt16 companyID)
     {
         SalesOrder salesOrder = new SalesOrder();
         Console.WriteLine();
         Console.WriteLine("New sales order");
 
         salesOrder.OrderTime = DateTime.Now;
-        salesOrder.CID = customer.ID;
+        salesOrder.CID = customer.CID;
         salesOrder.FullName = customer.ContactInfo.FullName;
         
-        // TODO: add products
         bool Done = false;
         do
         {
@@ -147,6 +179,7 @@ partial class Database
             {
                 case ConsoleKey.Escape:
                     Done = true;
+                    salesOrder.OLID = salesOrder.OrderLines[0].OLID;
                     break;
                 default:
                     break;
@@ -154,18 +187,21 @@ partial class Database
         } while (!Done);
 
         salesOrder.TotalPrice = salesOrder.CalculateTotalPrice(salesOrder.OrderLines);
-        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
-        // TODO: QUERY FÆRDIGGØRES
         string query = @"INSERT INTO[dbo].[SalesOrder]
-            ([Date]
+            ([OrderTime]
+          ,[OLID]
+          ,[ContactInfoID]
           ,[CID]
-          ,[FullName]
+          ,[CompanyID]
           ,[Price])
             VALUES
            (" + "'" + salesOrder.OrderTime.ToString() +
-           "','" + salesOrder.CID.ToString() +
-           "','" + salesOrder.FullName +
+           "','" + salesOrder.OLID.ToString() +
+           "','" + customer.ContactInfoID.ToString() +
+           "','" + customer.CID +
+           "', '" + companyID.ToString() +
            "','" + salesOrder.CalculateTotalPrice(salesOrder.OrderLines) + "')";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
@@ -178,16 +214,22 @@ partial class Database
         sqlConnection.Close();
     }
 
-    public void EditSalesOrder(SalesOrder editedSalesOrder, UInt32 orderId)
+    public void EditSalesOrder(SalesOrder editedSalesOrder)
     {
+        UInt32 orderID = editedSalesOrder.OrderID;
         //SalesOrder editedSalesOrder = SelectSalesOrder(orderId, customer);
-        editedSalesOrder.TotalPrice = editedSalesOrder.CalculateTotalPrice(editedSalesOrder.OrderLines);
+        
+        if (editedSalesOrder.CompletionTime.ToString() == "01-01-0001 00:00:00")
+            editedSalesOrder.CompletionTime = null;
         string query = @"UPDATE [dbo].[SalesOrder]
-                SET [Date] = '" + editedSalesOrder.OrderTime + "'" +
-            ",[CID] = '" + editedSalesOrder.CID + "'" +
-            ",[FullName] = '" + editedSalesOrder.FullName + "'" +
+                SET [OrderTime] = '" + editedSalesOrder.OrderTime.ToString() + "'" +
+                ", [CompletionTime] = '" + editedSalesOrder.CompletionTime.ToString() + "'" +
+            //",[CID] = '" + editedSalesOrder.CID + "'" +
+            //",[ContactInfoID] = '" + editedSalesOrder.ContactInfoID + "'" +
+            //",[CompanyID] = '" + editedSalesOrder.CompanyID + "'" +
+            //",[OLID] = '" + editedSalesOrder.OLID + "'" +
             ",[Price] = '" + editedSalesOrder.TotalPrice + "'" +
-            " WHERE id = " + orderId;
+            " WHERE OrderID = " + orderID;
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
 
@@ -206,7 +248,7 @@ partial class Database
 
         foreach (SalesOrder SalesOrderItem in SalesOrderList)
         {
-            if (salesOrder.OrderID == ID)
+            if (salesOrder.OrderID == orderId)
                 return salesOrder;
         }
         return null;
@@ -217,8 +259,10 @@ partial class Database
 
         string dateTimeString = "";
         DateTime dateTime = new DateTime();
+        ContactInfo contactInfo = SelectContactInfo(customer);
+
         string query = @"SELECT * FROM [dbo].[SalesOrder]";
-        query = query + "WHERE CID = " + customer.ID;
+        query = query + "WHERE CID = " + customer.CID;
         sqlConnection.Open();
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
 
@@ -234,22 +278,34 @@ partial class Database
                 DateTime.TryParse(dateTimeString, out dateTime);
                 salesOrder.OrderTime = dateTime;
             }
-            catch (Exception ex)
+            catch (FormatException ex)
             {
                 salesOrder.OrderTime = null;
             }
-
-            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(2)));
-            salesOrder.FullName = reader.GetValue(3).ToString();
-            salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(4));
+            dateTimeString = reader.GetValue(2).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.CompletionTime = dateTime;
+            }
+            catch (FormatException ex)
+            {
+                salesOrder.CompletionTime = null;
+            }
+            salesOrder.OLID = Convert.ToUInt16(reader.GetValue(3));
+            salesOrder.ContactInfoID = Convert.ToUInt16(reader.GetValue(4));
+            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(5)));
+            salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(6));
+            salesOrder.FullName = contactInfo.FullName;
             salesOrders.Add(salesOrder);
         }
         reader.Close();
         sqlConnection.Close();
+        
         return salesOrders;
     }
 
-    public List<SalesOrder> GetSalesOrders(UInt16 CID)
+    public List<SalesOrder> GetSalesOrders(UInt16 CID) //TODO: bruges denne?
     {
         List<SalesOrder> salesOrders = new List<SalesOrder>();
 

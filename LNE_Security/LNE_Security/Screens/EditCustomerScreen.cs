@@ -50,13 +50,14 @@ public class EditCustomerScreen : ScreenHandler
                 this.address.HouseNumber = newValue;
                 break;
             case "Zipcode":
-                zipcode = newValue;
+                this.address.ZipCode = newValue;
                 break;
             case "City":
                 this.address.City = newValue;
                 break;
             case "Phonenumber":
-                this.contact.PhoneNumber.Add(newValue);
+                //this.contact.PhoneNumber.Add(newValue);
+                this.contact.PhoneNumber = newValue;
                 break;
             case "Email":
                 this.contact.Email = newValue;
@@ -65,7 +66,7 @@ public class EditCustomerScreen : ScreenHandler
                 break;
         }
         Customer customer = this.customer;
-        Database.Instance.EditCustomer(customer.ID, this.customer);
+        Database.Instance.EditCustomer(this.customer, selected.Option);
     }
     protected override void Draw()
     {
@@ -108,12 +109,15 @@ public class EditCustomerScreen : ScreenHandler
             OptionListPage.Add(new Options("Zipcode", address.ZipCode));
             OptionListPage.Add(new Options("City", address.City));
             OptionListPage.Add(new Options("Country", address.Country));
-            string phoneNumbers = "";
+            
+            
+            /*string phoneNumbers = "";
             foreach(string phonenumber in contact.PhoneNumber)
             {
                 phoneNumbers = phoneNumbers + phonenumber + "\n";
-            }
-            OptionListPage.Add(new Options("Phonenumber", phoneNumbers));
+            }*/
+            
+            OptionListPage.Add(new Options("Phonenumber", contact.PhoneNumber));
             OptionListPage.Add(new Options("Email", contact.Email));
             OptionListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = OptionListPage.Select();

@@ -28,7 +28,13 @@ public class SalesOrderScreen : ScreenHandler
         Clear(this);
 
         List<Customer> Customers = Database.Instance.GetCustomers();
-
+        if(Customers.Count == 0)
+        {
+            Console.WriteLine("Create a customer first");
+            Console.WriteLine("Press a key to return to Main Menu");
+            Console.ReadKey();
+            ScreenHandler.Display(new MainMenuScreen(this.company));
+        }
         ListPage<Customer> customerListPage = new ListPage<Customer>();
 
         foreach (Customer Customer in Customers)
@@ -36,16 +42,16 @@ public class SalesOrderScreen : ScreenHandler
             customerListPage.Add(Customer);
         }
 
-        customerListPage.AddColumn("Select customer", "ID");
+        customerListPage.AddColumn("Select customer", "CID");
         selected = customerListPage.Select();
 
         ListPage<SalesOrder> salesOrderListPage = new ListPage<SalesOrder>();
-        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
         List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(selected);
         
         foreach (SalesOrder salesOrder in salesOrders)
         {
-            if(salesOrder.CID == selected.ID)
+            if(salesOrder.CID == selected.CID)
                 salesOrderListPage.Add(salesOrder);
         }
         
@@ -69,7 +75,7 @@ public class SalesOrderScreen : ScreenHandler
         {
             
             case ConsoleKey.F1:
-                Database.Instance.NewSalesOrder(selected);
+                Database.Instance.NewSalesOrder(selected, company.CompanyID);
                 break;
             case ConsoleKey.F2:
                 ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));
@@ -93,11 +99,11 @@ public class SalesOrderScreen : ScreenHandler
                 Database.Instance.DeleteSalesOrdersByCID(CID);
                 break;
             case ConsoleKey.F8:
-                Database.Instance.DeleteSalesOrder(DeleteSalesOrderOption(salesOrders),Database.Instance.SelectCustomer(selected.ID));
+                Database.Instance.DeleteSalesOrder(DeleteSalesOrderOption(salesOrders),Database.Instance.SelectCustomer(selected.CID));
                 Console.WriteLine("Press a enter to continue");
                 break;
             case ConsoleKey.F10:
-                ScreenHandler.Display(new MainMenuScreen(selected));
+                ScreenHandler.Display(new MainMenuScreen(this.company));
                 break;
             case ConsoleKey.Escape:
                 Environment.Exit(0);

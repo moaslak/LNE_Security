@@ -21,15 +21,8 @@ class Program
         companyList = Database.Instance.GetCompanies();
         //InvoiceMockTest(salesOrder);   
 
-        /*foreach (Company company in companyList)
-        {
-            if (company.Country == "Denmark")
-                company.Currency = Company.Currencies.DKK;
-            else
-                company.Currency = Company.Currencies.USD;
-        }*/
-
-        MainMenuScreen mainMenu = new MainMenuScreen(companyList[0]);
+        //MainMenuScreen mainMenu = new MainMenuScreen(companyList[0]);
+        MainMenuScreen mainMenu = new MainMenuScreen();
         ScreenHandler.Display(mainMenu);
 
     }

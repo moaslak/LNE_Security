@@ -37,6 +37,10 @@ public class MainMenuScreen : ScreenHandler
     {
         this.customer = Customer;
     }
+    public MainMenuScreen()
+    {
+
+    }
     
 
     protected override void Draw()
@@ -48,7 +52,7 @@ public class MainMenuScreen : ScreenHandler
         Clear(this);
 
         ListPage<Options> MenuOptions = new ListPage<Options>();
-        MenuOptions.AddColumn("Option", "Option");
+        MenuOptions.AddColumn("Option", "Option", "Sales order screen".Length);
         MenuOptions.Add(new Options("Company screen", "F1"));
         MenuOptions.Add(new Options("Customer screen", "F2"));
         MenuOptions.Add(new Options("Employee screen", "F3"));
@@ -64,13 +68,13 @@ public class MainMenuScreen : ScreenHandler
                 ScreenHandler.Display(new CompanyScreen(company));
                 break;
             case "F2":
-                ScreenHandler.Display(new CustomerScreen(customer));
+                ScreenHandler.Display(new CustomerScreen(company));
                 break;
             case "F3":
                 Console.WriteLine("NOT IMPLEMENTET");
                 break;
             case "F4":
-                ScreenHandler.Display(new ProductScreen(product));
+                ScreenHandler.Display(new ProductScreen(company));
                 break;
             case "F5":
                 if (company == null)
