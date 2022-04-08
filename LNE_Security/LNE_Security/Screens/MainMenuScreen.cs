@@ -18,6 +18,7 @@ public class MainMenuScreen : ScreenHandler
             KeyPress = keyPress;
             Option = option;
 
+            }
         }
     }
     private Company company { get; set; }
@@ -33,9 +34,10 @@ public class MainMenuScreen : ScreenHandler
     {
         this.product = Product;
     }
-    public MainMenuScreen(Customer Customer) : base(Customer)
+
+    public MainMenuScreen(Person person) : base(person)
     {
-        this.customer = Customer;
+        this.person = person;
     }
     public MainMenuScreen()
     {

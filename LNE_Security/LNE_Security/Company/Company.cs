@@ -56,7 +56,11 @@ public class Company
     public UInt16 ContactInfoID { get; set;}
     public ContactInfo contactInfo = new ContactInfo();
 
+
+ 
+
     public Company() 
+
     {
         return;
     }
@@ -86,7 +90,7 @@ public class Company
         Country = country;
     }
 
-    List<Person>? CompanyList { get; set; }
+    List<Company>? CompanyList { get; set; }
     public Company RemoveCompany(Company company)
     {
         SqlConnection sqlConnection = SetSqlConnection(CompanyID);

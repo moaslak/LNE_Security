@@ -13,7 +13,17 @@ class Program
         {
         }
     }
+
+
+  
+
+
+
+
+
+
     // TODO: TITLES!!!
+
     static List<Company> companyList = new List<Company>();
 
     public static void Main(string[] args)
