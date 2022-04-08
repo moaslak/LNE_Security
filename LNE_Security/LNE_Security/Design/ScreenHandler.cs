@@ -13,7 +13,13 @@ namespace LNE_Security
 
         static Company company { get; set; }
         static Product product { get; set; }
+
         static ContactInfo contactInfo { get; set; }
+
+        static Customer customer { get; set; }
+
+        static List<SalesOrder> salesOrders { get; set; }
+
         public ScreenHandler(Company Company)
         {
             company = Company;
@@ -27,6 +33,7 @@ namespace LNE_Security
             product = Product;
             company = Company;
         }
+
         public ScreenHandler(Person person)
         {
             this.Person = person;
@@ -35,7 +42,20 @@ namespace LNE_Security
         {
             contact = contactInfo;
         }
+        public ScreenHandler()
+        {
+        }
 
+        public ScreenHandler(Customer Customer)
+        {
+            customer = Customer;
+
+        }
+
+        public ScreenHandler(List<SalesOrder> SalesOrders)
+        {
+            salesOrders = SalesOrders;
+        }
         public Person Person { get; set; }
 
 

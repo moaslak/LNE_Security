@@ -94,7 +94,10 @@ public class EditCompnayScreen : ScreenHandler
                 break;
             default:
                 break;
-        }   
+        }
+
+        Company editedCompany = this.company;
+        Database.Instance.EditCompany(editedCompany.Id, this.company);
     }
 
     /// <summary>
@@ -108,22 +111,16 @@ public class EditCompnayScreen : ScreenHandler
 
         if (selected.Option == "Currency")
         {
-
             List<Company.Currencies> currencies = currenciesToList();
-
-
             ListPage<Options> listPage = new ListPage<Options>();
             listPage.AddColumn("Currency", "Option");
             foreach (Company.Currencies cur in currencies)
             {
                 listPage.Add(new Options(cur.ToString(), cur.ToString()));
 
-<<<<<<< HEAD
-                List<Company.Currencies> currencies = currenciesToList();
-                foreach (Company.Currencies cur in currencies)
-                {
-                    listPage.Add(new Options(cur.ToString(), cur.ToString()));
-                }
+
+            }
+
 
                 switch (selected.Value)
                 {
@@ -143,29 +140,8 @@ public class EditCompnayScreen : ScreenHandler
                         break;
                 }
 
-            }
+            
 
-=======
-            }
-
-            switch (selected.Value)
-            {
-                case "DKK":
-                    company.Currency = Company.Currencies.DKK;
-                    break;
-                case "USD":
-                    company.Currency = Company.Currencies.USD;
-                    break;
-                case "YEN":
-                    company.Currency = Company.Currencies.YEN;
-                    break;
-                case "EUR":
-                    company.Currency = Company.Currencies.EUR;
-                    break;
-                default:
-                    break;
-            }   
->>>>>>> master
         }
 
         switch (selected.Option)
@@ -223,11 +199,12 @@ public class EditCompnayScreen : ScreenHandler
             optionsListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = optionsListPage.Select();
             
+           
+            
             if(selected.Value != "NO EDIT")
             {
                 EditCompany(selected);
                 Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
-                
             }
             else
             {

@@ -2,25 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.SqlClient;
 
 namespace LNE_Security;
 
 public class Customer : Person
 {
-    Person _person;
-    public override Person NewPerson(ContactInfo contactInfo,
-        Database database, Address address)
-    {
-        
-        contactInfo = new ContactInfo();
-        address = new Address();
-        database = new Database();
-        return _person; 
-    }
+    private Person _person { get; set; }
+
+    public UInt16 CID { get; set; }
+    
 
     public override Person DeletePerson(ContactInfo contactInfo, Database database, Address address)
     {
-        database = new Database();
+        //database = new Database();
         contactInfo = new ContactInfo();
         address = new Address();
         _person.DeletePerson(contactInfo, database, address);
@@ -36,8 +31,13 @@ public class Customer : Person
     public override Person UpdatePerson(ContactInfo contactInfo, Database database, Address address)
     {
         contactInfo = new ContactInfo();
-        database = new Database();
+        //database = new Database();
         address = new Address();
         return _person;
+    }
+
+    public string CreateFullName(string FirstName, string LastName)
+    {
+        return FirstName + " " + LastName;
     }
 }

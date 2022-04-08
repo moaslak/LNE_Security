@@ -18,6 +18,7 @@ public class CustomerDetails : ScreenHandler
 	protected override void Draw()
 	{
 		ListPage<ContactInfo> CustomerlistPage = new ListPage<ContactInfo>();
+		ListPage<SalesOrder> SalesListPage = new ListPage<SalesOrder>();
 		CustomerlistPage.Add(contactInfo);
 
 		ListPage<string> SelectedList = new ListPage<string>();
@@ -27,12 +28,13 @@ public class CustomerDetails : ScreenHandler
 
 		CustomerlistPage.AddColumn("Customer name", "FullName");
 		CustomerlistPage.AddColumn("Address", "FullAddress");
-		//CustomerlistPage.AddColumn("Last Purchase", "?");
+		SalesListPage.AddColumn("Last Purchase", "OrderTime");
 		ContactInfo selected = CustomerlistPage.Select();
 
 		Console.WriteLine("Selection: " + selected.FullName);
 		Console.WriteLine("F1 - Back");
 		Console.WriteLine("F2 - Edit");
+		Console.WriteLine("F5 - Delete");
 		CustomerScreen customerScreen = new CustomerScreen();
 		EditCustomerScreen editCustomerScreen = new EditCustomerScreen();
 
@@ -43,8 +45,10 @@ public class CustomerDetails : ScreenHandler
 				break;
 			case ConsoleKey.F2:
 				ScreenHandler.Display(editCustomerScreen);
-				break ;
-
+				break;
+			case ConsoleKey.F5:
+				Database.Instance.DeleteCustomer(selected.ID);
+				break;
 			default:
 				break;
 		}

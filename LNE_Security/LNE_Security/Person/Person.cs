@@ -7,16 +7,9 @@ namespace LNE_Security;
 
 public abstract class Person
 {
-    Address address1 = new Address();
-    ContactInfo contactInfo1 = new ContactInfo();
-    public ContactInfo ContactInfo
-    {
-        get => default;
-        set
-        {
-            ContactInfo = value;
-        }
-    }
+    //Address address1 = new Address();
+    //ContactInfo contactInfo1 = new ContactInfo();
+    //public ContactInfo? ContactInfo = new ContactInfo();
 
     public Database Database
     {
@@ -27,27 +20,32 @@ public abstract class Person
         }
     }
 
-    public Address Address
-    {
-        get => default;
-        set
-        {
-            Address = value;
-        }
-    }
+    public ContactInfo ContactInfo = new ContactInfo();
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+
+    public string FullName { get; set; }
+
+    public Address Address { get; set; }
 
     public UInt16 ID { get; set; } // TODO: Lav id generator
 
+    public enum Types { Customer, Employee }
+    public Types type  { get; set; }
 
-    public Enum Type
+    public string Email { get; set; }
+
+    public List<string> PhoneNumbers { get; set; }
+
+    /*public Person(ContactInfo contactInfo)
     {
-        get => default;
-        set
-        {
-            Type = value;
-        }
-    }
-
+        this.FirstName = contactInfo.FirstName;
+        this.LastName = contactInfo.LastName;
+        this.FullName = contactInfo.FullName;
+        this.Address = contactInfo.Address;
+        this.PhoneNumbers = contactInfo.PhoneNumber;
+        this.Email = contactInfo.Email;
+    }*/
     public virtual Person NewPerson(
         ContactInfo contactInfo, Database database,
         Address address)
@@ -118,4 +116,7 @@ public abstract class Person
         var efternavn = Convert.ToString(Console.ReadLine());
         Console.WriteLine($"{fornavn + efternavn}");
     }
+
+    
+
 }
