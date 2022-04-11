@@ -145,8 +145,6 @@ public class EditProductScreen : ScreenHandler
                 ProductListPage.AddColumn("Unit", "Unit");
                 if (product.Unit != Product.Units.hours)
                 {
-                    product.LocationString = product.Location.Location2String(product.Location);
-                    string loc = product.LocationString;
                     ProductListPage.AddColumn("Amount In Storage", "AmountInStorage");
                     ProductListPage.AddColumn("Location", "LocationString");
                 }
@@ -184,7 +182,7 @@ public class EditProductScreen : ScreenHandler
                 Console.WriteLine("Press ESC to return to Product screen");
 
             } while ((Console.ReadKey().Key != ConsoleKey.Escape));
-            Database.Instance.EditProduct(product.ID, product);
+            Database.Instance.EditProduct(product.PID, product);
             ScreenHandler.Display(new ProductDetailsScreen(product));
 
         }

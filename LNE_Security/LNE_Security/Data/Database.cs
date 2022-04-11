@@ -59,44 +59,4 @@ public partial class Database : Product
     
     Address address = new Address();
     ContactInfo contactInfo = new ContactInfo();
-
-    public ContactInfo GetContactInfo(Person person, SqlConnection sqlConnection)
-    {
-        UInt16 personID = person.ID;
-        ContactInfo contactInfo = new ContactInfo();
-        sqlConnection.Open();
-
-        string query = "SELECT * FROM [dbo].[ContactInfo] WHERE PersonId = " + personID.ToString();
-        SqlCommand cmd = new SqlCommand(query, sqlConnection);
-        SqlDataReader reader = cmd.ExecuteReader();
-
-        StringBuilder stringBuilder = new StringBuilder();
-        while(reader.Read())
-        {
-            for(int i=0; i<=reader.FieldCount-1; i++)
-            {
-                stringBuilder.Append(reader.GetValue(i));
-            }
-            contactInfo.PersonId = stringBuilder[1]; // TODO: link to database
-            contactInfo.FirstName = stringBuilder[2].ToString();
-            contactInfo.LastName = stringBuilder[3].ToString();
-            contactInfo.FullName = contactInfo.FirstName + " " + contactInfo.LastName;
-            contactInfo.Address = address; // TODO: address id=?
-            contactInfo.Email = stringBuilder[4].ToString();
-
-            /*string[] Numbers = stringBuilder[5].ToString(); // TODO: to array
-            foreach (string phonenumber in Numbers)
-                contactInfo.PhoneNumber.Add(phonenumber);
-            */
-
-        }
-        reader.Close();
-
-        sqlConnection.Close();
-        return contactInfo;
-    }
-    
-     
-
-    
 }

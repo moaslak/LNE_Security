@@ -23,6 +23,11 @@ public class CustomerScreen : ScreenHandler
     public CustomerScreen()
     {
     }
+    private Company company { get; set; }
+    public CustomerScreen(Company Company) : base(Company)
+    {
+        this.company = Company;
+    }
 
     public void newCustomer()
     {
@@ -35,20 +40,28 @@ public class CustomerScreen : ScreenHandler
         contactInfo.FirstName = Console.ReadLine();
         Console.Write("Enter last name: ");
         contactInfo.LastName = Console.ReadLine();
+        Console.Write("Enter email: ");
+        contactInfo.Email = Console.ReadLine();
+        Console.Write("Enter phonenumber: ");
+        contactInfo.PhoneNumber = Console.ReadLine();
+        
         Console.Write("Enter street name: ");
-        address.StreetName = Console.ReadLine();
+        contactInfo.Address.StreetName = Console.ReadLine();
         Console.Write("Enter house number: ");
-        address.HouseNumber = Console.ReadLine();
+        contactInfo.Address.HouseNumber = Console.ReadLine();
         Console.Write("Enter zip code: ");
-        address.ZipCode = Console.ReadLine();
+        contactInfo.Address.ZipCode = Console.ReadLine();
         Console.Write("Enter city: ");
-        address.City = Console.ReadLine();
+        contactInfo.Address.City = Console.ReadLine();
         Console.Write("Enter country: ");
-        address.Country = Console.ReadLine();
+        contactInfo.Address.Country = Console.ReadLine();
+        contactInfo.AddressId = Database.Instance.NewAddress(contactInfo.Address);
+        
         Customer newCustomer = new Customer();
+        newCustomer.ContactInfoID = Database.Instance.NewContactInfo(contactInfo);
         newCustomer.ContactInfo = contactInfo;
-        newCustomer.Address = address;
-        Database.Instance.NewCustomer(contactInfo, address);
+        newCustomer.Address = contactInfo.Address;
+        Database.Instance.NewCustomer(newCustomer);
     }
 
     private void viewCustomer(Customer customer)
@@ -65,24 +78,35 @@ public class CustomerScreen : ScreenHandler
         
         foreach(Customer customer in customers)
         {
-            customer.FullName = customer.ContactInfo.FullName;
-            CustomerListPage.Add(customer);
+            try
+            {
+                customer.FullName = customer.ContactInfo.FullName;
+                customer.Email = customer.ContactInfo.Email;
+                customer.PhoneNumber = customer.ContactInfo.PhoneNumber;
+                CustomerListPage.Add(customer);
+            }
+            catch (System.NullReferenceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            } 
         }
  
         //string name = $"{Customer.ContactInfo.FirstName} {Customer.ContactInfo.LastName}";
         //Title = Customer.ContactInfo.FullName + " Customer name";
         Title = "Customer screen";
         Clear(this);
-
-        Console.WriteLine("Choose Customer");
-        CustomerListPage.AddColumn("Customer ID", "ID");
-        CustomerListPage.AddColumn("Customer Name", "FullName");
-        CustomerListPage.AddColumn("Phonenumber", "PhoneNumbers");
-        CustomerListPage.AddColumn("Email", "Email");
-        Customer selected = CustomerListPage.Select();
+        Customer selected = new Customer();
+        if(customers.Count != 0)
+        {
+            Console.WriteLine("Choose Customer");
+            CustomerListPage.AddColumn("Customer ID", "CID");
+            CustomerListPage.AddColumn("Customer Name", "FullName");
+            CustomerListPage.AddColumn("Phonenumber", "PhoneNumber");
+            CustomerListPage.AddColumn("Email", "Email");
+            selected = CustomerListPage.Select();
+            Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
+        }
         
-
-        Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
         Console.WriteLine("F1 - New Customer");
         //Console.WriteLine("F2 - Edit");
         Console.WriteLine("F2 - View/Edit Customer");
@@ -101,10 +125,10 @@ public class CustomerScreen : ScreenHandler
                 ScreenHandler.Display(new EditCustomerScreen(selected));
                 break;
             case ConsoleKey.F10:
-                ScreenHandler.Display(new MainMenuScreen(Customer));
+                ScreenHandler.Display(new MainMenuScreen(this.company));
                 break;
             case ConsoleKey.F8:
-                Database.Instance.DeleteCustomer(selected.ID);
+                Database.Instance.DeleteCustomer(selected.CID);
                 break;
             case ConsoleKey.Escape:
                 Environment.Exit(0);

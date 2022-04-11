@@ -77,6 +77,9 @@ public class EditCompnayScreen : ScreenHandler
             case "Company name":
                 this.company.CompanyName = newValue;
                 break;
+            case "CVR":
+                this.company.CVR = newValue;
+                break;
             case "Street name":
                 this.company.StreetName = newValue;
                 break;
@@ -92,12 +95,24 @@ public class EditCompnayScreen : ScreenHandler
             case "Country": 
                 this.company.Country = newValue;
                 break;
+            case "Email":
+                this.company.Email = newValue;
+                break;
+            case "Phonenumber":
+                this.company.PhoneNumber = newValue;
+                break;
+            case "First Name":
+                this.company.FirstName = newValue;
+                break;
+            case "Last Name":
+                this.company.LastName = newValue;
+                break;
             default:
                 break;
         }
 
         Company editedCompany = this.company;
-        Database.Instance.EditCompany(editedCompany.Id, this.company);
+        Database.Instance.EditCompany(editedCompany.CompanyID, this.company);
     }
 
     /// <summary>
@@ -149,20 +164,23 @@ public class EditCompnayScreen : ScreenHandler
             case "Company name":
                 this.company.CompanyName = newValue;
                 break;
+            case "CVR":
+                this.company.CVR = newValue;
+                break;
             case "Street name":
-                this.company.StreetName = newValue;
+                this.company.contactInfo.Address.StreetName = newValue;
                 break;
             case "House number":
-                this.company.HouseNumber = newValue;
+                this.company.contactInfo.Address.HouseNumber = newValue;
                 break;
             case "Zip code":
-                this.company.ZipCode = newValue;
+                this.company.contactInfo.Address.ZipCode = newValue;
                 break;
             case "City":
-                this.company.City = newValue;
+                this.company.contactInfo.Address.City = newValue;
                 break;
             case "Country":
-                this.company.Country = newValue;
+                this.company.contactInfo.Address.Country = newValue;
                 break;
             default:
                 break;
@@ -175,14 +193,18 @@ public class EditCompnayScreen : ScreenHandler
             Title = company.CompanyName + " Edit company screen";
             Clear(this);
             ListPage<Company> CompanyListPage = new ListPage<Company>();
-
             CompanyListPage.AddColumn("Company name", "CompanyName");
+            CompanyListPage.AddColumn("CVR", "CVR",10);
+            CompanyListPage.AddColumn("First Name", "FirstName");
+            CompanyListPage.AddColumn("Last Name", "LastName");
+            CompanyListPage.AddColumn("Email", "Email");
+            CompanyListPage.AddColumn("Phonenumber", "PhoneNumber",10);
             CompanyListPage.AddColumn("Street name", "StreetName");
             CompanyListPage.AddColumn("House number", "HouseNumber");
-            CompanyListPage.AddColumn("Zip code", "ZipCode");
+            CompanyListPage.AddColumn("Zip code", "ZipCode",10);
             CompanyListPage.AddColumn("City", "City");
             CompanyListPage.AddColumn("Country", "Country");
-            CompanyListPage.AddColumn("Currency", "Currency");
+            CompanyListPage.AddColumn("Currency", "Currency",5);
             CompanyListPage.Add(company);
             CompanyListPage.Draw();
 
@@ -190,6 +212,11 @@ public class EditCompnayScreen : ScreenHandler
 
             optionsListPage.AddColumn("Edit", "Option");
             optionsListPage.Add(new Options("Company name", company.CompanyName));
+            optionsListPage.Add(new Options("CVR", company.CVR));
+            optionsListPage.Add(new Options("First Name", company.contactInfo.FirstName));
+            optionsListPage.Add(new Options("Last Name", company.contactInfo.LastName));
+            optionsListPage.Add(new Options("Email", company.contactInfo.Email));
+            optionsListPage.Add(new Options("Phonenumber", company.contactInfo.PhoneNumber));
             optionsListPage.Add(new Options("Street name", company.StreetName));
             optionsListPage.Add(new Options("House number", company.HouseNumber));
             optionsListPage.Add(new Options("Zip code", company.ZipCode));

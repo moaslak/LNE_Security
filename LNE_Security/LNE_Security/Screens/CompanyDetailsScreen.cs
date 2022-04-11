@@ -45,7 +45,7 @@ public class CompanyDetailsScreen : ScreenHandler
 				Console.WriteLine("NOT IMPLEMENTET");
 				break;
 			case ConsoleKey.F5:
-				Database.Instance.DeleteCompany(selected.Id);
+				Database.Instance.DeleteCompany(selected.CompanyID);
 				break;
 			default:
 				break;

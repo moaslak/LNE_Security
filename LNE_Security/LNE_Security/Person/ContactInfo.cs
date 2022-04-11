@@ -8,13 +8,14 @@ namespace LNE_Security;
 public class ContactInfo
 {
     public Address Address = new Address();
-    public UInt16 ID { get; private set; }
+    public UInt16 ContactInfoID { get; set; }
 
     public UInt16 PersonId { get; set; }
+    public UInt16 AddressId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string? Email { get; set; }
-    public List<string>? PhoneNumber = new List<string>();
+    public string PhoneNumber {get; set; }
     public string FullName 
     {
         get

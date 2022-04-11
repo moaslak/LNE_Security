@@ -28,11 +28,18 @@ internal class EditSalesOrderScreen : ScreenHandler
 
     private SalesOrder EditSalesOrder(Options selected, SalesOrder selectedSalesOrder)
     {
-        Console.Write("New value: ");
-        string newValue = Console.ReadLine();
+        string newValue = "";
+        if(selected.Option != "Completion Time")
+        {
+            Console.Write("New value: ");
+            newValue = Console.ReadLine();
+        }
+
         UInt16 newInt = 0;
         UInt16.TryParse(newValue, out newInt);
         bool success = false;
+        double newDouble = 0;
+        double.TryParse(newValue, out newDouble);
         switch (selected.Option)
         {
             case "Customer Id":
@@ -40,7 +47,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 List<Customer> customers = Database.Instance.GetCustomers();
                 foreach(Customer customer in customers)
                 {
-                    if(customer.ID == newInt)
+                    if(customer.CID.ToString() == selected.Value)
                     {
                         selectedSalesOrder.CID = newInt;
                         Console.WriteLine("Customer id changed");
@@ -50,6 +57,20 @@ internal class EditSalesOrderScreen : ScreenHandler
                 }
                 if (!success)
                     Console.WriteLine("Could not find customer id. No entry change.");
+                break;
+            case "Completion Time":
+
+                DateTime temp;
+                do
+                {
+                    Console.Write("Enter completetion time(yyyy-mm-dd hh:mm:ss): ");
+                } while (!(DateTime.TryParse(Console.ReadLine(), out temp)));
+                selectedSalesOrder.CompletionTime = temp;
+                success = true;
+                break;
+            case "Total price": //TODO: Denne virker ikke
+                selectedSalesOrder.TotalPrice = newDouble;
+                success = true;
                 break;
             default:
                 break;
@@ -94,17 +115,17 @@ internal class EditSalesOrderScreen : ScreenHandler
 
             optionsListPage.AddColumn("Edit", "Option");
             optionsListPage.Add(new Options("Customer Id", selectedSalesOrder.CID.ToString()));
+            optionsListPage.Add(new Options("Total price", selectedSalesOrder.TotalPrice.ToString()));
+            optionsListPage.Add(new Options("Completion Time", selectedSalesOrder.CompletionTime.ToString()));
 
             optionsListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = optionsListPage.Select();
-
-            // TODO: EDIT SALESORDER!!!
 
             if (selected.Value != "NO EDIT")
             {
                 selectedSalesOrder = EditSalesOrder(selected, selectedSalesOrder);
                 Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
-                Database.Instance.EditSalesOrder(selectedSalesOrder, selectedSalesOrder.OrderID);
+                Database.Instance.EditSalesOrder(selectedSalesOrder);
             }
             else
             {

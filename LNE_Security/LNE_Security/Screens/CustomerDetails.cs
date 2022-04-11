@@ -9,27 +9,28 @@ namespace LNE_Security.Screens;
 
 public class CustomerDetails : ScreenHandler
 {
-    private ContactInfo contactInfo { get; set; }
-    public CustomerDetails(ContactInfo contact) : base(contact)
+	// TODO: Kaldes bruges denne?
+    private Customer customer { get; set; }
+    public CustomerDetails(Customer Customer) : base(Customer)
     {
-        this.contactInfo = contact;
+        this.customer = Customer;
     }
 
 	protected override void Draw()
 	{
-		ListPage<ContactInfo> CustomerlistPage = new ListPage<ContactInfo>();
+		ListPage<Customer> CustomerlistPage = new ListPage<Customer>();
 		ListPage<SalesOrder> SalesListPage = new ListPage<SalesOrder>();
-		CustomerlistPage.Add(contactInfo);
+		CustomerlistPage.Add(customer);
 
 		ListPage<string> SelectedList = new ListPage<string>();
 
-		Title = contactInfo.FullName + " Customer Details";
+		Title = customer.FullName + " Customer Details";
 		Clear(this);
 
 		CustomerlistPage.AddColumn("Customer name", "FullName");
 		CustomerlistPage.AddColumn("Address", "FullAddress");
 		SalesListPage.AddColumn("Last Purchase", "OrderTime");
-		ContactInfo selected = CustomerlistPage.Select();
+		Customer selected = CustomerlistPage.Select();
 
 		Console.WriteLine("Selection: " + selected.FullName);
 		Console.WriteLine("F1 - Back");
@@ -47,7 +48,7 @@ public class CustomerDetails : ScreenHandler
 				ScreenHandler.Display(editCustomerScreen);
 				break;
 			case ConsoleKey.F5:
-				Database.Instance.DeleteCustomer(selected.ID);
+				Database.Instance.DeleteCustomer(selected.CID);
 				break;
 			default:
 				break;

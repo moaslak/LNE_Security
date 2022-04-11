@@ -21,6 +21,7 @@ public abstract class Person
     }
 
     public ContactInfo ContactInfo = new ContactInfo();
+    public UInt16 ContactInfoID { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
 
@@ -28,15 +29,15 @@ public abstract class Person
 
     public Address Address { get; set; }
 
-    public UInt16 ID { get; set; } // TODO: Lav id generator
+    public UInt16 ID { get; set; }
 
     public enum Types { Customer, Employee }
     public Types type  { get; set; }
 
     public string Email { get; set; }
 
-    public List<string> PhoneNumbers { get; set; }
-
+    //public List<string> PhoneNumbers { get; set; }
+    public string PhoneNumber { get; set; }
     /*public Person(ContactInfo contactInfo)
     {
         this.FirstName = contactInfo.FirstName;

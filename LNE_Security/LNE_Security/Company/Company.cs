@@ -34,6 +34,10 @@ public class Company
         }
     }
 
+    public string PhoneNumber { get; set; }
+    public string Email { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
 
     public string? CompanyName { get; set; }
     public string? Country { get; set; }
@@ -48,7 +52,9 @@ public class Company
 
     public string? City { get; set; }
 
-    public UInt16 Id { get; set; }
+    public UInt16 CompanyID { get; set; }
+    public UInt16 ContactInfoID { get; set;}
+    public ContactInfo contactInfo = new ContactInfo();
 
 
  
@@ -87,7 +93,7 @@ public class Company
     List<Company>? CompanyList { get; set; }
     public Company RemoveCompany(Company company)
     {
-        SqlConnection sqlConnection = SetSqlConnection(Id);
+        SqlConnection sqlConnection = SetSqlConnection(CompanyID);
         CompanyName = null;
         StreetName = null;
         HouseNumber = null;
