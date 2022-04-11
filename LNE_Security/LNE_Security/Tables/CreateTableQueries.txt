@@ -26,19 +26,19 @@ ProductNumber int,
 ProductName varchar(64),
 SalesPrice money,
 CostPrice money,
-AmountInStorage decimal(8,2),
+AmountInStorage decimal(18,2),
 LocationString varchar(8),
 Unit nchar(5),
 Description varchar(128),
 Profit money,
 ProfitPersent decimal(5,2),
-PRIMARY KEY(Id)
+PRIMARY KEY(PID)
 )
 
 CREATE TABLE Orderline(
 OLID int IDENTITY(1,1),
 PID int FOREIGN KEY REFERENCES Product(PID),
-Quantity decimal(1000000,2)
+Quantity decimal(18,2)
 PRIMARY KEY(OLID)
 )
 
