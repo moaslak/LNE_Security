@@ -60,8 +60,7 @@ public class CompanyScreen : ScreenHandler
                 Database.Instance.DeleteCompany(selected.CompanyID);
                 break;
             case ConsoleKey.F10:
-                MainMenuScreen menu = new MainMenuScreen(selected);
-                ScreenHandler.Display(menu);
+                ScreenHandler.Display(new MainMenuScreen(selected));
                 break;
             case ConsoleKey.Escape:
                 Environment.Exit(0);

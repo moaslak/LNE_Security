@@ -79,9 +79,10 @@ partial class Database
     {
         Console.Clear();
         List<Product> productList = Database.Instance.GetProducts();
+        if (productList.Count == 0) return null;
+
         OrderLine orderline = new OrderLine();
         List<UInt16> OLIDs = new List<UInt16>();
-        // TODO: List products and select from list
         ListPage<Product> productListPage = new ListPage<Product>();
         ListPage<String> selectedList = new ListPage<String>();
         foreach (Product product in productList)
@@ -179,7 +180,7 @@ partial class Database
             {
                 case ConsoleKey.Escape:
                     Done = true;
-                    salesOrder.OLID = salesOrder.OrderLines[0].OLID;
+                    //salesOrder.OLID = salesOrder.OrderLines[0].OLID; // TODO: fix this
                     break;
                 default:
                     break;
@@ -191,14 +192,13 @@ partial class Database
 
         string query = @"INSERT INTO[dbo].[SalesOrder]
             ([OrderTime]
-          ,[OLID]
           ,[ContactInfoID]
           ,[CID]
           ,[CompanyID]
           ,[Price])
             VALUES
-           (" + "'" + salesOrder.OrderTime.ToString() +
-           "','" + salesOrder.OLID.ToString() +
+           (" + "'" + salesOrder.OrderTime.ToString("s").Replace("T"," ") +
+           //"','" + salesOrder.OLID.ToString() +
            "','" + customer.ContactInfoID.ToString() +
            "','" + customer.CID +
            "', '" + companyID.ToString() +
@@ -222,7 +222,7 @@ partial class Database
         if (editedSalesOrder.CompletionTime.ToString() == "01-01-0001 00:00:00")
             editedSalesOrder.CompletionTime = null;
         string query = @"UPDATE [dbo].[SalesOrder]
-                SET [OrderTime] = '" + editedSalesOrder.OrderTime.ToString() + "'" +
+                SET [OrderTime] = '" + editedSalesOrder.OrderTime.ToString("s").Replace("T", " ") + "'" +
                 ", [CompletionTime] = '" + editedSalesOrder.CompletionTime.ToString() + "'" +
             //",[CID] = '" + editedSalesOrder.CID + "'" +
             //",[ContactInfoID] = '" + editedSalesOrder.ContactInfoID + "'" +
@@ -280,7 +280,7 @@ partial class Database
             }
             catch (FormatException ex)
             {
-                salesOrder.OrderTime = null;
+                salesOrder.OrderTime = DateTime.MinValue;
             }
             dateTimeString = reader.GetValue(2).ToString();
             try
@@ -292,7 +292,15 @@ partial class Database
             {
                 salesOrder.CompletionTime = null;
             }
-            salesOrder.OLID = Convert.ToUInt16(reader.GetValue(3));
+            try
+            {
+                salesOrder.OLID = Convert.ToUInt16(reader.GetValue(3));
+            }
+            catch(InvalidCastException ex)
+            {
+                Console.WriteLine("OLID not set");
+                salesOrder.OLID = 0;
+            }
             salesOrder.ContactInfoID = Convert.ToUInt16(reader.GetValue(4));
             salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(5)));
             salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(6));
@@ -330,7 +338,7 @@ partial class Database
             }
             catch (Exception ex)
             {
-                salesOrder.OrderTime = null;
+                salesOrder.OrderTime = DateTime.MinValue;
             }
 
             salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(2)));
