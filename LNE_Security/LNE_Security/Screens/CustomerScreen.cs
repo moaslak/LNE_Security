@@ -128,7 +128,7 @@ public class CustomerScreen : ScreenHandler
                 ScreenHandler.Display(new MainMenuScreen(this.company));
                 break;
             case ConsoleKey.F8:
-                Database.Instance.DeleteCustomer(selected.CID);
+                Database.Instance.DeleteCustomer(selected.CID); //TODO: kan ikke slette hvis brugeren har en salgsordre
                 break;
             case ConsoleKey.Escape:
                 Environment.Exit(0);

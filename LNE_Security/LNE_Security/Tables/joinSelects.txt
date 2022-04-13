@@ -1,7 +1,7 @@
 ﻿Company view
 select CompanyID, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country FROM company
 inner join ContactInfo On Company.ContactInfoID=ContactInfo.ContactInfoID
-inner join Address on ContactInfo.ContactInfoID = Address.AddressID
+inner join Address on ContactInfo.AddressID = Address.AddressID
 
 Customer view
 select CID, FirstName, LastName, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country FROM customer
@@ -9,7 +9,7 @@ inner join ContactInfo On Customer.ContactInfoID=ContactInfo.ContactInfoID
 inner join Address on ContactInfo.AddressID = Address.AddressID
 
 Sales Order View
-select OrderID, OrderTime, CompletionTime CompanyID, price, Quantity, ProductName, SalesPrice, CostPrice, AmountInStorage, LocationString, Unit, Description, Profit, ProfitPersent, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber from SalesOrder
+select SalesOrder.OrderID, OrderTime, CompletionTime, price, Quantity, ProductName, SalesPrice, CostPrice, AmountInStorage, LocationString, Unit, Description, Profit, ProfitPersent, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber from SalesOrder
 inner join Orderline on SalesOrder.OLID = Orderline.OLID
 inner join Product on Orderline.PID = Product.PID
 inner join Company on SalesOrder.CompanyID = Company.CompanyID

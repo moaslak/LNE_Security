@@ -26,10 +26,27 @@ internal class EditSalesOrderScreen : ScreenHandler
         this.salesOrders = SalesOrders;
     }
 
+    private List<OrderLine> EditOrderLines(UInt32 OrderID)
+    {
+        List<OrderLine> orderLines = Database.Instance.GetOrderLines(OrderID);
+        ListPage<OrderLine> orderLineListPage = new ListPage<OrderLine>();
+
+        orderLineListPage.AddColumn("Order line ID", "OLID");
+        orderLineListPage.AddColumn("Product", "Product");
+        orderLineListPage.AddColumn("Quantity", "Quantity");
+
+        foreach (OrderLine orderline in orderLines)
+            orderLineListPage.Add(orderline);
+
+        orderLineListPage.Draw();
+        List<OrderLine> newOrderLines = new List<OrderLine>();
+        return newOrderLines;
+    }
+
     private SalesOrder EditSalesOrder(Options selected, SalesOrder selectedSalesOrder)
     {
         string newValue = "";
-        if(selected.Option != "Completion Time")
+        if(selected.Option != "Completion Time" && selected.Option != "Orderlines")
         {
             Console.Write("New value: ");
             newValue = Console.ReadLine();
@@ -47,6 +64,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 List<Customer> customers = Database.Instance.GetCustomers();
                 foreach(Customer customer in customers)
                 {
+                    throw new NotImplementedException();
                     if(customer.CID.ToString() == selected.Value)
                     {
                         selectedSalesOrder.CID = newInt;
@@ -71,6 +89,9 @@ internal class EditSalesOrderScreen : ScreenHandler
             case "Total price": //TODO: Denne virker ikke
                 selectedSalesOrder.TotalPrice = newDouble;
                 success = true;
+                break;
+            case "Orderlines":
+                selectedSalesOrder.OrderLines = EditOrderLines(selectedSalesOrder.OrderID);
                 break;
             default:
                 break;
@@ -117,6 +138,7 @@ internal class EditSalesOrderScreen : ScreenHandler
             //optionsListPage.Add(new Options("Customer Id", selectedSalesOrder.CID.ToString()));
             optionsListPage.Add(new Options("Total price", selectedSalesOrder.TotalPrice.ToString()));
             optionsListPage.Add(new Options("Completion Time", selectedSalesOrder.CompletionTime.ToString()));
+            optionsListPage.Add(new Options("Orderlines", selectedSalesOrder.OrderLines.ToString()));
 
             optionsListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = optionsListPage.Select();

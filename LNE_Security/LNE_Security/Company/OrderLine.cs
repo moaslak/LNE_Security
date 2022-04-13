@@ -12,6 +12,8 @@ public class OrderLine
 
     public Product Product = new Product();
 
+    public UInt32 OrderID { get; set; }
+
     public double CalculateLinePrice(Product product)
     {
         if(product == null || product.SalesPrice < 0)
