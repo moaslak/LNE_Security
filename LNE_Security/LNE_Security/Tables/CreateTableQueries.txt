@@ -38,7 +38,8 @@ PRIMARY KEY(PID)
 CREATE TABLE Orderline(
 OLID int IDENTITY(1,1),
 PID int FOREIGN KEY REFERENCES Product(PID),
-Quantity decimal(18,2)
+Quantity decimal(18,2),
+OrderID int FOREIGN KEY REFERENCES SalesOrder(OrderID)
 PRIMARY KEY(OLID)
 )
 
@@ -46,7 +47,6 @@ CREATE TABLE SalesOrder(
 OrderID int IDENTITY(1,1),
 OrderTime DATETIME,
 CompletionTime DATETIME,
-OLID int FOREIGN KEY REFERENCES Orderline(OLID),
 ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
 CID int FOREIGN KEY REFERENCES Customer(CID),
 CompanyID int FOREIGN KEY REFERENCES Company(CompanyID),

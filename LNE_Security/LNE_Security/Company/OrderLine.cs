@@ -11,6 +11,8 @@ public class OrderLine
     public double Quantity { get; set; }
 
     public Product Product = new Product();
+    public UInt32 PID { get; set; }
+    public UInt32 OrderID { get; set; }
 
     public double CalculateLinePrice(Product product)
     {
