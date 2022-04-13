@@ -180,7 +180,7 @@ partial class Database
             {
                 case ConsoleKey.Escape:
                     Done = true;
-                    //salesOrder.OLID = salesOrder.OrderLines[0].OLID; // TODO: fix this
+                    salesOrder.OLID = salesOrder.OrderLines[0].OLID; // TODO: fix this
                     break;
                 default:
                     break;
@@ -192,13 +192,14 @@ partial class Database
 
         string query = @"INSERT INTO[dbo].[SalesOrder]
             ([OrderTime]
+            ,[OLID]
           ,[ContactInfoID]
           ,[CID]
           ,[CompanyID]
           ,[Price])
             VALUES
            (" + "'" + salesOrder.OrderTime.ToString("s").Replace("T"," ") +
-           //"','" + salesOrder.OLID.ToString() +
+           "','" + salesOrder.OLID.ToString() +
            "','" + customer.ContactInfoID.ToString() +
            "','" + customer.CID +
            "', '" + companyID.ToString() +
@@ -298,7 +299,6 @@ partial class Database
             }
             catch(InvalidCastException ex)
             {
-                Console.WriteLine("OLID not set");
                 salesOrder.OLID = 0;
             }
             salesOrder.ContactInfoID = Convert.ToUInt16(reader.GetValue(4));

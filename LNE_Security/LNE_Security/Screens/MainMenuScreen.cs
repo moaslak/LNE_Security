@@ -69,7 +69,7 @@ public class MainMenuScreen : ScreenHandler
                 ScreenHandler.Display(new CustomerScreen(company));
                 break;
             case "F3":
-                Console.WriteLine("NOT IMPLEMENTET");
+                ScreenHandler.Display(new EmployeeScreen(company));
                 break;
             case "F4":
                 ScreenHandler.Display(new ProductScreen(company));

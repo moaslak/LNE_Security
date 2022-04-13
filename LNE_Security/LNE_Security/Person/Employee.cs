@@ -7,7 +7,7 @@ namespace LNE_Security;
 
 public class Employee : Person
 {
-    UInt16 EID { get; set; }
+    public UInt16 EID { get; set; }
     public override Person NewPerson()
     {
         throw new System.NotImplementedException();
