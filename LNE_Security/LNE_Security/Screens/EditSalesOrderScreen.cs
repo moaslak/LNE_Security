@@ -114,7 +114,7 @@ internal class EditSalesOrderScreen : ScreenHandler
             ListPage<Options> optionsListPage = new ListPage<Options>();
 
             optionsListPage.AddColumn("Edit", "Option");
-            optionsListPage.Add(new Options("Customer Id", selectedSalesOrder.CID.ToString()));
+            //optionsListPage.Add(new Options("Customer Id", selectedSalesOrder.CID.ToString()));
             optionsListPage.Add(new Options("Total price", selectedSalesOrder.TotalPrice.ToString()));
             optionsListPage.Add(new Options("Completion Time", selectedSalesOrder.CompletionTime.ToString()));
 

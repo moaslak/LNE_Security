@@ -125,6 +125,7 @@ namespace LNE_Security
 
             Console.Write("Enter product description: ");
             product.Description = Console.ReadLine();
+            
             product.Profit = product.CalculateProfit(product.SalesPrice, product.CostPrice);
             product.ProfitPercent = product.CalculateProfitPercent(product.SalesPrice, product.CostPrice);
 
@@ -140,10 +141,10 @@ namespace LNE_Security
            ,[Profit]
            ,[ProfitPersent]) ";
             string VALUES = "VALUES(" + product.ProductNumber.ToString() + ", '" + product.ProductName
-                + "', " + product.SalesPrice.ToString() + ", "
-                + product.CostPrice.ToString() + ", " + product.AmountInStorage.ToString()
-                + ", '" + product.LocationString + "', '" + product.Unit.ToString()
-                + "', '" + product.Description + "', " + product.Profit.ToString()
+                + "', " + product.SalesPrice.ToString().Replace("'", "") + ", "
+                + product.CostPrice.ToString().Replace("'", "") + ", " + product.AmountInStorage.ToString().Replace("'", "")
+                + ", '" + product.LocationString + "', '" + product.Unit.ToString().Replace("'", "")
+                + "', '" + product.Description + "', " + product.Profit.ToString().Replace("'", "")
                 + ", " + product.ProfitPercent.ToString().Replace(',','.') + ")";
            
             query = query + VALUES;
