@@ -29,16 +29,21 @@ internal class EditSalesOrderScreen : ScreenHandler
     private List<OrderLine> EditOrderLines(UInt32 OrderID)
     {
         List<OrderLine> orderLines = Database.Instance.GetOrderLines(OrderID);
+
         ListPage<OrderLine> orderLineListPage = new ListPage<OrderLine>();
 
         orderLineListPage.AddColumn("Order line ID", "OLID");
-        orderLineListPage.AddColumn("Product", "Product");
+        orderLineListPage.AddColumn("Product", "PID");
         orderLineListPage.AddColumn("Quantity", "Quantity");
 
         foreach (OrderLine orderline in orderLines)
+        {
+            orderline.PID = orderline.Product.PID;
             orderLineListPage.Add(orderline);
+        }
+            
 
-        orderLineListPage.Draw();
+        orderLineListPage.Draw(); // TODO: finish edit
         List<OrderLine> newOrderLines = new List<OrderLine>();
         return newOrderLines;
     }

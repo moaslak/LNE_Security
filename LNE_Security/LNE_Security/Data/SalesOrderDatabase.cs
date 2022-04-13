@@ -234,7 +234,7 @@ partial class Database
 
         query = @"UPDATE [dbo].[SalesOrder]
             SET [OrderTime] = '" + salesOrder.OrderTime.ToString("s").Replace("T", " ") +
-            "',[OLID] = '" + salesOrder.OLID.ToString() +
+            
           "', [ContactInfoID] = '" + customer.ContactInfoID.ToString() +
           "', [CID] = '" + customer.CID +
           "', [CompanyID] = '" + companyID.ToString() +
@@ -330,25 +330,17 @@ partial class Database
             }
             try
             {
-                salesOrder.OLID = Convert.ToUInt16(reader.GetValue(3));
-            }
-            catch(InvalidCastException ex)
-            {
-                salesOrder.OLID = 0;
-            }
-            try
-            {
-                salesOrder.ContactInfoID = Convert.ToUInt16(reader.GetValue(4));
+                salesOrder.ContactInfoID = Convert.ToUInt16(reader.GetValue(3));
             }
             catch (InvalidCastException ex)
             {
                 salesOrder.ContactInfoID = 0;
             }
 
-            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(5)));
+            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(4)));
             try
             {
-                salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(7));
+                salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(6));
             }
             catch (InvalidCastException ex)
             {
