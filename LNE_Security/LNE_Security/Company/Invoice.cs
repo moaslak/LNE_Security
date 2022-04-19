@@ -14,7 +14,7 @@ public class Invoice : Sales
     public DateTime? OrderTime {  get; set; }
     public DateTime CompletionTime { get; set; }
     public ushort CustomerID { get; set; }
-    public enum States { None, Created, Confirmed, Packed, Done};
+    public enum States { Created, Confirmed, Packed, Done};
     public States State{ get; set; }
     public double TotalPrice { get; set; }
     public List<OrderLine> OrderLines { get; set; }

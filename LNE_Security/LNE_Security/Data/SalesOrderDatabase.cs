@@ -26,10 +26,29 @@ partial class Database
         while (reader.Read())
         {
             OrderLine line = new OrderLine();
-            line.OrderID = Convert.ToUInt16(reader.GetValue(0));
+            line.OLID = Convert.ToUInt16(reader.GetValue(0));
             line.Product.PID = Convert.ToUInt16(reader.GetValue(1));
             line.Quantity = Convert.ToDouble(reader.GetValue(2));
             line.OrderID = Convert.ToUInt16(reader.GetValue(3));
+            string state = reader.GetValue(4).ToString();
+            switch (state)
+            {
+                case "Done":
+                    line.State = OrderLine.States.Done;
+                    break;
+                case "Packed":
+                    line.State = OrderLine.States.Packed;
+                    break;
+                case "Confirmed":
+                    line.State = OrderLine.States.Confirmed;
+                    break;
+                case "Created":
+                    line.State = OrderLine.States.Created;
+                    break;
+                default:
+                    line.State = OrderLine.States.Created;
+                    break;
+            }  
             orderLines.Add(line);
         }
         reader.Close();
@@ -152,10 +171,10 @@ partial class Database
             }
         }
         orderline.Quantity = quantity;
-
+        orderline.State = OrderLine.States.Created;
         sqlConnection.Open();
-        string query = @"INSERT INTO [dbo].[Orderline]( [PID], [Quantity], [OrderID]) VALUES(
-        '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID+ "')";
+        string query = @"INSERT INTO [dbo].[Orderline]( [PID], [Quantity], [OrderID], [Status]) VALUES(
+        '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID+ "','" + orderline.State.ToString() + "')";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         SqlDataReader reader = cmd.ExecuteReader();
         reader.Close();
@@ -179,7 +198,7 @@ partial class Database
         else
             orderline.OLID = 1;
 
-        selectedProduct.AmountInStorage = amountInStore - quantity;
+        selectedProduct.AmountInStorage = amountInStore - quantity; //TODO: trækkes fra i Storage, når state == packed
         Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
 
         return orderline;
@@ -196,7 +215,7 @@ partial class Database
 
         SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
-        DateTime randomDate = new DateTime(1900, 1, 1, 0, 0, 0);
+        DateTime randomDate = new DateTime(1900, 1, 1, 0, 0, 0); //TODO: insæt alt data på en gang
         string query = "INSERT INTO[dbo].[SalesOrder] (OrderTime, CID) VALUES('" + randomDate.ToString("s").Replace("T", " ") + "', '" + customer.CID.ToString() +"')";
         
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
@@ -241,7 +260,7 @@ partial class Database
           "', [Price] = '" + salesOrder.CalculateTotalPrice(salesOrder.OrderLines) + "' WHERE OrderID = '" + salesOrder.OrderID+"'";
         cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
-
+        
         //execute the SQLCommand
         reader = cmd.ExecuteReader();
         reader.Close();
@@ -250,31 +269,63 @@ partial class Database
         sqlConnection.Close();
     }
 
-    public void EditSalesOrder(SalesOrder editedSalesOrder)
+    public OrderLine SelectOrderline(UInt16 OLID, UInt32 OrderID)
     {
-        UInt32 orderID = editedSalesOrder.OrderID;
-        //SalesOrder editedSalesOrder = SelectSalesOrder(orderId, customer);
-        
-        if (editedSalesOrder.CompletionTime.ToString() == "01-01-0001 00:00:00")
-            editedSalesOrder.CompletionTime = null;
-        string query = @"UPDATE [dbo].[SalesOrder]
-                SET [OrderTime] = '" + editedSalesOrder.OrderTime.ToString("s").Replace("T", " ") + "'" +
-                ", [CompletionTime] = '" + editedSalesOrder.CompletionTime.ToString() + "'" +
-            //",[CID] = '" + editedSalesOrder.CID + "'" +
-            //",[ContactInfoID] = '" + editedSalesOrder.ContactInfoID + "'" +
-            //",[CompanyID] = '" + editedSalesOrder.CompanyID + "'" +
-            //",[OLID] = '" + editedSalesOrder.OLID + "'" +
-            ",[Price] = '" + editedSalesOrder.TotalPrice + "'" +
-            " WHERE OrderID = " + orderID;
-        SqlCommand cmd = new SqlCommand(query, sqlConnection);
-        sqlConnection.Open();
+        List<OrderLine> orderLines = GetOrderLines(OrderID);
+        foreach(OrderLine line in orderLines)
+        {
+            if(line.OLID == OLID)
+                return line;
+        }
+        Console.WriteLine("Could not find orderling with OLID: " + OLID);
+        return null;
+    }
 
-        //execute the SQLCommand
+    public void EditOrderline(UInt16 OLID, OrderLine editedOrderline)
+    {
+        
+        string query = @"UPDATE [dbo].[Orderline]
+            SET[PID] = " + editedOrderline.PID.ToString() +
+            ",[Quantity] =" + editedOrderline.Quantity.ToString() +
+            ",[OrderID] = " + editedOrderline.OrderID.ToString() +
+            ",[Status] = '" + editedOrderline.State.ToString() +
+            "' WHERE OLID =" + OLID.ToString();
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
         SqlDataReader reader = cmd.ExecuteReader();
         reader.Close();
-
-        //close connection
         sqlConnection.Close();
+    }
+    public void EditSalesOrder(SalesOrder editedSalesOrder)
+    {
+        if(editedSalesOrder != null)
+        {
+            UInt32 orderID = editedSalesOrder.OrderID;
+            //SalesOrder editedSalesOrder = SelectSalesOrder(orderId, customer);
+
+            if (editedSalesOrder.CompletionTime.ToString() == "01-01-0001 00:00:00")
+                editedSalesOrder.CompletionTime = null;
+            string query = @"UPDATE [dbo].[SalesOrder]
+                SET [OrderTime] = '" + editedSalesOrder.OrderTime.ToString("s").Replace("T", " ") + "'" +
+                    ", [CompletionTime] = '" + editedSalesOrder.CompletionTime.ToString() + "'" +
+                //",[CID] = '" + editedSalesOrder.CID + "'" +
+                //",[ContactInfoID] = '" + editedSalesOrder.ContactInfoID + "'" +
+                //",[CompanyID] = '" + editedSalesOrder.CompanyID + "'" +
+                //",[OLID] = '" + editedSalesOrder.OLID + "'" +
+                ",[Price] = '" + editedSalesOrder.TotalPrice + "'" +
+                " WHERE OrderID = " + orderID;
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+
+            //execute the SQLCommand
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+
+            //close connection
+            sqlConnection.Close();
+        }
+        
     }
 
     public SalesOrder SelectSalesOrder(UInt32 orderId, Customer customer)
@@ -356,7 +407,7 @@ partial class Database
         return salesOrders;
     }
 
-    public List<SalesOrder> GetSalesOrders(UInt16 CID) //TODO: bruges denne?
+    public List<SalesOrder> GetSalesOrders(UInt16 CID)
     {
         List<SalesOrder> salesOrders = new List<SalesOrder>();
 
