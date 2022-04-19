@@ -9,6 +9,10 @@ namespace LNE_Security.Screens;
 
 public class MainMenuScreen : ScreenHandler
 {
+    public MainMenuScreen(Person person) : base(person)
+    {
+    }
+
     class Options
     {
         public string Option { get; set; }
@@ -18,14 +22,14 @@ public class MainMenuScreen : ScreenHandler
             KeyPress = keyPress;
             Option = option;
 
-            }
+            
         }
     }
     private Company company { get; set; }
     private Product product { get; set; }
     private Customer customer = new Customer();
+    private Person person;
 
-        
     public MainMenuScreen(Company Company) : base(Company)
     {
         this.company = Company;
@@ -35,10 +39,6 @@ public class MainMenuScreen : ScreenHandler
         this.product = Product;
     }
 
-    public MainMenuScreen(Person person) : base(person)
-    {
-        this.person = person;
-    }
 
     protected override void Draw()
     {

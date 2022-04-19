@@ -59,3 +59,10 @@ LastName VARCHAR(32),
 Address VARCHAR(128),
 PRIMARY KEY(Id)
 )
+
+CREATE TABLE UserLogin(
+Id int IDENTITY(1,1),
+UserName VARCHAR(32),
+Password VARCHAR(32),
+PRIMARY KEY(Id)
+)
