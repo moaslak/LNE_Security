@@ -114,12 +114,6 @@ partial class Database
             contactInfo.FullName = contactInfo.FirstName + " " + contactInfo.LastName;
             contactInfo.Address = address; // TODO: address id=?
             contactInfo.Email = stringBuilder[4].ToString();
-
-            /*string[] Numbers = stringBuilder[5].ToString(); // TODO: to array
-            foreach (string phonenumber in Numbers)
-                contactInfo.PhoneNumber.Add(phonenumber);
-            */
-
         }
         reader.Close();
 

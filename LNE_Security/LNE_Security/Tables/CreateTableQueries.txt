@@ -39,7 +39,8 @@ CREATE TABLE Orderline(
 OLID int IDENTITY(1,1),
 PID int FOREIGN KEY REFERENCES Product(PID),
 Quantity decimal(18,2),
-OrderID int FOREIGN KEY REFERENCES SalesOrder(OrderID)
+OrderID int FOREIGN KEY REFERENCES SalesOrder(OrderID),
+Status varchar(16),
 PRIMARY KEY(OLID)
 )
 

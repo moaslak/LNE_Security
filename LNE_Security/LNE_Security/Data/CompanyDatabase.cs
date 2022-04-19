@@ -219,7 +219,6 @@ partial class Database
         address.AddressID = Database.Instance.NewAddress(address);
         newCompany.ContactInfoID = Database.Instance.NewContactInfo(address, newCompany);
 
-        //TODO: Joined tabels
         string query = @"INSERT INTO [dbo].[Company]
         ([CompanyName]
         ,[Currency]

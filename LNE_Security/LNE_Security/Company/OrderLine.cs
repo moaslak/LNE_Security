@@ -13,6 +13,8 @@ public class OrderLine
     public Product Product = new Product();
     public UInt32 PID { get; set; }
     public UInt32 OrderID { get; set; }
+    public enum States { Created, Confirmed, Packed, Done };
+    public States State { get; set; }
 
     public double CalculateLinePrice(Product product)
     {

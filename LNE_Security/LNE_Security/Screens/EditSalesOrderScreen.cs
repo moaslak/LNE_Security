@@ -26,26 +26,92 @@ internal class EditSalesOrderScreen : ScreenHandler
         this.salesOrders = SalesOrders;
     }
 
+    private List<OrderLine.States> statesToList()
+    {
+        List<OrderLine.States> list = Enum.GetValues(typeof(OrderLine.States)).Cast<OrderLine.States>().ToList();
+        return list;
+    }
+
     private List<OrderLine> EditOrderLines(UInt32 OrderID)
     {
         List<OrderLine> orderLines = Database.Instance.GetOrderLines(OrderID);
-
+        if (orderLines.Count == 0)
+            return orderLines;
         ListPage<OrderLine> orderLineListPage = new ListPage<OrderLine>();
 
-        orderLineListPage.AddColumn("Order line ID", "OLID");
+        orderLineListPage.AddColumn("OLID", "OLID");
         orderLineListPage.AddColumn("Product", "PID");
         orderLineListPage.AddColumn("Quantity", "Quantity");
+        orderLineListPage.AddColumn("Status", "State");
 
         foreach (OrderLine orderline in orderLines)
         {
             orderline.PID = orderline.Product.PID;
             orderLineListPage.Add(orderline);
         }
-            
+        OrderLine selected = orderLineListPage.Select(); // TODO: finish edit
 
-        orderLineListPage.Draw(); // TODO: finish edit
-        List<OrderLine> newOrderLines = new List<OrderLine>();
-        return newOrderLines;
+        ListPage<Options> OptionListPage = new ListPage<Options>();
+        OptionListPage.AddColumn("Edit", "Option");
+        OptionListPage.Add(new Options("OrderID", "OrderID"));
+        OptionListPage.Add(new Options("Product", "Product"));
+        OptionListPage.Add(new Options("Status", "State"));
+        Options option = OptionListPage.Select();
+
+        string newValue = "";
+        UInt32 newUint = 0;
+        if (option.Option != "Status")
+        {
+            newValue = Console.ReadLine();
+
+            UInt32.TryParse(newValue, out newUint);
+            Console.Write("Enter new " + option.Option.ToString() + ": ");
+        }
+
+        switch (option.Option)
+        {
+            case "OrderID":
+                selected.OrderID = newUint;
+                break;
+            case "Product":
+                selected.PID = newUint;
+                break;
+            case "Status":
+                List<OrderLine.States> stateList = statesToList();
+                ListPage<Options> listPage = new ListPage<Options>();
+                listPage.AddColumn("Status", "Option");
+                foreach (OrderLine.States state in stateList)
+                {
+                    listPage.Add(new Options(state.ToString(), state.ToString()));
+                }
+                Options selectedState = listPage.Select();
+                switch (selectedState.Option)
+                {
+                    case "Created":
+                        selected.State = OrderLine.States.Created;
+                        break;
+                    case "Confirmed":
+                        selected.State = OrderLine.States.Confirmed;
+                        break;
+                    case "Packed":
+                        selected.State = OrderLine.States.Packed;
+                        break;
+                    case "Done":
+                        selected.State = OrderLine.States.Done;
+                        break;
+                }
+                break;
+        }
+        for (int i = 0; i < orderLines.Count; i++)
+        {
+            if (orderLines[i].OLID == selected.OLID)
+            {
+                orderLines[i] = selected;
+                Database.Instance.EditOrderline(selected.OLID, selected);
+            }
+        } 
+        
+        return orderLines;
     }
 
     private SalesOrder EditSalesOrder(Options selected, SalesOrder selectedSalesOrder)
@@ -97,18 +163,24 @@ internal class EditSalesOrderScreen : ScreenHandler
                 break;
             case "Orderlines":
                 selectedSalesOrder.OrderLines = EditOrderLines(selectedSalesOrder.OrderID);
+                success = true;
                 break;
             default:
                 break;
         }
         for(int i = 0; i < this.salesOrders.Count; i++)
         {
+            if( selectedSalesOrder.OrderLines.Count == 0)
+            {
+                Console.WriteLine("no orderlines in sales order");
+                return selectedSalesOrder;
+            }
             if (this.salesOrders[i].OrderID == selectedSalesOrder.OrderID && success)
             {
                 Console.WriteLine("Sales order with orderId " + selectedSalesOrder.OrderID + " edited");
-                return this.salesOrders[i];
+                return selectedSalesOrder;
             }
-                
+            
         }
         Console.WriteLine("Could not find sales order to edit");
         return selectedSalesOrder;
@@ -124,17 +196,20 @@ internal class EditSalesOrderScreen : ScreenHandler
             Clear(this);
             ListPage<SalesOrder> SalesOrderListPage = new ListPage<SalesOrder>();
 
-            SalesOrderListPage.AddColumn("ID", "OrderID");
-            SalesOrderListPage.AddColumn("Order time", "OrderTime");
-            SalesOrderListPage.AddColumn("Customer Id", "CID");
-            SalesOrderListPage.AddColumn("Name", "FullName");
-            SalesOrderListPage.AddColumn("Price", "TotalPrice");
+            int fullNameMaxLength = 0;
 
             foreach(SalesOrder salesOrder in salesOrders)
             {
                 SalesOrderListPage.Add(salesOrder);
                 customer = Database.Instance.SelectCustomer(salesOrder.CID);
+                if(salesOrder.FullName.Length > fullNameMaxLength)
+                    fullNameMaxLength = salesOrder.FullName.Length;
             }
+            SalesOrderListPage.AddColumn("ID", "OrderID", 10);
+            SalesOrderListPage.AddColumn("Order time", "OrderTime", salesOrders[0].OrderTime.ToString().Length);
+            SalesOrderListPage.AddColumn("Customer Id", "CID", "Customer Id".Length);
+            SalesOrderListPage.AddColumn("Name", "FullName", fullNameMaxLength);
+            SalesOrderListPage.AddColumn("Price", "TotalPrice", 10);
             SalesOrder selectedSalesOrder = SalesOrderListPage.Select();
 
             ListPage<Options> optionsListPage = new ListPage<Options>();
@@ -151,8 +226,11 @@ internal class EditSalesOrderScreen : ScreenHandler
             if (selected.Value != "NO EDIT")
             {
                 selectedSalesOrder = EditSalesOrder(selected, selectedSalesOrder);
-                Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
-                Database.Instance.EditSalesOrder(selectedSalesOrder);
+                if (selectedSalesOrder.OrderLines != null)
+                {
+                    Console.WriteLine("Press a key to update another parameter");
+                    Database.Instance.EditSalesOrder(selectedSalesOrder);
+                }
             }
             else
             {

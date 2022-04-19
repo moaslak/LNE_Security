@@ -24,6 +24,8 @@ public class SalesOrder
     public string FullName { get; set; }
     public UInt16 CompanyID { get; set; }
     public UInt16 OLID { get; set; }
+    public enum States { Created, Confirmed, Packed, Done };
+    public States State { get; set; }
 
     /// <summary>
     /// Adds the VATS to the total price

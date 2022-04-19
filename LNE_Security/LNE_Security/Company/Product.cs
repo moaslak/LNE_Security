@@ -14,7 +14,7 @@ public class Product
     public double SalesPrice { get; set; }
     public double CostPrice { get; set; }
     public double AmountInStorage { get; set; }
-    public UInt32 PID { get; set; }//PID
+    public UInt32 PID { get; set; }
 
     public Location? Location = new Location();
     public string LocationString { get; set; }
