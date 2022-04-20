@@ -287,6 +287,19 @@ partial class Database
         return null;
     }
 
+    public void EditOrderlineState(UInt16 OLID, string state)
+    {
+        string query = @"UPDATE [dbo].[Orderline]
+        SET[Status] = '" + state +
+                    "' WHERE OLID =" + OLID.ToString();
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+        sqlConnection.Close();
+    }
+
     public void EditOrderline(UInt16 OLID, OrderLine editedOrderline)
     {
         string query = @"UPDATE [dbo].[Orderline]
@@ -418,9 +431,9 @@ partial class Database
         reader.Close();
         sqlConnection.Close();
         
-        
+        /*
         foreach(SalesOrder salesOrder in salesOrders)
-            UpdateSalesOrderState(salesOrder);
+            UpdateSalesOrderState(salesOrder);*/
 
         return salesOrders;
     }
@@ -460,7 +473,7 @@ partial class Database
             }
             catch(Exception ex)
             {
-                salesOrder.OrderTime = DateTime.MinValue;
+                salesOrder.CompletionTime = null;
             }
             try
             {
@@ -525,8 +538,81 @@ partial class Database
         reader.Close();
         sqlConnection.Close();
         
+        /*
         foreach (SalesOrder salesOrder in salesOrders)
-            UpdateSalesOrderState(salesOrder);
+            UpdateSalesOrderState(salesOrder);*/
+
+        return salesOrders;
+    }
+
+    public List<SalesOrder> GetSalesOrders(string state)
+    {
+        List<SalesOrder> salesOrders = new List<SalesOrder>();
+
+        string dateTimeString = "";
+        DateTime dateTime = new DateTime();
+
+        string query = @"SELECT * FROM [dbo].[SalesOrder]";
+        query = query + " WHERE State = '" + state +"'";
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            SalesOrder salesOrder = new SalesOrder();
+            salesOrder.OrderID = Convert.ToUInt16(reader.GetValue(0).ToString());
+            dateTimeString = reader.GetValue(1).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.OrderTime = dateTime;
+            }
+            catch (FormatException ex)
+            {
+                salesOrder.OrderTime = DateTime.MinValue;
+            }
+            dateTimeString = reader.GetValue(2).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.CompletionTime = dateTime;
+            }
+            catch (FormatException ex)
+            {
+                salesOrder.CompletionTime = null;
+            }
+            try
+            {
+                salesOrder.ContactInfoID = Convert.ToUInt16(reader.GetValue(3));
+            }
+            catch (InvalidCastException ex)
+            {
+                salesOrder.ContactInfoID = 0;
+            }
+
+            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(4)));
+            salesOrder.CompanyID = (ushort)(Convert.ToUInt16(reader.GetValue(5)));
+            try
+            {
+                salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(6));
+            }
+            catch (InvalidCastException ex)
+            {
+                salesOrder.TotalPrice = 0;
+            }
+
+            salesOrder.FullName = contactInfo.FullName;
+
+            salesOrders.Add(salesOrder);
+        }
+        reader.Close();
+        sqlConnection.Close();
+
+        /*
+        foreach (SalesOrder salesOrder in salesOrders)
+            UpdateSalesOrderState(salesOrder);*/
 
         return salesOrders;
     }

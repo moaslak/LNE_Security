@@ -196,12 +196,12 @@ namespace LNE_Security
                 Console.WriteLine("Could not find product to delete");
         }
 
-        public Product SelectProduct(UInt32 ID)
+        public Product SelectProduct(UInt32 PID)
         {
-            List<Product> products = new List<Product>();
+            List<Product> products = GetProducts();
             foreach(Product product in products)
             {
-                if(product.PID == ID) return product;
+                if(product.PID == PID) return product;
             }
             return null;
         }

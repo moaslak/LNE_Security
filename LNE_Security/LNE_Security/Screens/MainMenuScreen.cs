@@ -39,8 +39,6 @@ public class MainMenuScreen : ScreenHandler
     {
 
     }
-    
-
     protected override void Draw()
     {
         if (company == null)
@@ -56,6 +54,7 @@ public class MainMenuScreen : ScreenHandler
         MenuOptions.Add(new Options("Employee screen", "F3"));
         MenuOptions.Add(new Options("Product screen", "F4"));
         MenuOptions.Add(new Options("Sales order screen", "F5"));
+        MenuOptions.Add(new Options("Storage screen", "F6"));
         MenuOptions.Add(new Options("Close App", "ESC"));
 
         Options selected = MenuOptions.Select();
@@ -79,6 +78,12 @@ public class MainMenuScreen : ScreenHandler
                     Console.WriteLine("Select company first");
                 else
                     ScreenHandler.Display(new SalesOrderScreen(company, customer));
+                break;
+            case "F6":
+                if (company == null)
+                    Console.WriteLine("Select company first");
+                else
+                    ScreenHandler.Display(new StorageScreen(company));
                 break;
             case "ESC":
                 Environment.Exit(0);
