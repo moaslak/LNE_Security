@@ -32,11 +32,15 @@ internal class EditSalesOrderScreen : ScreenHandler
         return list;
     }
 
-    private List<OrderLine> EditOrderLines(UInt32 OrderID)
+    private (List<OrderLine>, bool) EditOrderLines(UInt32 OrderID)
     {
+        bool succes = false;
         List<OrderLine> orderLines = Database.Instance.GetOrderLines(OrderID);
         if (orderLines.Count == 0)
-            return orderLines;
+        {
+            return (orderLines, succes);
+        }
+
         ListPage<OrderLine> orderLineListPage = new ListPage<OrderLine>();
 
         orderLineListPage.AddColumn("OLID", "OLID");
@@ -48,6 +52,13 @@ internal class EditSalesOrderScreen : ScreenHandler
         {
             orderline.PID = orderline.Product.PID;
             orderLineListPage.Add(orderline);
+            if (orderline.State == OrderLine.States.Closed || orderline.State == OrderLine.States.Canceled)
+            {
+                Console.WriteLine("Cannot edit Orderline with state: " + orderline.State.ToString());
+                Console.WriteLine("Press a key to return");
+                Console.ReadKey();
+                return (orderLines, succes);
+            }
         }
         OrderLine selected = orderLineListPage.Select(); // TODO: finish edit
 
@@ -96,8 +107,8 @@ internal class EditSalesOrderScreen : ScreenHandler
                     case "Packed":
                         selected.State = OrderLine.States.Packed;
                         break;
-                    case "Done":
-                        selected.State = OrderLine.States.Done;
+                    case "Closed":
+                        selected.State = OrderLine.States.Closed;
                         break;
                 }
                 break;
@@ -110,8 +121,8 @@ internal class EditSalesOrderScreen : ScreenHandler
                 Database.Instance.EditOrderline(selected.OLID, selected);
             }
         } 
-        
-        return orderLines;
+        succes = true;
+        return (orderLines, succes);
     }
 
     private SalesOrder EditSalesOrder(Options selected, SalesOrder selectedSalesOrder)
@@ -162,8 +173,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 success = true;
                 break;
             case "Orderlines":
-                selectedSalesOrder.OrderLines = EditOrderLines(selectedSalesOrder.OrderID);
-                success = true;
+                (selectedSalesOrder.OrderLines, success) = EditOrderLines(selectedSalesOrder.OrderID);
                 break;
             default:
                 break;
@@ -178,6 +188,11 @@ internal class EditSalesOrderScreen : ScreenHandler
             if (this.salesOrders[i].OrderID == selectedSalesOrder.OrderID && success)
             {
                 Console.WriteLine("Sales order with orderId " + selectedSalesOrder.OrderID + " edited");
+                return selectedSalesOrder;
+            }
+            if(this.salesOrders[i].OrderID == selectedSalesOrder.OrderID && !success)
+            {
+                Console.WriteLine("Sales order not edited");
                 return selectedSalesOrder;
             }
             
@@ -210,6 +225,7 @@ internal class EditSalesOrderScreen : ScreenHandler
             SalesOrderListPage.AddColumn("Customer Id", "CID", "Customer Id".Length);
             SalesOrderListPage.AddColumn("Name", "FullName", fullNameMaxLength);
             SalesOrderListPage.AddColumn("Price", "TotalPrice", 10);
+            SalesOrderListPage.AddColumn("State", "State");
             SalesOrder selectedSalesOrder = SalesOrderListPage.Select();
 
             ListPage<Options> optionsListPage = new ListPage<Options>();
@@ -237,7 +253,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 break;
             }
             Console.WriteLine("Press ESC to return to Sales Order screen");
-
+            company = Database.Instance.SelectCompany(selectedSalesOrder.CompanyID);
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 
         ScreenHandler.Display(new SalesOrderScreen(company, customer));

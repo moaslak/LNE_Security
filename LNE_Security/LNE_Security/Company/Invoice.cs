@@ -9,6 +9,7 @@ namespace LNE_Security;
 
 public class Invoice : Sales
 {
+    public UInt32 IID { get; set; }
     public UInt32 OrderID { get; set; }
 
     public DateTime? OrderTime {  get; set; }

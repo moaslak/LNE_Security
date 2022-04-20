@@ -52,6 +52,7 @@ ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
 CID int FOREIGN KEY REFERENCES Customer(CID),
 CompanyID int FOREIGN KEY REFERENCES Company(CompanyID),
 Price money,
+State VARCHAR(16),
 PRIMARY KEY(OrderID)
 )
 

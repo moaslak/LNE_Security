@@ -24,7 +24,7 @@ public class SalesOrder
     public string FullName { get; set; }
     public UInt16 CompanyID { get; set; }
     public UInt16 OLID { get; set; }
-    public enum States { Created, Confirmed, Packed, Done };
+    public enum States { Created, Confirmed, Packed, Closed, Canceled, Error };
     public States State { get; set; }
 
     /// <summary>

@@ -55,11 +55,12 @@ public class SalesOrderScreen : ScreenHandler
                 salesOrderListPage.Add(salesOrder);
         }
         
-        salesOrderListPage.AddColumn("Sales order id", "OrderID",20);
+        salesOrderListPage.AddColumn("Sales order id", "OrderID", "Sales order id".Length);
         salesOrderListPage.AddColumn("Date", "OrderTime", 20);
-        salesOrderListPage.AddColumn("CID", "CID", 20);
-        salesOrderListPage.AddColumn("Name", "FullName", 20);
-        salesOrderListPage.AddColumn("Price", "TotalPrice", 20);
+        salesOrderListPage.AddColumn("CID", "CID", 5);
+        salesOrderListPage.AddColumn("Name", "FullName", 30);
+        salesOrderListPage.AddColumn("Price", "TotalPrice", 5);
+        salesOrderListPage.AddColumn("State", "State");
         salesOrderListPage.Draw();
 
         Console.WriteLine("F1 - New Sales Order");
@@ -75,7 +76,7 @@ public class SalesOrderScreen : ScreenHandler
         {
             
             case ConsoleKey.F1:
-                Database.Instance.NewSalesOrder(selected, company.CompanyID);
+                Database.Instance.NewSalesOrder(selected, this.company.CompanyID);
                 break;
             case ConsoleKey.F2:
                 ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));
