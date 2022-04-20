@@ -21,6 +21,12 @@ namespace LNE_Security
         {
             this.company = Company;
         }
+
+        public ProductScreen(Company Company, Product Product)
+        {
+            this.company = Company;
+            this.product = Product;
+        }
         protected override void Draw()
         {
             Title = "Product";
@@ -35,11 +41,11 @@ namespace LNE_Security
                 foreach (Product product in products)
                     productListPage.Add(product);
 
-                productListPage.AddColumn("Product Number", "ProductNumber", 10);
+                productListPage.AddColumn("Product Number", "ProductNumber", "Product Number".Length);
                 productListPage.AddColumn("Product Name", "ProductName", 25);
-                productListPage.AddColumn("Amount In Storage", "AmountInStorage");
-                productListPage.AddColumn("Cost Price", "CostPrice");
-                productListPage.AddColumn("Sales Price", "SalesPrice");
+                productListPage.AddColumn("Amount In Storage", "AmountInStorage", "Amount In Storage".Length);
+                productListPage.AddColumn("Cost Price " + company.Currency.ToString(), "CostPrice", "Cost Price ".Length + 3);
+                productListPage.AddColumn("Sales Price " + company.Currency.ToString(), "SalesPrice", "Sales Price ".Length + 3);
                 if (products.Count == 0)
                     productListPage.Draw();
                 else
@@ -56,7 +62,7 @@ namespace LNE_Security
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.Enter:
-                    ScreenHandler.Display(new ProductDetailsScreen(selectedProduct)); // kunne man kalde ProductDetailsScreen direkte i Display()? ScreenHandler.Display(new ProdcuctDetailsScreen(product)); Erklæring er måske ikke nødvendig.
+                    ScreenHandler.Display(new ProductDetailsScreen(selectedProduct, company));
                     break;
                 case ConsoleKey.F1:
                     Database.Instance.NewProduct();

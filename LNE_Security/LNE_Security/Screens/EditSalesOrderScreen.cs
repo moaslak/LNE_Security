@@ -168,7 +168,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 selectedSalesOrder.CompletionTime = temp;
                 success = true;
                 break;
-            case "Total price": //TODO: Denne virker ikke
+            case "Total price":
                 selectedSalesOrder.TotalPrice = newDouble;
                 success = true;
                 break;
@@ -182,7 +182,7 @@ internal class EditSalesOrderScreen : ScreenHandler
         {
             if( selectedSalesOrder.OrderLines.Count == 0)
             {
-                Console.WriteLine("no orderlines in sales order");
+                Console.WriteLine("no orderlines in sales order");// TODO: Denne kaldes når man ænder først gang
                 return selectedSalesOrder;
             }
             if (this.salesOrders[i].OrderID == selectedSalesOrder.OrderID && success)
@@ -203,7 +203,7 @@ internal class EditSalesOrderScreen : ScreenHandler
 
     protected override void Draw()
     {
-        Company company = new Company();
+        Company company = Database.Instance.SelectCompany(salesOrders[0].CompanyID);
         Customer customer = new Customer();
         do
         {
@@ -224,8 +224,8 @@ internal class EditSalesOrderScreen : ScreenHandler
             SalesOrderListPage.AddColumn("Order time", "OrderTime", salesOrders[0].OrderTime.ToString().Length);
             SalesOrderListPage.AddColumn("Customer Id", "CID", "Customer Id".Length);
             SalesOrderListPage.AddColumn("Name", "FullName", fullNameMaxLength);
-            SalesOrderListPage.AddColumn("Price", "TotalPrice", 10);
-            SalesOrderListPage.AddColumn("State", "State");
+            SalesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", "Price ".Length + 3);
+            SalesOrderListPage.AddColumn("State", "State", 9);
             SalesOrder selectedSalesOrder = SalesOrderListPage.Select();
 
             ListPage<Options> optionsListPage = new ListPage<Options>();

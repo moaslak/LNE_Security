@@ -154,9 +154,6 @@ public class EditCompnayScreen : ScreenHandler
                     default:
                         break;
                 }
-
-            
-
         }
 
         switch (selected.Option)

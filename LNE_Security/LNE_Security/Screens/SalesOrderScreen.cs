@@ -59,7 +59,7 @@ public class SalesOrderScreen : ScreenHandler
         salesOrderListPage.AddColumn("Date", "OrderTime", 20);
         salesOrderListPage.AddColumn("CID", "CID", 5);
         salesOrderListPage.AddColumn("Name", "FullName", 30);
-        salesOrderListPage.AddColumn("Price", "TotalPrice", 5);
+        salesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", 10);
         salesOrderListPage.AddColumn("State", "State");
         salesOrderListPage.Draw();
 
