@@ -113,8 +113,6 @@ namespace LNE_Security.Screens;
 
     private void ViewOrderline(OrderLine orderLine)
     {
-
-
         Product product = Database.Instance.SelectProduct(orderLine.PID);
         ListPage<Product> productListPage = new ListPage<Product>();
         productListPage.Add(product);
@@ -126,7 +124,39 @@ namespace LNE_Security.Screens;
 
     private void Pick()
     {
-        new NotImplementedException();
+        List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders("Confirmed");
+        ListPage<SalesOrder> salesOrderListpage = new ListPage<SalesOrder>();
+        foreach (SalesOrder so in salesOrders)
+        {
+            so.FullName = (Database.Instance.SelectCustomer(so.CID)).ContactInfo.FullName;
+            salesOrderListpage.Add(so);
+        }
+            
+        salesOrderListpage.AddColumn("Order ID", "OrderID");
+        salesOrderListpage.AddColumn("Customer", "FullName");
+        SalesOrder salesOrder = salesOrderListpage.Select();
+
+        List<OrderLine> orderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
+        ListPage<OrderLine> listPage = new ListPage<OrderLine>();
+        foreach(OrderLine orderLine in orderLines)
+        {
+            orderLine.PID = orderLine.Product.PID;
+            listPage.Add(orderLine);
+        }
+            
+        listPage.AddColumn("OLID", "OLID");
+        listPage.AddColumn("Status", "State");
+        OrderLine selectedOrderLine = listPage.Select();
+
+        Product product = Database.Instance.SelectProduct(selectedOrderLine.PID);
+        ListPage<Product> productListPage = new ListPage<Product>();
+        productListPage.Add(product);
+        productListPage.AddColumn("PID", "PID");
+        productListPage.AddColumn("Product Number", "ProductNumber");
+        productListPage.AddColumn("Product Name", "ProductName");
+        productListPage.AddColumn("Location", "LocationString");
+        productListPage.AddColumn("Description", "Description");
+        productListPage.Select(); //TODO: Finish Pick()
     }
 
     private void Put()
