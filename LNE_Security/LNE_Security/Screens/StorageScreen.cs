@@ -154,9 +154,42 @@ namespace LNE_Security.Screens;
         productListPage.AddColumn("PID", "PID");
         productListPage.AddColumn("Product Number", "ProductNumber");
         productListPage.AddColumn("Product Name", "ProductName");
+        productListPage.AddColumn("Amount in storage", "AmountInStorage");
         productListPage.AddColumn("Location", "LocationString");
         productListPage.AddColumn("Description", "Description");
-        productListPage.Select(); //TODO: Finish Pick()
+        Product selectedProduct = productListPage.Select(); //TODO: Finish Pick()
+
+        string pick = "";
+        do
+        {
+            Console.WriteLine("Confirm pick? (y)es/(n)o");
+            pick = Console.ReadLine();
+        } while (pick.ToUpper() != "y" || pick.ToUpper() != "");
+
+        switch (pick)
+        {
+            case "Y":
+                if(selectedOrderLine.Quantity > selectedOrderLine.Product.AmountInStorage)
+                {
+                    Console.WriteLine("Not enough in storage. Cannot pack orderline");
+                    selectedOrderLine.State = OrderLine.States.Incomplete;
+                }
+                else
+                {
+                    selectedProduct.AmountInStorage = selectedProduct.AmountInStorage - selectedOrderLine.Quantity;
+                    selectedOrderLine.State = OrderLine.States.Packed;
+                    Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
+                    Database.Instance.EditOrderline(selectedOrderLine.OLID, selectedOrderLine);
+                }
+                break;
+            case "N":
+                Console.WriteLine("Orderline not picked");
+                break;
+            default:
+                Console.WriteLine("Orderline not picked");
+                break;
+        }
+        string stop = "";
     }
 
     private void Put()
