@@ -9,7 +9,6 @@ namespace LNE_Security.Screens;
 
 public class CustomerDetails : ScreenHandler
 {
-	// TODO: Kaldes bruges denne?
     private Customer customer { get; set; }
     public CustomerDetails(Customer Customer) : base(Customer)
     {

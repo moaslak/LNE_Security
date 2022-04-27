@@ -130,7 +130,6 @@ partial class Database
     public void NewEmployee(Employee employee)
     {
 
-        // TODO: fix query
         string query = @"INSERT INTO [dbo].[Employee] 
             (
             [ContactInfoID])
@@ -144,7 +143,6 @@ partial class Database
 
         //close connection
         sqlConnection.Close();
-
     }
 
 

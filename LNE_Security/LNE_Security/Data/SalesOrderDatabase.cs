@@ -12,7 +12,6 @@ namespace LNE_Security;
 
 partial class Database
 {
-    // TODO: finish sales order database
     SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
     public List<OrderLine> GetOrderLines(UInt32 OrderID)
@@ -198,7 +197,7 @@ partial class Database
         else
             orderline.OLID = 1;
 
-        selectedProduct.AmountInStorage = amountInStore - quantity; //TODO: trækkes fra i Storage, når state == packed
+        //selectedProduct.AmountInStorage = amountInStore - quantity; //TODO: trækkes fra i Storage, når state == packed
         Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
 
         return orderline;

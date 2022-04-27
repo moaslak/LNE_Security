@@ -108,11 +108,11 @@ partial class Database
             {
                 stringBuilder.Append(reader.GetValue(i));
             }
-            contactInfo.PersonId = stringBuilder[1]; // TODO: link to database
+            contactInfo.PersonId = stringBuilder[1];
             contactInfo.FirstName = stringBuilder[2].ToString();
             contactInfo.LastName = stringBuilder[3].ToString();
             contactInfo.FullName = contactInfo.FirstName + " " + contactInfo.LastName;
-            contactInfo.Address = address; // TODO: address id=?
+            contactInfo.Address = address;
             contactInfo.Email = stringBuilder[4].ToString();
         }
         reader.Close();
