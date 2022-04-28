@@ -110,6 +110,9 @@ internal class EditSalesOrderScreen : ScreenHandler
                     case "Closed":
                         selected.State = OrderLine.States.Closed;
                         break;
+                    case "Incomplete":
+                        selected.State = OrderLine.States.Incomplete;
+                        break;
                 }
                 break;
         }
@@ -122,6 +125,8 @@ internal class EditSalesOrderScreen : ScreenHandler
             }
         } 
         succes = true;
+        SalesOrder salesOrder = Database.Instance.SelectSalesOrder(OrderID);
+        Database.Instance.UpdateSalesOrderStateFromOrderlines(salesOrder);
         return (orderLines, succes);
     }
 
@@ -174,6 +179,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 break;
             case "Orderlines":
                 (selectedSalesOrder.OrderLines, success) = EditOrderLines(selectedSalesOrder.OrderID);
+                Database.Instance.UpdateSalesOrderStateFromOrderlines(selectedSalesOrder);
                 //TODO: update state from orderlines
                 break;
             default:

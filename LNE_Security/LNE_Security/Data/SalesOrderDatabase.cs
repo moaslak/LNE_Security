@@ -364,6 +364,95 @@ partial class Database
         }
         return null;
     }
+
+    public SalesOrder SelectSalesOrder(UInt32 orderID)
+    {
+        string query = @"SELECT * FROM [dbo].[SalesOrder]";
+        query = query + "WHERE OrderID = " + orderID;
+
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+        SalesOrder salesOrder = new SalesOrder();
+        DateTime dateTime = new DateTime();
+        while (reader.Read())
+        {
+            
+            salesOrder.OrderID = Convert.ToUInt16(reader.GetValue(0).ToString());
+            string dateTimeString = reader.GetValue(1).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.OrderTime = dateTime;
+            }
+            catch (FormatException ex)
+            {
+                salesOrder.OrderTime = DateTime.MinValue;
+            }
+            dateTimeString = reader.GetValue(2).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.CompletionTime = dateTime;
+            }
+            catch (FormatException ex)
+            {
+                salesOrder.CompletionTime = null;
+            }
+            try
+            {
+                salesOrder.ContactInfoID = Convert.ToUInt16(reader.GetValue(3));
+            }
+            catch (InvalidCastException ex)
+            {
+                salesOrder.ContactInfoID = 0;
+            }
+
+            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(4)));
+            salesOrder.CompanyID = (ushort)(Convert.ToUInt16(reader.GetValue(5)));
+            try
+            {
+                salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(6));
+            }
+            catch (InvalidCastException ex)
+            {
+                salesOrder.TotalPrice = 0;
+            }
+            try
+            {
+                string state = reader.GetValue(7).ToString();
+                switch (state)
+                {
+                    case "Created":
+                        salesOrder.State = SalesOrder.States.Created;
+                        break;
+                    case "Confirmed":
+                        salesOrder.State = SalesOrder.States.Confirmed;
+                        break;
+                    case "Packed":
+                        salesOrder.State = SalesOrder.States.Packed;
+                        break;
+                    case "Closed":
+                        salesOrder.State = SalesOrder.States.Closed;
+                        break;
+                    case "Canceled":
+                        salesOrder.State = SalesOrder.States.Canceled;
+                        break;
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                salesOrder.State = SalesOrder.States.Error;
+            }
+
+            salesOrder.FullName = contactInfo.FullName;
+        }
+        reader.Close();
+        sqlConnection.Close();
+
+        return salesOrder;
+    }
     public List<SalesOrder> GetSalesOrders(Customer customer)
     {
         List<SalesOrder> salesOrders = new List<SalesOrder>();
@@ -442,6 +531,12 @@ partial class Database
                     case "Canceled":
                         salesOrder.State = SalesOrder.States.Canceled;
                         break;
+                    case "Incomplete":
+                        salesOrder.State = SalesOrder.States.Incomplete;
+                        break;
+                    case "Error":
+                        salesOrder.State = SalesOrder.States.Error;
+                        break;
                 }
             }
             catch (ArgumentNullException ex)
@@ -456,10 +551,6 @@ partial class Database
         reader.Close();
         sqlConnection.Close();
         
-        /*
-        foreach(SalesOrder salesOrder in salesOrders)
-            UpdateSalesOrderState(salesOrder);*/
-
         return salesOrders;
     }
 
@@ -562,10 +653,6 @@ partial class Database
         }
         reader.Close();
         sqlConnection.Close();
-        
-        /*
-        foreach (SalesOrder salesOrder in salesOrders)
-            UpdateSalesOrderState(salesOrder);*/
 
         return salesOrders;
     }
@@ -635,17 +722,34 @@ partial class Database
         reader.Close();
         sqlConnection.Close();
 
-        /*
-        foreach (SalesOrder salesOrder in salesOrders)
-            UpdateSalesOrderState(salesOrder);*/
-
         return salesOrders;
+    }
+
+    public void UpdateSalesOrderStateFromOrderlines(SalesOrder salesOrder)
+    {
+        SalesOrder.States initState = salesOrder.State;
+        List<OrderLine> orderLines = GetOrderLines(salesOrder.OrderID);
+        int sameState = 0;
+        foreach(OrderLine line in orderLines) //TODO: FIX THIS!!!
+        {
+            if (line.State.CompareTo((OrderLine.States)salesOrder.State) == 0)
+                sameState++;
+        }
+        if (orderLines.Count == 1)
+        {
+            salesOrder.State = (SalesOrder.States)orderLines[0].State;
+            EditSalesOrder(salesOrder);
+        }
+        if (salesOrder.State == SalesOrder.States.Created && orderLines.Count > 0 && sameState == orderLines.Count)
+        {
+            salesOrder.State++;
+            EditSalesOrder(salesOrder);
+        }
     }
 
     private void UpdateSalesOrderState(SalesOrder salesOrder)
     {
         List<OrderLine> orderLines = GetOrderLines(salesOrder.OrderID);
-        OrderLine l = new OrderLine();
         for(int i = 0; i < orderLines.Count; i++)
         {
             if(orderLines[i].State.CompareTo((OrderLine.States)salesOrder.State) != 0)
