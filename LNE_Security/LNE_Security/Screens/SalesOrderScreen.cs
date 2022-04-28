@@ -80,6 +80,7 @@ public class SalesOrderScreen : ScreenHandler
                 break;
             case ConsoleKey.F2:
                 ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));
+                
                 break;
             case ConsoleKey.F3:
                 do

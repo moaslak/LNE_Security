@@ -422,7 +422,33 @@ partial class Database
             {
                 salesOrder.TotalPrice = 0;
             }
-            
+            try
+            {
+                string state = reader.GetValue(7).ToString();
+                switch (state)
+                {
+                    case "Created":
+                        salesOrder.State = SalesOrder.States.Created;
+                        break;
+                    case "Confirmed":
+                        salesOrder.State = SalesOrder.States.Confirmed;
+                        break;
+                    case "Packed":
+                        salesOrder.State = SalesOrder.States.Packed;
+                        break;
+                    case "Closed":
+                        salesOrder.State = SalesOrder.States.Closed;
+                        break;
+                    case "Canceled":
+                        salesOrder.State = SalesOrder.States.Canceled;
+                        break;
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                salesOrder.State = SalesOrder.States.Error;
+            }
+
             salesOrder.FullName = contactInfo.FullName;
             
             salesOrders.Add(salesOrder);

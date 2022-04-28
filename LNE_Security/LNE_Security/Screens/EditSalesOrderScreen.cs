@@ -174,6 +174,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 break;
             case "Orderlines":
                 (selectedSalesOrder.OrderLines, success) = EditOrderLines(selectedSalesOrder.OrderID);
+                //TODO: update state from orderlines
                 break;
             default:
                 break;

@@ -94,15 +94,21 @@ public class StorageScreen : ScreenHandler
 
             Console.WriteLine("F1 - Confirm sales order");
             Console.WriteLine("F2 - Inspect orderlines");
+            Console.WriteLine("F8 - Back");
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.F1:
                     foreach (OrderLine orderLine in orderLines)
-                        Database.Instance.EditOrderlineState(orderLine.OLID, "Confirmed"); // TODO: SalesOrder state update
+                        Database.Instance.EditOrderlineState(orderLine.OLID, "Confirmed");
+                    selected.State = SalesOrder.States.Confirmed;
+                    Database.Instance.EditSalesOrder(selected);
+                    Console.WriteLine($"Sales order with OrderId: {selected.OrderID} confirmed");
                     break;
                 case ConsoleKey.F2:
                     orderline = ordersListPage.Select();
                     ViewOrderline(orderline);
+                    break;
+                case ConsoleKey.F8:
                     break;
                 default:
                     Console.WriteLine("Not a valid selection");
@@ -131,75 +137,100 @@ public class StorageScreen : ScreenHandler
             so.FullName = (Database.Instance.SelectCustomer(so.CID)).ContactInfo.FullName;
             salesOrderListpage.Add(so);
         }
-        salesOrderListpage.AddColumn("Order ID", "OrderID");
-        salesOrderListpage.AddColumn("Customer", "FullName");
-        SalesOrder salesOrder = salesOrderListpage.Select();
-
-        List<OrderLine> orderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
-        ListPage<OrderLine> listPage = new ListPage<OrderLine>();
-
-        int count = 0;
-        foreach (OrderLine orderLine in orderLines)
+        if (salesOrders.Count > 0)
         {
-            if (orderLine.State == OrderLine.States.Confirmed)
+            salesOrderListpage.AddColumn("Order ID", "OrderID");
+            salesOrderListpage.AddColumn("Customer", "FullName");
+            SalesOrder salesOrder = salesOrderListpage.Select();
+
+            List<OrderLine> orderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
+            ListPage<OrderLine> listPage = new ListPage<OrderLine>();
+
+            int count = 0;
+            foreach (OrderLine orderLine in orderLines)
             {
-                orderLine.PID = orderLine.Product.PID;
-                orderLine.Product = Database.Instance.SelectProduct(orderLine.PID);
-                listPage.Add(orderLine);
-                count++;
-            }
-        }
-        if(count > 0)
-        {
-            
-
-            listPage.AddColumn("OLID", "OLID");
-            listPage.AddColumn("Status", "State");
-            OrderLine selectedOrderLine = listPage.Select();
-
-            if (selectedOrderLine.State != OrderLine.States.Packed)
-            {
-                Product product = Database.Instance.SelectProduct(selectedOrderLine.PID);
-                ListPage<Product> productListPage = new ListPage<Product>();
-                productListPage.Add(product);
-                productListPage.AddColumn("PID", "PID");
-                productListPage.AddColumn("Product Number", "ProductNumber");
-                productListPage.AddColumn("Product Name", "ProductName");
-                productListPage.AddColumn("Amount in storage", "AmountInStorage");
-                productListPage.AddColumn("Location", "LocationString");
-                productListPage.AddColumn("Description", "Description");
-                Product selectedProduct = productListPage.Select(); //TODO: Finish Pick()
-
-                Console.WriteLine("Confirm pick? (y)es/(n)o");
-                switch (Console.ReadKey().Key)
+                if (orderLine.State == OrderLine.States.Confirmed)
                 {
-                    case ConsoleKey.Y:
-                        if (selectedOrderLine.Quantity > selectedOrderLine.Product.AmountInStorage)
-                        {
-                            Console.WriteLine("Not enough in storage. Cannot pack orderline");
-                            selectedOrderLine.State = OrderLine.States.Incomplete;
-                        }
-                        else
-                        {
-                            selectedProduct.AmountInStorage = selectedProduct.AmountInStorage - selectedOrderLine.Quantity;
-                            selectedOrderLine.State = OrderLine.States.Packed;
-                            Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
-                            Database.Instance.EditOrderline(selectedOrderLine.OLID, selectedOrderLine);
-                        }
-                        break;
-                    case ConsoleKey.N:
-                        Console.WriteLine("Orderline not picked");
-                        break;
-                    default:
-                        Console.WriteLine("Orderline not picked");
-                        break;
+                    orderLine.PID = orderLine.Product.PID;
+                    orderLine.Product = Database.Instance.SelectProduct(orderLine.PID);
+                    listPage.Add(orderLine);
+                    count++;
                 }
+            }
+            if (count > 0)
+            {
+
+
+                listPage.AddColumn("OLID", "OLID");
+                listPage.AddColumn("Status", "State");
+                OrderLine selectedOrderLine = listPage.Select();
+
+                if (selectedOrderLine.State != OrderLine.States.Packed)
+                {
+                    Product product = Database.Instance.SelectProduct(selectedOrderLine.PID);
+                    ListPage<Product> productListPage = new ListPage<Product>();
+                    productListPage.Add(product);
+                    productListPage.AddColumn("PID", "PID");
+                    productListPage.AddColumn("Product Number", "ProductNumber");
+                    productListPage.AddColumn("Product Name", "ProductName");
+                    productListPage.AddColumn("Amount in storage", "AmountInStorage");
+                    productListPage.AddColumn("Location", "LocationString");
+                    productListPage.AddColumn("Description", "Description");
+                    Product selectedProduct = productListPage.Select(); //TODO: Finish Pick()
+
+                    Console.WriteLine("Confirm pick? (y)es/(n)o");
+                    switch (Console.ReadKey().Key)
+                    {
+                        case ConsoleKey.Y:
+                            if (selectedOrderLine.Quantity > selectedOrderLine.Product.AmountInStorage)
+                            {
+                                Console.WriteLine("Not enough in storage. Cannot pack orderline");
+                                selectedOrderLine.State = OrderLine.States.Incomplete;
+                            }
+                            else
+                            {
+                                selectedProduct.AmountInStorage = selectedProduct.AmountInStorage - selectedOrderLine.Quantity;
+                                selectedOrderLine.State = OrderLine.States.Packed;
+                                Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
+                                Database.Instance.EditOrderline(selectedOrderLine.OLID, selectedOrderLine);
+                                Console.WriteLine($"Orderline with OLID {selectedOrderLine.OLID} packed");
+                            }
+                            break;
+                        case ConsoleKey.N:
+                            Console.WriteLine("Orderline not picked");
+                            break;
+                        default:
+                            Console.WriteLine("Orderline not picked");
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Orderline is already packed");
+                }
+            }
+            int sameStateCount = 0;
+            foreach (OrderLine line in orderLines)
+            {
+
+                if (line.State == OrderLine.States.Packed)
+                    sameStateCount++;
+            }
+            if (sameStateCount != orderLines.Count)
+            {
+                salesOrder.State = SalesOrder.States.Incomplete;
+                Database.Instance.EditSalesOrder(salesOrder);
             }
             else
             {
-                Console.WriteLine("Orderline is already packed");
+                salesOrder.State = SalesOrder.States.Packed;
+                Database.Instance.EditSalesOrder(salesOrder);
             }
         }
+        else
+            Console.WriteLine("No confirmed sales orders in database");
+        
+            
         //TODO: update salesorder state from orderlines.
     }
 
