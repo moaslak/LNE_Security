@@ -115,6 +115,10 @@ public class StorageScreen : ScreenHandler
                     break;
             }
         }
+        else
+        {
+            Console.WriteLine("No new sales orders");
+        }
     }
 
     private void ViewOrderline(OrderLine orderLine)
@@ -176,12 +180,13 @@ public class StorageScreen : ScreenHandler
                     productListPage.AddColumn("Amount in storage", "AmountInStorage");
                     productListPage.AddColumn("Location", "LocationString");
                     productListPage.AddColumn("Description", "Description");
-                    Product selectedProduct = productListPage.Select(); //TODO: Finish Pick()
+                    Product selectedProduct = productListPage.Select();
 
                     Console.WriteLine("Confirm pick? (y)es/(n)o");
                     switch (Console.ReadKey().Key)
                     {
                         case ConsoleKey.Y:
+                            Console.WriteLine();
                             if (selectedOrderLine.Quantity > selectedOrderLine.Product.AmountInStorage)
                             {
                                 Console.WriteLine("Not enough in storage. Cannot pack orderline");
@@ -197,6 +202,7 @@ public class StorageScreen : ScreenHandler
                             }
                             break;
                         case ConsoleKey.N:
+                            Console.WriteLine();
                             Console.WriteLine("Orderline not picked");
                             break;
                         default:

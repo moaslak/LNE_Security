@@ -73,8 +73,7 @@ public class SalesOrderScreen : ScreenHandler
         
         UInt16 CID = 0;
         switch (Console.ReadKey().Key)
-        {
-            
+        {   
             case ConsoleKey.F1:
                 Database.Instance.NewSalesOrder(selected, this.company.CompanyID);
                 break;

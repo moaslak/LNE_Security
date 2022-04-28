@@ -148,27 +148,6 @@ partial class Database
 
         //close connection
         sqlConnection.Close();
-        /*string CID = "";
-        query = "SELECT CID FROM Customer WHERE FirstName = '" + contactInfo.FirstName + "' AND LastName = '" + contactInfo.LastName
-            +"'";
-        sqlConnection.Open();
-        cmd = new SqlCommand(query, sqlConnection);
-        reader = cmd.ExecuteReader();
-        while (reader.Read())
-        {
-            CID = reader.GetValue(0).ToString();
-        }
-        reader.Close();
-        query = @"INSERT INTO [dbo].[Person]
-           ([Type]
-           ,[ContactInfoID])
-            VALUES
-           ('Customer'" +
-           ",'" + CID + "')";
-        cmd = new SqlCommand(query, sqlConnection);
-        reader = cmd.ExecuteReader();
-        reader.Close();
-        sqlConnection.Close();*/
     }
 
     

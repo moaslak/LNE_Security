@@ -125,8 +125,7 @@ internal class EditSalesOrderScreen : ScreenHandler
             }
         } 
         succes = true;
-        SalesOrder salesOrder = Database.Instance.SelectSalesOrder(OrderID);
-        Database.Instance.UpdateSalesOrderStateFromOrderlines(salesOrder);
+
         return (orderLines, succes);
     }
 
@@ -179,8 +178,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 break;
             case "Orderlines":
                 (selectedSalesOrder.OrderLines, success) = EditOrderLines(selectedSalesOrder.OrderID);
-                Database.Instance.UpdateSalesOrderStateFromOrderlines(selectedSalesOrder);
-                //TODO: update state from orderlines
+                //TODO: update to lower state from orderlines
                 break;
             default:
                 break;
