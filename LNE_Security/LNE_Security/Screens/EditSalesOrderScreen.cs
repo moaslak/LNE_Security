@@ -165,8 +165,10 @@ internal class EditSalesOrderScreen : ScreenHandler
                 ListPage<Options> listPage = new ListPage<Options>();
                 listPage.AddColumn("Status", "Option");
 
-                listPage.Add(new Options("Closed", "Closed"));
+                if (selectedSalesOrder.State == SalesOrder.States.Packed)
+                    listPage.Add(new Options("Closed", "Closed"));
                 listPage.Add(new Options("Canceled", "Canceled"));
+                listPage.Add(new Options("Back", "NO EDIT"));
                 
                 Options selectedState = listPage.Select();
                 switch (selectedState.Option)
@@ -193,6 +195,8 @@ internal class EditSalesOrderScreen : ScreenHandler
                         }
                         selectedSalesOrder.State = SalesOrder.States.Error;
 
+                        break;
+                    case "NO EDIT":
                         break;
                 }
                 
@@ -323,8 +327,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 if (selectedSalesOrder.OrderLines != null)
                 {
                     Console.WriteLine("Press a key to update another parameter");
-                    Database.Instance.EditSalesOrder(selectedSalesOrder);
-                    
+                    Database.Instance.EditSalesOrder(selectedSalesOrder); 
                 }
             }
             else
