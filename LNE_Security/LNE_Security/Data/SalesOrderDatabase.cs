@@ -724,46 +724,6 @@ partial class Database
 
         return salesOrders;
     }
-
-    public void UpdateSalesOrderStateFromOrderlines(SalesOrder salesOrder)
-    {
-        SalesOrder.States initState = salesOrder.State;
-        List<OrderLine> orderLines = GetOrderLines(salesOrder.OrderID);
-        int sameState = 0;
-        foreach(OrderLine line in orderLines) //TODO: FIX THIS!!!
-        {
-            if (line.State.CompareTo((OrderLine.States)salesOrder.State) == 0)
-                sameState++;
-        }
-        if (orderLines.Count == 1)
-        {
-            salesOrder.State = (SalesOrder.States)orderLines[0].State;
-            EditSalesOrder(salesOrder);
-        }
-        if (salesOrder.State == SalesOrder.States.Created && orderLines.Count > 0 && sameState == orderLines.Count)
-        {
-            salesOrder.State++;
-            EditSalesOrder(salesOrder);
-        }
-    }
-
-    private void UpdateSalesOrderState(SalesOrder salesOrder)
-    {
-        List<OrderLine> orderLines = GetOrderLines(salesOrder.OrderID);
-        for(int i = 0; i < orderLines.Count; i++)
-        {
-            if(orderLines[i].State.CompareTo((OrderLine.States)salesOrder.State) != 0)
-            {
-                return;
-            }
-        }
-        if(salesOrder.State == SalesOrder.States.Created && orderLines.Count > 0)//TODO: update orderlines
-        {
-            salesOrder.State++;
-            EditSalesOrder(salesOrder);
-        }
-    }
-
     private DateTime RandomDay()
     {
         Random gen = new Random();

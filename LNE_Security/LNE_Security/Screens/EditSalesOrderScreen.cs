@@ -66,17 +66,20 @@ internal class EditSalesOrderScreen : ScreenHandler
         OptionListPage.AddColumn("Edit", "Option");
         OptionListPage.Add(new Options("OrderID", "OrderID"));
         OptionListPage.Add(new Options("Product", "Product"));
+        OptionListPage.Add(new Options("Quantity", "Quantity"));
         OptionListPage.Add(new Options("Status", "State"));
         Options option = OptionListPage.Select();
 
         string newValue = "";
         UInt32 newUint = 0;
+        double newDouble = 0;
         if (option.Option != "Status")
         {
+            Console.Write("Enter new " + option.Option.ToString() + ": ");
             newValue = Console.ReadLine();
 
             UInt32.TryParse(newValue, out newUint);
-            Console.Write("Enter new " + option.Option.ToString() + ": ");
+            Double.TryParse(newValue, out newDouble);
         }
 
         switch (option.Option)
@@ -86,6 +89,9 @@ internal class EditSalesOrderScreen : ScreenHandler
                 break;
             case "Product":
                 selected.PID = newUint;
+                break;
+            case "Quantity":
+                selected.Quantity = newDouble;
                 break;
             case "Status":
                 List<OrderLine.States> stateList = statesToList();
@@ -178,12 +184,12 @@ internal class EditSalesOrderScreen : ScreenHandler
                 break;
             case "Orderlines":
                 (selectedSalesOrder.OrderLines, success) = EditOrderLines(selectedSalesOrder.OrderID);
-                //TODO: update to lower state from orderlines
                 break;
             default:
                 break;
         }
-        for(int i = 0; i < this.salesOrders.Count; i++)
+        
+        for (int i = 0; i < this.salesOrders.Count; i++)
         {
             if( selectedSalesOrder.OrderLines.Count == 0)
             {
@@ -192,6 +198,7 @@ internal class EditSalesOrderScreen : ScreenHandler
             }
             if (this.salesOrders[i].OrderID == selectedSalesOrder.OrderID && success)
             {
+                List<OrderLine> orderLines = Database.Instance.GetOrderLines(selectedSalesOrder.OrderID);
                 Console.WriteLine("Sales order with orderId " + selectedSalesOrder.OrderID + " edited");
                 return selectedSalesOrder;
             }
@@ -203,6 +210,7 @@ internal class EditSalesOrderScreen : ScreenHandler
             
         }
         Console.WriteLine("Could not find sales order to edit");
+        
         return selectedSalesOrder;
     }
 
@@ -246,7 +254,14 @@ internal class EditSalesOrderScreen : ScreenHandler
 
             if (selected.Value != "NO EDIT")
             {
+                List<OrderLine> orderLines = Database.Instance.GetOrderLines(selectedSalesOrder.OrderID);
+                for(int i = 0; i < selectedSalesOrder.OrderLines.Count; i++)
+                {
+                    selectedSalesOrder.OrderLines[i].Product = Database.Instance.SelectProduct(selectedSalesOrder.OrderLines[i].Product.PID);
+                }
+                
                 selectedSalesOrder = EditSalesOrder(selected, selectedSalesOrder);
+                selectedSalesOrder.TotalPrice = selectedSalesOrder.CalculateTotalPrice(orderLines);
                 if (selectedSalesOrder.OrderLines != null)
                 {
                     Console.WriteLine("Press a key to update another parameter");
@@ -258,6 +273,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 break;
             }
             Console.WriteLine("Press ESC to return to Sales Order screen");
+            Database.Instance.EditSalesOrder(selectedSalesOrder);
             company = Database.Instance.SelectCompany(selectedSalesOrder.CompanyID);
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 

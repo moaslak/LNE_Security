@@ -134,7 +134,6 @@ partial class Database
     public void NewCustomer(Customer customer)
     {
         SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
-        // TODO: fix query
         string query = @"INSERT INTO [dbo].[Customer] 
             (
             [ContactInfoID])

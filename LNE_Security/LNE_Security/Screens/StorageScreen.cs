@@ -235,9 +235,6 @@ public class StorageScreen : ScreenHandler
         }
         else
             Console.WriteLine("No confirmed sales orders in database");
-        
-            
-        //TODO: update salesorder state from orderlines.
     }
 
     private void Put()

@@ -10,7 +10,6 @@ namespace LNE_Security;
 
 public partial class Database : Product
 {
-    // TODO: getContactInfo(personID)
     public static Database Instance { get; private set; }
 
     static Database()
