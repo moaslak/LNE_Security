@@ -288,31 +288,42 @@ partial class Database
 
     public void EditOrderlineState(UInt16 OLID, string state)
     {
-        string query = @"UPDATE [dbo].[Orderline]
+        if (state != "Closed")
+        {
+            string query = @"UPDATE [dbo].[Orderline]
         SET[Status] = '" + state +
-                    "' WHERE OLID =" + OLID.ToString();
-        sqlConnection.Open();
-        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                                "' WHERE OLID =" + OLID.ToString();
+            sqlConnection.Open();
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
 
-        SqlDataReader reader = cmd.ExecuteReader();
-        reader.Close();
-        sqlConnection.Close();
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+            sqlConnection.Close();
+        }
+        else
+            Console.WriteLine("Orderline is CLOSED and cannot be edited");
+        
     }
 
     public void EditOrderline(UInt16 OLID, OrderLine editedOrderline)
     {
-        string query = @"UPDATE [dbo].[Orderline]
+        if(editedOrderline.State.ToString() != "Closed")
+        {
+            string query = @"UPDATE [dbo].[Orderline]
         SET[PID] = " + editedOrderline.PID.ToString() +
-                    ",[Quantity] =" + editedOrderline.Quantity.ToString() +
-                    ",[OrderID] = " + editedOrderline.OrderID.ToString() +
-                    ",[Status] = '" + editedOrderline.State.ToString() +
-                    "' WHERE OLID =" + OLID.ToString();
-        sqlConnection.Open();
-        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                                ",[Quantity] =" + editedOrderline.Quantity.ToString() +
+                                ",[OrderID] = " + editedOrderline.OrderID.ToString() +
+                                ",[Status] = '" + editedOrderline.State.ToString() +
+                                "' WHERE OLID =" + OLID.ToString();
+            sqlConnection.Open();
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
 
-        SqlDataReader reader = cmd.ExecuteReader();
-        reader.Close();
-        sqlConnection.Close();
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+            sqlConnection.Close();
+        }
+        else
+            Console.WriteLine("Orderline is CLOSED and cannot be edited");
     }
     public void EditSalesOrder(SalesOrder editedSalesOrder)
     {
