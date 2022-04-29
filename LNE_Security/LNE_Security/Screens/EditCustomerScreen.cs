@@ -15,6 +15,7 @@ public class EditCustomerScreen : ScreenHandler
     private Address address { get; set; }
     private Options options { get; set; }
     private Customer customer { get; set; }
+    private Company company { get; set; }
     public EditCustomerScreen(Person person, ContactInfo contactInfo, Address address) : base(person)
     {
         this.person = person;
@@ -27,6 +28,13 @@ public class EditCustomerScreen : ScreenHandler
         this.customer = Customer;
         contact = customer.ContactInfo;
         address = contact.Address;
+    }
+    public EditCustomerScreen(Customer Customer, Company Company) : base(Customer, Company)
+    {
+        this.customer = Customer;
+        contact = customer.ContactInfo;
+        address = contact.Address;
+        this.company = Company;
     }
 
     public EditCustomerScreen()
@@ -137,7 +145,7 @@ public class EditCustomerScreen : ScreenHandler
             Console.WriteLine("Press ESC to return to Company screen");
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 
-        CustomerScreen customerScreen = new CustomerScreen();
+        CustomerScreen customerScreen = new CustomerScreen(company);
         ScreenHandler.Display(customerScreen);
     }
 }

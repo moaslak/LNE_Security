@@ -30,47 +30,54 @@ public class SalesOrder
         get
         {
             OrderLines = Database.Instance.GetOrderLines(OrderID);
-            int[] sameStateCount = new int[6];
-            foreach(OrderLine line in OrderLines)
+            int[] sameStateCount = new int[7];
+
+            for(int i = 0; i < OrderLines.Count; i++)
             {
-                if(line.State == OrderLine.States.Created)
+                if (OrderLines[i].State == OrderLine.States.Created)
                 {
                     sameStateCount[0]++;
-                    if(OrderLines.Count == sameStateCount[0])
+                    if (OrderLines.Count == sameStateCount[0])
                         return SalesOrder.States.Created;
                 }
-                if (line.State == OrderLine.States.Confirmed)
+                if (OrderLines[i].State == OrderLine.States.Confirmed)
                 {
                     sameStateCount[1]++;
                     if (OrderLines.Count == sameStateCount[1])
                         return SalesOrder.States.Confirmed;
                 }
-                if (line.State == OrderLine.States.Packed)
+                if (OrderLines[i].State == OrderLine.States.Packed)
                 {
                     sameStateCount[2]++;
                     if (OrderLines.Count == sameStateCount[2])
                         return SalesOrder.States.Packed;
                 }
-                if (line.State == OrderLine.States.Closed)
+                if (OrderLines[i].State == OrderLine.States.Closed)
                 {
                     sameStateCount[3]++;
                     if (OrderLines.Count == sameStateCount[3])
                         return SalesOrder.States.Closed;
                 }
-                if (line.State == OrderLine.States.Canceled)
+                if (OrderLines[i].State == OrderLine.States.Canceled)
                 {
                     sameStateCount[4]++;
                     if (OrderLines.Count == sameStateCount[4])
                         return SalesOrder.States.Canceled;
                 }
-                if (line.State == OrderLine.States.Error)
+                if (OrderLines[i].State == OrderLine.States.Error)
                 {
                     sameStateCount[5]++;
                     if (OrderLines.Count == sameStateCount[5])
                         return SalesOrder.States.Error;
                 }
-                
+                if (OrderLines[i].State == OrderLine.States.Incomplete)
+                {
+                    sameStateCount[6]++;
+                    if (OrderLines.Count == sameStateCount[6])
+                        return SalesOrder.States.Incomplete;
+                }
             }
+            //Database.Instance.EditSalesOrder(Database.Instance.SelectSalesOrder(OrderID));
             return SalesOrder.States.Incomplete;
         }
         set { }

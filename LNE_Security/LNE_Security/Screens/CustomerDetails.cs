@@ -10,9 +10,11 @@ namespace LNE_Security.Screens;
 public class CustomerDetails : ScreenHandler
 {
     private Customer customer { get; set; }
-    public CustomerDetails(Customer Customer) : base(Customer)
+	private Company company { get; set; }
+    public CustomerDetails(Customer Customer, Company Company) : base(Customer, Company)
     {
         this.customer = Customer;
+		this.company = Company;
     }
 
 	protected override void Draw()
@@ -35,13 +37,13 @@ public class CustomerDetails : ScreenHandler
 		Console.WriteLine("F1 - Back");
 		Console.WriteLine("F2 - Edit");
 		Console.WriteLine("F5 - Delete");
-		CustomerScreen customerScreen = new CustomerScreen();
+		CustomerScreen customerScreen = new CustomerScreen(company);
 		EditCustomerScreen editCustomerScreen = new EditCustomerScreen();
 
 		switch (Console.ReadKey().Key)
 		{
 			case ConsoleKey.F1:
-				ScreenHandler.Display(customerScreen);
+				ScreenHandler.Display(customerScreen); // TODO: COMPANY!!!
 				break;
 			case ConsoleKey.F2:
 				ScreenHandler.Display(editCustomerScreen);

@@ -122,7 +122,7 @@ public class CustomerScreen : ScreenHandler
                 Console.WriteLine("Press enter to continue");
                 break;
             case ConsoleKey.F2:
-                ScreenHandler.Display(new EditCustomerScreen(selected));
+                ScreenHandler.Display(new EditCustomerScreen(selected, company));
                 break;
             case ConsoleKey.F10:
                 ScreenHandler.Display(new MainMenuScreen(this.company));

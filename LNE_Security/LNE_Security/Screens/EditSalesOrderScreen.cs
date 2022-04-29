@@ -147,7 +147,7 @@ internal class EditSalesOrderScreen : ScreenHandler
     private SalesOrder EditSalesOrder(Options selected, SalesOrder selectedSalesOrder)
     {
         string newValue = "";
-        if(selected.Option != "Completion Time" && selected.Option != "Orderlines")
+        if(selected.Option != "Completion Time" && selected.Option != "Orderlines" && selected.Option != "State")
         {
             Console.Write("New value: ");
             newValue = Console.ReadLine();
@@ -160,8 +160,45 @@ internal class EditSalesOrderScreen : ScreenHandler
         double.TryParse(newValue, out newDouble);
         switch (selected.Option)
         {
-            case "Customer Id":
+            case "State":
+                List<OrderLine.States> stateList = statesToList();
+                ListPage<Options> listPage = new ListPage<Options>();
+                listPage.AddColumn("Status", "Option");
+
+                listPage.Add(new Options("Closed", "Closed"));
+                listPage.Add(new Options("Canceled", "Canceled"));
                 
+                Options selectedState = listPage.Select();
+                switch (selectedState.Option)
+                {
+                    case "Closed":
+                        List<OrderLine> ols = Database.Instance.GetOrderLines(selectedSalesOrder.OrderID);
+                        foreach (OrderLine ol in ols)
+                        {
+                            ol.PID = ol.Product.PID;
+                            ol.State = OrderLine.States.Closed;
+                            Database.Instance.EditOrderline(ol.OLID, ol);
+                        }
+                        selectedSalesOrder.State = SalesOrder.States.Closed;
+                        break;
+                    case "Canceled":
+                        List<OrderLine> ols2 = Database.Instance.GetOrderLines(selectedSalesOrder.OrderID);
+                        
+                        for(int i = 0; i < ols2.Count; i++)
+                        {
+                            ols2[i].PID = ols2[i].Product.PID;
+                            ols2[i].State = OrderLine.States.Canceled;
+                            selectedSalesOrder.OrderLines[i] = ols2[i];
+                            Database.Instance.EditOrderline(ols2[i].OLID, ols2[i]);
+                        }
+                        selectedSalesOrder.State = SalesOrder.States.Error;
+
+                        break;
+                }
+                
+                success = true;
+                break;
+            case "Customer Id":
                 List<Customer> customers = Database.Instance.GetCustomers();
                 foreach(Customer customer in customers)
                 {
@@ -178,7 +215,6 @@ internal class EditSalesOrderScreen : ScreenHandler
                     Console.WriteLine("Could not find customer id. No entry change.");
                 break;
             case "Completion Time":
-
                 DateTime temp;
                 do
                 {
@@ -274,6 +310,7 @@ internal class EditSalesOrderScreen : ScreenHandler
             //optionsListPage.Add(new Options("Customer Id", selectedSalesOrder.CID.ToString()));
             optionsListPage.Add(new Options("Total price", selectedSalesOrder.TotalPrice.ToString()));
             optionsListPage.Add(new Options("Completion Time", selectedSalesOrder.CompletionTime.ToString()));
+            optionsListPage.Add(new Options("State", selectedSalesOrder.State.ToString()));
             optionsListPage.Add(new Options("Orderlines", selectedSalesOrder.OrderLines.ToString()));
 
             optionsListPage.Add(new Options("Back", "NO EDIT"));
@@ -287,6 +324,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 {
                     Console.WriteLine("Press a key to update another parameter");
                     Database.Instance.EditSalesOrder(selectedSalesOrder);
+                    
                 }
             }
             else
@@ -294,7 +332,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 break;
             }
             Console.WriteLine("Press ESC to return to Sales Order screen");
-            Database.Instance.EditSalesOrder(selectedSalesOrder);
+            //Database.Instance.EditSalesOrder(selectedSalesOrder);
             company = Database.Instance.SelectCompany(selectedSalesOrder.CompanyID);
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 

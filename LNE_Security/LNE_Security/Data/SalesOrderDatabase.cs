@@ -44,6 +44,9 @@ partial class Database
                 case "Created":
                     line.State = OrderLine.States.Created;
                     break;
+                case "Canceled":
+                    line.State = OrderLine.States.Canceled;
+                    break;
                 default:
                     line.State = OrderLine.States.Created;
                     break;
@@ -288,52 +291,43 @@ partial class Database
 
     public void EditOrderlineState(UInt16 OLID, string state)
     {
-        if (state != "Closed")
-        {
-            string query = @"UPDATE [dbo].[Orderline]
-        SET[Status] = '" + state +
-                                "' WHERE OLID =" + OLID.ToString();
-            sqlConnection.Open();
-            SqlCommand cmd = new SqlCommand(query, sqlConnection);
-
-            SqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
-            sqlConnection.Close();
-        }
-        else
-            Console.WriteLine("Orderline is CLOSED and cannot be edited");
         
+        string query = @"UPDATE [dbo].[Orderline]
+        SET[Status] = '" + state +
+                            "' WHERE OLID =" + OLID.ToString();
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+        sqlConnection.Close();
     }
 
     public void EditOrderline(UInt16 OLID, OrderLine editedOrderline)
     {
-        if(editedOrderline.State.ToString() != "Closed")
-        {
-            string query = @"UPDATE [dbo].[Orderline]
+        string query = @"UPDATE [dbo].[Orderline]
         SET[PID] = " + editedOrderline.PID.ToString() +
-                                ",[Quantity] =" + editedOrderline.Quantity.ToString() +
-                                ",[OrderID] = " + editedOrderline.OrderID.ToString() +
-                                ",[Status] = '" + editedOrderline.State.ToString() +
-                                "' WHERE OLID =" + OLID.ToString();
-            sqlConnection.Open();
-            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                            ",[Quantity] =" + editedOrderline.Quantity.ToString() +
+                            ",[OrderID] = " + editedOrderline.OrderID.ToString() +
+                            ",[Status] = '" + editedOrderline.State.ToString() +
+                            "' WHERE OLID =" + OLID.ToString();
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
 
-            SqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
-            sqlConnection.Close();
-        }
-        else
-            Console.WriteLine("Orderline is CLOSED and cannot be edited");
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+        sqlConnection.Close();
     }
     public void EditSalesOrder(SalesOrder editedSalesOrder)
     {
+        /*
         if(editedSalesOrder.State == SalesOrder.States.Closed || editedSalesOrder.State == SalesOrder.States.Canceled)
         {
-            Console.WriteLine("Cannot edit Salesorder with state: " + editedSalesOrder.ToString());
+            Console.WriteLine("Cannot edit Salesorder with state: " + editedSalesOrder.State.ToString());
             Console.WriteLine("Press a key to return");
             Console.ReadKey();
             return;
-        }
+        }*/
         if(editedSalesOrder != null)
         {
             UInt32 orderID = editedSalesOrder.OrderID;

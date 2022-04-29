@@ -61,7 +61,8 @@ public class SalesOrderScreen : ScreenHandler
                 }
                 salesOrder.TotalPrice = salesOrder.CalculateTotalPrice(salesOrder.OrderLines);
                 salesOrderListPage.Add(salesOrder);
-            }     
+            }   
+            Database.Instance.EditSalesOrder(salesOrder);
         }
         
         salesOrderListPage.AddColumn("Sales order id", "OrderID", "Sales order id".Length);
@@ -71,6 +72,8 @@ public class SalesOrderScreen : ScreenHandler
         salesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", 10);
         salesOrderListPage.AddColumn("State", "State");
         salesOrderListPage.Draw();
+        
+        
 
         Console.WriteLine("F1 - New Sales Order");
         Console.WriteLine("F2 - Edit Sales Order");
