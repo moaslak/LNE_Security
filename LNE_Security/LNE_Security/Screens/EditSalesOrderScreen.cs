@@ -197,7 +197,12 @@ internal class EditSalesOrderScreen : ScreenHandler
             default:
                 break;
         }
-        
+        List<OrderLine> orderLines = Database.Instance.GetOrderLines(selectedSalesOrder.OrderID);
+        for(int i = 0; i < orderLines.Count; i++)
+        {
+            orderLines[i].Product = Database.Instance.SelectProduct(orderLines[i].Product.PID);
+        }
+        selectedSalesOrder.TotalPrice = selectedSalesOrder.CalculateTotalPrice(orderLines);
         for (int i = 0; i < this.salesOrders.Count; i++)
         {
             if( selectedSalesOrder.OrderLines.Count == 0)
@@ -207,7 +212,6 @@ internal class EditSalesOrderScreen : ScreenHandler
             }
             if (this.salesOrders[i].OrderID == selectedSalesOrder.OrderID && success)
             {
-                List<OrderLine> orderLines = Database.Instance.GetOrderLines(selectedSalesOrder.OrderID);
                 Console.WriteLine("Sales order with orderId " + selectedSalesOrder.OrderID + " edited");
                 return selectedSalesOrder;
             }

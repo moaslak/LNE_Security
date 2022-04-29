@@ -261,7 +261,7 @@ partial class Database
           "', [ContactInfoID] = '" + customer.ContactInfoID.ToString() +
           "', [CID] = '" + customer.CID +
           "', [CompanyID] = '" + companyID.ToString() +
-          "', [Price] = '" + salesOrder.CalculateTotalPrice(salesOrder.OrderLines) + 
+          "', [Price] = '" + salesOrder.TotalPrice + 
           "', [State] = '" + salesOrder.State.ToString() + "'  WHERE OrderID = '" + salesOrder.OrderID+"'";
         cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();

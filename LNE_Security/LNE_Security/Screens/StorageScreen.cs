@@ -135,6 +135,13 @@ public class StorageScreen : ScreenHandler
     private void Pick()
     {
         List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders("Confirmed");
+        List<SalesOrder> incompleteOrders = Database.Instance.GetSalesOrders("Incomplete");
+
+        foreach(SalesOrder salesOrder in incompleteOrders)
+        {
+            salesOrders.Add(salesOrder);
+        }
+
         ListPage<SalesOrder> salesOrderListpage = new ListPage<SalesOrder>();
         foreach (SalesOrder so in salesOrders)
         {
@@ -153,7 +160,7 @@ public class StorageScreen : ScreenHandler
             int count = 0;
             foreach (OrderLine orderLine in orderLines)
             {
-                if (orderLine.State == OrderLine.States.Confirmed)
+                if (orderLine.State == OrderLine.States.Confirmed || orderLine.State == OrderLine.States.Created)
                 {
                     orderLine.PID = orderLine.Product.PID;
                     orderLine.Product = Database.Instance.SelectProduct(orderLine.PID);

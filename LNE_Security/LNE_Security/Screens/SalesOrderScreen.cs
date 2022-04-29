@@ -61,8 +61,7 @@ public class SalesOrderScreen : ScreenHandler
                 }
                 salesOrder.TotalPrice = salesOrder.CalculateTotalPrice(salesOrder.OrderLines);
                 salesOrderListPage.Add(salesOrder);
-            }
-                
+            }     
         }
         
         salesOrderListPage.AddColumn("Sales order id", "OrderID", "Sales order id".Length);
