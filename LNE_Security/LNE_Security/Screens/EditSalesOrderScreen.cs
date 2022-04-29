@@ -228,11 +228,25 @@ internal class EditSalesOrderScreen : ScreenHandler
 
             foreach(SalesOrder salesOrder in salesOrders)
             {
+                salesOrder.OrderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
+                salesOrder.TotalPrice = salesOrder.CalculateTotalPrice(salesOrder.OrderLines);
                 SalesOrderListPage.Add(salesOrder);
                 customer = Database.Instance.SelectCustomer(salesOrder.CID);
                 if(salesOrder.FullName.Length > fullNameMaxLength)
                     fullNameMaxLength = salesOrder.FullName.Length;
             }
+            
+            for (int i = 0; i < salesOrders.Count; i++)
+            {
+                salesOrders[i].OrderLines = Database.Instance.GetOrderLines(salesOrders[i].OrderID);
+                for (int j = 0; j < salesOrders[i].OrderLines.Count; j++)
+                {
+                    salesOrders[i].OrderLines[j].PID = salesOrders[i].OrderLines[j].Product.PID;
+                    salesOrders[i].OrderLines[j].Product = Database.Instance.SelectProduct(salesOrders[i].OrderLines[j].PID);
+                }
+                salesOrders[i].TotalPrice = salesOrders[i].CalculateTotalPrice(salesOrders[i].OrderLines);
+            }
+            
             SalesOrderListPage.AddColumn("ID", "OrderID", 10);
             SalesOrderListPage.AddColumn("Order time", "OrderTime", salesOrders[0].OrderTime.ToString().Length);
             SalesOrderListPage.AddColumn("Customer Id", "CID", "Customer Id".Length);
@@ -254,14 +268,8 @@ internal class EditSalesOrderScreen : ScreenHandler
 
             if (selected.Value != "NO EDIT")
             {
-                List<OrderLine> orderLines = Database.Instance.GetOrderLines(selectedSalesOrder.OrderID);
-                for(int i = 0; i < selectedSalesOrder.OrderLines.Count; i++)
-                {
-                    selectedSalesOrder.OrderLines[i].Product = Database.Instance.SelectProduct(selectedSalesOrder.OrderLines[i].Product.PID);
-                }
-                
                 selectedSalesOrder = EditSalesOrder(selected, selectedSalesOrder);
-                selectedSalesOrder.TotalPrice = selectedSalesOrder.CalculateTotalPrice(orderLines);
+                
                 if (selectedSalesOrder.OrderLines != null)
                 {
                     Console.WriteLine("Press a key to update another parameter");

@@ -52,7 +52,17 @@ public class SalesOrderScreen : ScreenHandler
         foreach (SalesOrder salesOrder in salesOrders)
         {
             if(salesOrder.CID == selected.CID)
+            {
+                salesOrder.OrderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
+                for(int i = 0; i < salesOrder.OrderLines.Count; i++)
+                {
+                    salesOrder.OrderLines[i].PID = salesOrder.OrderLines[i].Product.PID;
+                    salesOrder.OrderLines[i].Product = Database.Instance.SelectProduct(salesOrder.OrderLines[i].PID);
+                }
+                salesOrder.TotalPrice = salesOrder.CalculateTotalPrice(salesOrder.OrderLines);
                 salesOrderListPage.Add(salesOrder);
+            }
+                
         }
         
         salesOrderListPage.AddColumn("Sales order id", "OrderID", "Sales order id".Length);

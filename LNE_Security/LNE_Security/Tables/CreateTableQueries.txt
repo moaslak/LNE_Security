@@ -16,7 +16,7 @@ FirstName VARCHAR(64),
 LastName VARCHAR(64),
 Email VARCHAR(64),
 PhoneNumber VARCHAR(16)
-AddressID int FOREIGN REFERENCES Address(AddressID),
+AddressID int FOREIGN KEY REFERENCES Address(AddressID),
 PRIMARY KEY(Id)
 )
 
