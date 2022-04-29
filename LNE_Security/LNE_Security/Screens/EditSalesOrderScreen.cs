@@ -91,7 +91,16 @@ internal class EditSalesOrderScreen : ScreenHandler
                 selected.PID = newUint;
                 break;
             case "Quantity":
-                selected.Quantity = newDouble;
+                Product product = Database.Instance.SelectProduct(selected.PID);
+                Console.WriteLine("Amount in storage: " + product.AmountInStorage);
+                if(product.AmountInStorage < newDouble)
+                {
+                    Console.WriteLine("Not enough in storage!!");
+                    succes = false;
+                    return (orderLines, succes);
+                }
+                else
+                    selected.Quantity = newDouble;
                 break;
             case "Status":
                 List<OrderLine.States> stateList = statesToList();
