@@ -101,12 +101,12 @@ public class EditCustomerScreen : ScreenHandler
             Console.WriteLine("Phonenumber: " + contact.PhoneNumber);
             Console.WriteLine("Email: " + contact.Email);
 
-            ContactListPage.AddColumn("Firstname", "FirstName");
-            ContactListPage.AddColumn("Lastname", "LastName");
-            AddressListPage.AddColumn("Streetname", "StreetName");
-            AddressListPage.AddColumn("Housenumber", "HouseNumber");
-            AddressListPage.AddColumn("Zipcode", "ZipCode");
-            AddressListPage.AddColumn("City", "City");
+            ContactListPage.AddColumn("Firstname", "FirstName", customer.FirstName.Length);
+            ContactListPage.AddColumn("Lastname", "LastName", customer.LastName.Length);
+            AddressListPage.AddColumn("Streetname", "StreetName", customer.ContactInfo.Address.StreetName.Length);
+            AddressListPage.AddColumn("Housenumber", "HouseNumber", customer.ContactInfo.Address.HouseNumber.Length);
+            AddressListPage.AddColumn("Zipcode", "ZipCode", customer.ContactInfo.Address.ZipCode.Length);
+            //AddressListPage.AddColumn("City", "City", customer.ContactInfo.Address.);
             AddressListPage.AddColumn("Country", "Country");
             ContactListPage.AddColumn("Phonenumber", "PhoneNumber");
             ContactListPage.AddColumn("Email", "Email");

@@ -14,14 +14,6 @@ class Program
         }
     }
 
-
-  
-
-
-
-
-
-
     // TODO: TITLES!!!
 
     static List<Company> companyList = new List<Company>();
@@ -35,5 +27,10 @@ class Program
         MainMenuScreen mainMenu = new MainMenuScreen();
         ScreenHandler.Display(mainMenu);
 
+    }
+
+    public static void CreateInvoice(SalesOrder salesOrder)
+    {
+        string html = System.IO.File.ReadAllText(@"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Templates\Invoice.html");
     }
 }

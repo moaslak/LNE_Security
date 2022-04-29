@@ -28,13 +28,25 @@ public class CompanyScreen : ScreenHandler
         ListPage<Company> CompanyListPage = new ListPage<Company>();
         List<Company> CompanyList = Database.Instance.GetCompanies();
         Company selected = new Company();
+
+        int maxCountryLength = 0;
+        int maxCurrencyLength = 0;
+        foreach(Company company in CompanyList)
+        {
+            if(company.Country.Length > maxCountryLength)
+                maxCountryLength = company.Country.Length;
+            if(company.Currency.ToString().Length > maxCurrencyLength)
+                maxCurrencyLength = company.Currency.ToString().Length;
+        }
+        
+       
         if(CompanyList.Count > 0)
         {
             foreach (Company company in CompanyList)
                 CompanyListPage.Add(company);
-            CompanyListPage.AddColumn("Company name", "CompanyName");
-            CompanyListPage.AddColumn("Country", "Country");
-            CompanyListPage.AddColumn("Currency", "Currency");
+            CompanyListPage.AddColumn("Company name", "CompanyName", "Company name".Length);
+            CompanyListPage.AddColumn("Country", "Country", maxCountryLength);
+            CompanyListPage.AddColumn("Currency", "Currency", maxCountryLength);
             Console.WriteLine("Choose Company");
             selected = CompanyListPage.Select();
             Console.WriteLine("Selection: " + Database.Instance.SelectCompany(selected.CompanyID).CompanyName);

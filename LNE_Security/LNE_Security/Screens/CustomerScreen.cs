@@ -75,8 +75,10 @@ public class CustomerScreen : ScreenHandler
         ListPage<Customer> CustomerListPage = new ListPage<Customer>();
         ListPage<ContactInfo> ContactListPage = new ListPage<ContactInfo>();
         List<Customer> customers = Database.Instance.GetCustomers();
-        
-        foreach(Customer customer in customers)
+        int maxFullnameLength = 0;
+        int maxEmailLength = 0;
+        int maxPhoneNumberLength = 0;
+        foreach (Customer customer in customers)
         {
             try
             {
@@ -89,20 +91,26 @@ public class CustomerScreen : ScreenHandler
             {
                 Console.WriteLine(ex.Message);
             } 
+            if(customer.FullName.Length > maxFullnameLength)
+                maxFullnameLength = customer.FullName.Length;
+            if(customer.Email.Length > maxEmailLength)
+                maxEmailLength = customer.Email.Length;
+            if(customer.PhoneNumber.Length > maxPhoneNumberLength)
+                maxPhoneNumberLength = customer.PhoneNumber.Length;
         }
  
-        //string name = $"{Customer.ContactInfo.FirstName} {Customer.ContactInfo.LastName}";
-        //Title = Customer.ContactInfo.FullName + " Customer name";
         Title = "Customer screen";
         Clear(this);
         Customer selected = new Customer();
+
+
         if(customers.Count != 0)
         {
             Console.WriteLine("Choose Customer");
-            CustomerListPage.AddColumn("Customer ID", "CID");
-            CustomerListPage.AddColumn("Customer Name", "FullName");
-            CustomerListPage.AddColumn("Phonenumber", "PhoneNumber");
-            CustomerListPage.AddColumn("Email", "Email");
+            CustomerListPage.AddColumn("Customer ID", "CID", "Customer ID".Length);
+            CustomerListPage.AddColumn("Customer Name", "FullName", maxFullnameLength);
+            CustomerListPage.AddColumn("Phonenumber", "PhoneNumber", maxPhoneNumberLength);
+            CustomerListPage.AddColumn("Email", "Email", maxEmailLength);
             selected = CustomerListPage.Select();
             Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
         }

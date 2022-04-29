@@ -28,9 +28,9 @@ public class CustomerDetails : ScreenHandler
 		Title = customer.FullName + " Customer Details";
 		Clear(this);
 
-		CustomerlistPage.AddColumn("Customer name", "FullName");
-		CustomerlistPage.AddColumn("Address", "FullAddress");
-		SalesListPage.AddColumn("Last Purchase", "OrderTime");
+		CustomerlistPage.AddColumn("Customer name", "FullName", customer.FullName.Length);
+		CustomerlistPage.AddColumn("Address", "FullAddress", customer.ContactInfo.FullAddress.Length);
+		SalesListPage.AddColumn("Last Purchase", "OrderTime"); //TODO: IMPLEMENT
 		Customer selected = CustomerlistPage.Select();
 
 		Console.WriteLine("Selection: " + selected.FullName);
