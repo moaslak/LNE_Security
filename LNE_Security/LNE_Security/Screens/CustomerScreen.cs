@@ -112,35 +112,38 @@ public class CustomerScreen : ScreenHandler
             CustomerListPage.AddColumn("Phonenumber", "PhoneNumber", maxPhoneNumberLength);
             CustomerListPage.AddColumn("Email", "Email", maxEmailLength);
             selected = CustomerListPage.Select();
-            Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
+            
         }
-        
-        Console.WriteLine("F1 - New Customer");
-        //Console.WriteLine("F2 - Edit");
-        Console.WriteLine("F2 - View/Edit Customer");
-        Console.WriteLine("F8 - Delete Customer");
-        Console.WriteLine("F10 - To Main menu");
-        Console.WriteLine("Esc - Close App");
-        Console.WriteLine();
-        
-        switch (Console.ReadKey().Key)
+        if (selected != null)
         {
-            case ConsoleKey.F1:
-                newCustomer();
-                Console.WriteLine("Press enter to continue");
-                break;
-            case ConsoleKey.F2:
-                ScreenHandler.Display(new EditCustomerScreen(selected, company));
-                break;
-            case ConsoleKey.F10:
-                ScreenHandler.Display(new MainMenuScreen(this.company));
-                break;
-            case ConsoleKey.F8:
-                Database.Instance.DeleteCustomer(selected.CID); //TODO: kan ikke slette hvis brugeren har en salgsordre, DELETE ON CASCADE
-                break;
-            case ConsoleKey.Escape:
-                Environment.Exit(0);
-                break;
+            Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
+            Console.WriteLine("F1 - New Customer");
+            Console.WriteLine("F2 - View/Edit Customer");
+            Console.WriteLine("F8 - Delete Customer");
+            Console.WriteLine("F10 - To Main menu");
+            Console.WriteLine("Esc - Close App");
+            Console.WriteLine();
+
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.F1:
+                    newCustomer();
+                    Console.WriteLine("Press enter to continue");
+                    break;
+                case ConsoleKey.F2:
+                    ScreenHandler.Display(new EditCustomerScreen(selected, company));
+                    break;
+                case ConsoleKey.F10:
+                    ScreenHandler.Display(new MainMenuScreen(this.company));
+                    break;
+                case ConsoleKey.F8:
+                    Database.Instance.DeleteCustomer(selected.CID); //TODO: kan ikke slette hvis brugeren har en salgsordre, DELETE ON CASCADE
+                    break;
+                case ConsoleKey.Escape:
+                    Environment.Exit(0);
+                    break;
+            }
         }
+        
     }
 }

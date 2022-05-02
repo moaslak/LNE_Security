@@ -135,15 +135,16 @@ partial class Database
 
         Product selectedProduct = new Product();
 
-        productListPage.AddColumn("Product Number", "ProductNumber", 10);
-        productListPage.AddColumn("Product Name", "ProductName", 25);
-        productListPage.AddColumn("Amount In Storage", "AmountInStorage");
-        productListPage.AddColumn("Cost Price", "CostPrice");
-        productListPage.AddColumn("Sales Price", "SalesPrice");
+        productListPage.AddColumn("Product Number", "ProductNumber", "Product Number".Length);
+        productListPage.AddColumn("Product Name", "ProductName", "Product Name".Length);
+        productListPage.AddColumn("Amount In Storage", "AmountInStorage", "Amount In Storage".Length);
+        productListPage.AddColumn("Cost Price", "CostPrice", "Cost Price".Length);
+        productListPage.AddColumn("Sales Price", "SalesPrice", "Sales Price".Length);
         if (productList.Count == 0)
             productListPage.Draw();
         else
             selectedProduct = productListPage.Select();
+        //TODO: exception handling
         Console.WriteLine("Selection : " + selectedProduct.ProductName);
         orderline.Product = selectedProduct;
         double quantity = 0;
@@ -177,7 +178,7 @@ partial class Database
         orderline.State = OrderLine.States.Created;
         sqlConnection.Open();
         string query = @"INSERT INTO [dbo].[Orderline]( [PID], [Quantity], [OrderID], [Status]) VALUES(
-        '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID + "','" + orderline.State.ToString() +"')";
+    '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID + "','" + orderline.State.ToString() + "')";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         SqlDataReader reader = cmd.ExecuteReader();
         reader.Close();
@@ -203,6 +204,8 @@ partial class Database
 
         //selectedProduct.AmountInStorage = amountInStore - quantity; //TODO: trækkes fra i Storage, når state == packed
         Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
+
+        
 
         return orderline;
     }

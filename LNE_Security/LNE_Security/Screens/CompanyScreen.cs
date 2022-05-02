@@ -28,19 +28,18 @@ public class CompanyScreen : ScreenHandler
         ListPage<Company> CompanyListPage = new ListPage<Company>();
         List<Company> CompanyList = Database.Instance.GetCompanies();
         Company selected = new Company();
-
+        
         int maxCountryLength = 0;
         int maxCurrencyLength = 0;
-        foreach(Company company in CompanyList)
+        foreach (Company company in CompanyList)
         {
-            if(company.Country.Length > maxCountryLength)
+            if (company.Country.Length > maxCountryLength)
                 maxCountryLength = company.Country.Length;
-            if(company.Currency.ToString().Length > maxCurrencyLength)
+            if (company.Currency.ToString().Length > maxCurrencyLength)
                 maxCurrencyLength = company.Currency.ToString().Length;
         }
-        
-       
-        if(CompanyList.Count > 0)
+
+        if (CompanyList.Count > 0)
         {
             foreach (Company company in CompanyList)
                 CompanyListPage.Add(company);
@@ -49,34 +48,36 @@ public class CompanyScreen : ScreenHandler
             CompanyListPage.AddColumn("Currency", "Currency", maxCountryLength);
             Console.WriteLine("Choose Company");
             selected = CompanyListPage.Select();
-            Console.WriteLine("Selection: " + Database.Instance.SelectCompany(selected.CompanyID).CompanyName);
-        }
-        
             
-        
-        Console.WriteLine("F1 - New Company");
-        Console.WriteLine("F2 - Edit Company");
-        Console.WriteLine("F8 - Delete Company");
-        Console.WriteLine("F10 - To Main menu");
-        Console.WriteLine("Esc - Close App");
-
-        switch (Console.ReadKey().Key)
-        {
-            case ConsoleKey.F1:
-                Database.Instance.newCompany();
-                break;
-            case ConsoleKey.F2:
-                ScreenHandler.Display(new EditCompnayScreen(selected));
-                break;
-            case ConsoleKey.F8:
-                Database.Instance.DeleteCompany(selected.CompanyID);
-                break;
-            case ConsoleKey.F10:
-                ScreenHandler.Display(new MainMenuScreen(selected));
-                break;
-            case ConsoleKey.Escape:
-                Environment.Exit(0);
-                break;
         }
+        if (selected != null)
+        {
+            Console.WriteLine("Selection: " + Database.Instance.SelectCompany(selected.CompanyID).CompanyName);
+            Console.WriteLine("F1 - New Company");
+            Console.WriteLine("F2 - Edit Company");
+            Console.WriteLine("F8 - Delete Company");
+            Console.WriteLine("F10 - To Main menu");
+            Console.WriteLine("Esc - Close App");
+
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.F1:
+                    Database.Instance.newCompany();
+                    break;
+                case ConsoleKey.F2:
+                    ScreenHandler.Display(new EditCompnayScreen(selected));
+                    break;
+                case ConsoleKey.F8:
+                    Database.Instance.DeleteCompany(selected.CompanyID);
+                    break;
+                case ConsoleKey.F10:
+                    ScreenHandler.Display(new MainMenuScreen(selected));
+                    break;
+                case ConsoleKey.Escape:
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+           
     }
 }

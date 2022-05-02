@@ -50,39 +50,43 @@ namespace LNE_Security
                     productListPage.Draw();
                 else
                     selectedProduct = productListPage.Select();
+                
+                
+            }
+            if(selectedProduct != null)
+            {
                 Console.WriteLine("Selection : " + selectedProduct.ProductName);
                 Console.WriteLine("Enter - product details");
-            }
-     
-            Console.WriteLine("F1 - New product");
-            Console.WriteLine("F2 - Edit product");
-            Console.WriteLine("F8 - Delete product");
-            Console.WriteLine("F10 - Back");
-            Console.WriteLine("Esc - Close app");
-            switch (Console.ReadKey().Key)
-            {
-                case ConsoleKey.Enter:
-                    ScreenHandler.Display(new ProductDetailsScreen(selectedProduct, company));
-                    break;
-                case ConsoleKey.F1:
-                    Database.Instance.NewProduct();
-                    break;
-                case ConsoleKey.F2:
-                    ScreenHandler.Display(new EditProductScreen(selectedProduct));
-                    break;
-                case ConsoleKey.Escape:
-                    Environment.Exit(0);
-                    break;
-                case ConsoleKey.F8:
-                    Database.Instance.DeleteProduct(selectedProduct.PID);
-                    break;
-                case ConsoleKey.F10:
-                    ScreenHandler.Display(new MainMenuScreen(this.company));
-                    break;
-                default:
-                    break;
-            }
-            
+
+                Console.WriteLine("F1 - New product");
+                Console.WriteLine("F2 - Edit product");
+                Console.WriteLine("F8 - Delete product");
+                Console.WriteLine("F10 - Back");
+                Console.WriteLine("Esc - Close app");
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.Enter:
+                        ScreenHandler.Display(new ProductDetailsScreen(selectedProduct, company));
+                        break;
+                    case ConsoleKey.F1:
+                        Database.Instance.NewProduct();
+                        break;
+                    case ConsoleKey.F2:
+                        ScreenHandler.Display(new EditProductScreen(selectedProduct));
+                        break;
+                    case ConsoleKey.Escape:
+                        Environment.Exit(0);
+                        break;
+                    case ConsoleKey.F8:
+                        Database.Instance.DeleteProduct(selectedProduct.PID);
+                        break;
+                    case ConsoleKey.F10:
+                        ScreenHandler.Display(new MainMenuScreen(this.company));
+                        break;
+                    default:
+                        break;
+                }
+            }  
         }
     }
 }

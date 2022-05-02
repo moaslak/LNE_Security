@@ -125,14 +125,18 @@ public class StorageScreen : ScreenHandler
         SalesOrder selected = new SalesOrder();
         if (salesOrders.Count > 0)
         {
+
+            int maxFullnameLength = 0;
             foreach (SalesOrder salesOrder in salesOrders)
             {
                 salesOrder.FullName = (Database.Instance.SelectCustomer(salesOrder.CID)).ContactInfo.FullName;
                 salesOrdersListPage.Add(salesOrder);
-                
+                if (salesOrder.FullName.Length > maxFullnameLength)
+                    maxFullnameLength = salesOrder.FullName.Length;
+
             }
-            salesOrdersListPage.AddColumn("Order ID", "OrderID");
-            salesOrdersListPage.AddColumn("Customer", "FullName");
+            salesOrdersListPage.AddColumn("Order ID", "OrderID", "Order ID".Length);
+            salesOrdersListPage.AddColumn("Customer", "FullName", maxFullnameLength);
             Console.WriteLine("Choose Company");
             selected = salesOrdersListPage.Select();
 
@@ -147,8 +151,8 @@ public class StorageScreen : ScreenHandler
                 
 
             OrderLine orderline = new OrderLine();
-            ordersListPage.AddColumn("PID", "PID");
-            ordersListPage.AddColumn("Quantity", "Quantity");
+            ordersListPage.AddColumn("PID", "PID", 5);
+            ordersListPage.AddColumn("Quantity", "Quantity", 6);
 
             Console.WriteLine("F1 - Confirm sales order");
             Console.WriteLine("F2 - Inspect orderlines");
@@ -188,9 +192,9 @@ public class StorageScreen : ScreenHandler
         Product product = Database.Instance.SelectProduct(orderLine.PID);
         ListPage<Product> productListPage = new ListPage<Product>();
         productListPage.Add(product);
-        productListPage.AddColumn("Product name", "ProductName");
-        productListPage.AddColumn("Amount in storage", "AmountInStorage");
-        productListPage.AddColumn("Location", "LocationString");
+        productListPage.AddColumn("Product name", "ProductName", product.ProductName.Length);
+        productListPage.AddColumn("Amount in storage", "AmountInStorage", "Amount in storage".Length);
+        productListPage.AddColumn("Location", "LocationString", "Location".Length);
         productListPage.Draw();
     }
 
@@ -215,8 +219,15 @@ public class StorageScreen : ScreenHandler
         }
         if (salesOrders.Count > 0)
         {
-            salesOrderListpage.AddColumn("Order ID", "OrderID");
-            salesOrderListpage.AddColumn("Customer", "FullName");
+            int maxFullnameLength = 0;
+            foreach(SalesOrder so in salesOrders)
+            {
+                if (so.FullName.Length > maxFullnameLength)
+                    maxFullnameLength = so.FullName.Length;
+            }
+
+            salesOrderListpage.AddColumn("Order ID", "OrderID", "Order ID".Length);
+            salesOrderListpage.AddColumn("Customer", "FullName", maxFullnameLength);
             SalesOrder salesOrder = salesOrderListpage.Select();
 
             List<OrderLine> orderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
@@ -235,8 +246,8 @@ public class StorageScreen : ScreenHandler
             }
             if (count > 0)
             {
-                listPage.AddColumn("OLID", "OLID");
-                listPage.AddColumn("Status", "State");
+                listPage.AddColumn("OLID", "OLID", "OLID".Length);
+                listPage.AddColumn("Status", "State", "Confirmed".Length);
                 OrderLine selectedOrderLine = listPage.Select();
 
                 if (selectedOrderLine.State != OrderLine.States.Packed)
@@ -244,12 +255,12 @@ public class StorageScreen : ScreenHandler
                     Product product = Database.Instance.SelectProduct(selectedOrderLine.PID);
                     ListPage<Product> productListPage = new ListPage<Product>();
                     productListPage.Add(product);
-                    productListPage.AddColumn("PID", "PID");
-                    productListPage.AddColumn("Product Number", "ProductNumber");
-                    productListPage.AddColumn("Product Name", "ProductName");
-                    productListPage.AddColumn("Amount in storage", "AmountInStorage");
-                    productListPage.AddColumn("Location", "LocationString");
-                    productListPage.AddColumn("Description", "Description");
+                    productListPage.AddColumn("PID", "PID", 5);
+                    productListPage.AddColumn("Product Number", "ProductNumber", "Product Number".Length);
+                    productListPage.AddColumn("Product Name", "ProductName", "Product Name".Length);
+                    productListPage.AddColumn("Amount in storage", "AmountInStorage", "Amount in storage".Length);
+                    productListPage.AddColumn("Location", "LocationString", "Location".Length);
+                    productListPage.AddColumn("Description", "Description", product.Description.Length);
                     Product selectedProduct = productListPage.Select();
 
                     Console.WriteLine("Confirm pick? (y)es/(n)o");

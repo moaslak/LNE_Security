@@ -45,87 +45,87 @@ public class SalesOrderScreen : ScreenHandler
         customerListPage.AddColumn("Select customer", "CID");
         selected = customerListPage.Select();
 
-        ListPage<SalesOrder> salesOrderListPage = new ListPage<SalesOrder>();
-        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
-        List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(selected);
-        
-        foreach (SalesOrder salesOrder in salesOrders)
+        if(selected != null)
         {
-            if(salesOrder.CID == selected.CID)
-            {
-                salesOrder.OrderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
-                for(int i = 0; i < salesOrder.OrderLines.Count; i++)
-                {
-                    salesOrder.OrderLines[i].PID = salesOrder.OrderLines[i].Product.PID;
-                    salesOrder.OrderLines[i].Product = Database.Instance.SelectProduct(salesOrder.OrderLines[i].PID);
-                }
-                salesOrder.TotalPrice = salesOrder.CalculateTotalPrice(salesOrder.OrderLines);
-                salesOrderListPage.Add(salesOrder);
-            }   
-            Database.Instance.EditSalesOrder(salesOrder);
-        }
-        
-        salesOrderListPage.AddColumn("Sales order id", "OrderID", "Sales order id".Length);
-        salesOrderListPage.AddColumn("Date", "OrderTime", 20);
-        salesOrderListPage.AddColumn("CID", "CID", 5);
-        salesOrderListPage.AddColumn("Name", "FullName", 30);
-        salesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", 10);
-        salesOrderListPage.AddColumn("State", "State");
-        salesOrderListPage.Draw();
-        
-        
+            ListPage<SalesOrder> salesOrderListPage = new ListPage<SalesOrder>();
+            SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
+            List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(selected);
 
-        Console.WriteLine("F1 - New Sales Order");
-        Console.WriteLine("F2 - Edit Sales Order");
-        Console.WriteLine("F3 - Get Sales Order for Customer");
-        Console.WriteLine("F7 - Delete Sales Orders by customer id");
-        Console.WriteLine("F8 - Delete Sales Orders");
-        Console.WriteLine("F10 - Back");
-        Console.WriteLine("Esc - Close App");
-        
-        UInt16 CID = 0;
-        switch (Console.ReadKey().Key)
-        {   
-            case ConsoleKey.F1:
-                Database.Instance.NewSalesOrder(selected, this.company.CompanyID);
-                break;
-            case ConsoleKey.F2:
-                ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));
-                
-                break;
-            case ConsoleKey.F3:
-                do
+            foreach (SalesOrder salesOrder in salesOrders)
+            {
+                if (salesOrder.CID == selected.CID)
                 {
-                    Console.Write("Get Sales Srders for which custumer ID: ");
-                } while (!(UInt16.TryParse(Console.ReadLine(), out CID)));
-                Console.WriteLine();
-                showSalesOrders(Database.Instance.SelectCustomer(CID));
-                Console.WriteLine("Press a key to continue");
-                Console.ReadKey();
-                break;
-            case ConsoleKey.F7:
-                do
-                {
-                    Console.Write("Delete Sales Orders for which custumer ID: ");
-                } while (!(UInt16.TryParse(Console.ReadLine(), out CID)));
-                Console.WriteLine();
-                Database.Instance.DeleteSalesOrdersByCID(CID);
-                break;
-            case ConsoleKey.F8:
-                Database.Instance.DeleteSalesOrder(DeleteSalesOrderOption(salesOrders),Database.Instance.SelectCustomer(selected.CID));
-                Console.WriteLine("Press a enter to continue");
-                break;
-            case ConsoleKey.F10:
-                ScreenHandler.Display(new MainMenuScreen(this.company));
-                break;
-            case ConsoleKey.Escape:
-                Environment.Exit(0);
-                break;
-            default:
-                break;
-        }
-        Draw();
-        
+                    salesOrder.OrderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
+                    for (int i = 0; i < salesOrder.OrderLines.Count; i++)
+                    {
+                        salesOrder.OrderLines[i].PID = salesOrder.OrderLines[i].Product.PID;
+                        salesOrder.OrderLines[i].Product = Database.Instance.SelectProduct(salesOrder.OrderLines[i].PID);
+                    }
+                    salesOrder.TotalPrice = salesOrder.CalculateTotalPrice(salesOrder.OrderLines);
+                    salesOrderListPage.Add(salesOrder);
+                }
+                Database.Instance.EditSalesOrder(salesOrder);
+            }
+
+            salesOrderListPage.AddColumn("Sales order id", "OrderID", "Sales order id".Length);
+            salesOrderListPage.AddColumn("Date", "OrderTime", 20);
+            salesOrderListPage.AddColumn("CID", "CID", 5);
+            salesOrderListPage.AddColumn("Name", "FullName", 30);
+            salesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", 10);
+            salesOrderListPage.AddColumn("State", "State");
+            salesOrderListPage.Draw();
+
+            Console.WriteLine("F1 - New Sales Order");
+            Console.WriteLine("F2 - Edit Sales Order");
+            Console.WriteLine("F3 - Get Sales Order for Customer");
+            Console.WriteLine("F7 - Delete Sales Orders by customer id");
+            Console.WriteLine("F8 - Delete Sales Orders");
+            Console.WriteLine("F10 - Back");
+            Console.WriteLine("Esc - Close App");
+
+            UInt16 CID = 0;
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.F1:
+                    Database.Instance.NewSalesOrder(selected, this.company.CompanyID);
+                    break;
+                case ConsoleKey.F2:
+                    ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));
+
+                    break;
+                case ConsoleKey.F3:
+                    do
+                    {
+                        Console.Write("Get Sales Srders for which custumer ID: ");
+                    } while (!(UInt16.TryParse(Console.ReadLine(), out CID)));
+                    Console.WriteLine();
+                    showSalesOrders(Database.Instance.SelectCustomer(CID));
+                    Console.WriteLine("Press a key to continue");
+                    Console.ReadKey();
+                    break;
+                case ConsoleKey.F7:
+                    do
+                    {
+                        Console.Write("Delete Sales Orders for which custumer ID: ");
+                    } while (!(UInt16.TryParse(Console.ReadLine(), out CID)));
+                    Console.WriteLine();
+                    Database.Instance.DeleteSalesOrdersByCID(CID);
+                    break;
+                case ConsoleKey.F8:
+                    Database.Instance.DeleteSalesOrder(DeleteSalesOrderOption(salesOrders), Database.Instance.SelectCustomer(selected.CID));
+                    Console.WriteLine("Press a enter to continue");
+                    break;
+                case ConsoleKey.F10:
+                    ScreenHandler.Display(new MainMenuScreen(this.company));
+                    break;
+                case ConsoleKey.Escape:
+                    Environment.Exit(0);
+                    break;
+                default:
+                    break;
+            }
+            Draw();
+        }  
     }
 
     /// <summary>

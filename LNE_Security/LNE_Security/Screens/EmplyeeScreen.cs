@@ -134,35 +134,38 @@ public class EmployeeScreen : ScreenHandler
             EmployeeListPage.AddColumn("User name", "UserName");
             
             selected = EmployeeListPage.Select();
-            Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
+            
         }
-
-        Console.WriteLine("F1 - New Employee");
-        //Console.WriteLine("F2 - Edit");
-        Console.WriteLine("F2 - View/Edit Employee");
-        Console.WriteLine("F8 - Delete Employee");
-        Console.WriteLine("F10 - To Main menu");
-        Console.WriteLine("Esc - Close App");
-        Console.WriteLine();
-
-        switch (Console.ReadKey().Key)
+        if(selected != null)
         {
-            case ConsoleKey.F1:
-                newEmployee();
-                Console.WriteLine("Press enter to continue");
-                break;
-            case ConsoleKey.F2:
-                ScreenHandler.Display(new EditEmployeeScreen(selected));
-                break;
-            case ConsoleKey.F10:
-                ScreenHandler.Display(new MainMenuScreen(this.company));
-                break;
-            case ConsoleKey.F8:
-                Database.Instance.DeleteEmployee(selected.EID);
-                break;
-            case ConsoleKey.Escape:
-                Environment.Exit(0);
-                break;
+            Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
+            Console.WriteLine("F1 - New Employee");
+            Console.WriteLine("F2 - View/Edit Employee");
+            Console.WriteLine("F8 - Delete Employee");
+            Console.WriteLine("F10 - To Main menu");
+            Console.WriteLine("Esc - Close App");
+            Console.WriteLine();
+
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.F1:
+                    newEmployee();
+                    Console.WriteLine("Press enter to continue");
+                    break;
+                case ConsoleKey.F2:
+                    ScreenHandler.Display(new EditEmployeeScreen(selected));
+                    break;
+                case ConsoleKey.F10:
+                    ScreenHandler.Display(new MainMenuScreen(this.company));
+                    break;
+                case ConsoleKey.F8:
+                    Database.Instance.DeleteEmployee(selected.EID);
+                    break;
+                case ConsoleKey.Escape:
+                    Environment.Exit(0);
+                    break;
+            }
         }
+        
     }
 }

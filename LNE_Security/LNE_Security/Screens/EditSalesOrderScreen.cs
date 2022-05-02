@@ -332,35 +332,39 @@ internal class EditSalesOrderScreen : ScreenHandler
             SalesOrderListPage.AddColumn("State", "State", 9);
             SalesOrder selectedSalesOrder = SalesOrderListPage.Select();
 
-            ListPage<Options> optionsListPage = new ListPage<Options>();
-
-            optionsListPage.AddColumn("Edit", "Option");
-            //optionsListPage.Add(new Options("Customer Id", selectedSalesOrder.CID.ToString()));
-            optionsListPage.Add(new Options("Total price", selectedSalesOrder.TotalPrice.ToString()));
-            optionsListPage.Add(new Options("Completion Time", selectedSalesOrder.CompletionTime.ToString()));
-            optionsListPage.Add(new Options("State", selectedSalesOrder.State.ToString()));
-            optionsListPage.Add(new Options("Orderlines", selectedSalesOrder.OrderLines.ToString()));
-
-            optionsListPage.Add(new Options("Back", "NO EDIT"));
-            Options selected = optionsListPage.Select();
-
-            if (selected.Value != "NO EDIT")
+            if(selectedSalesOrder != null)
             {
-                selectedSalesOrder = EditSalesOrder(selected, selectedSalesOrder);
-                
-                if (selectedSalesOrder.OrderLines != null)
+                ListPage<Options> optionsListPage = new ListPage<Options>();
+
+                optionsListPage.AddColumn("Edit", "Option");
+                //optionsListPage.Add(new Options("Customer Id", selectedSalesOrder.CID.ToString()));
+                optionsListPage.Add(new Options("Total price", selectedSalesOrder.TotalPrice.ToString()));
+                optionsListPage.Add(new Options("Completion Time", selectedSalesOrder.CompletionTime.ToString()));
+                optionsListPage.Add(new Options("State", selectedSalesOrder.State.ToString()));
+                optionsListPage.Add(new Options("Orderlines", selectedSalesOrder.OrderLines.ToString()));
+
+                optionsListPage.Add(new Options("Back", "NO EDIT"));
+                Options selected = optionsListPage.Select();
+
+                if (selected.Value != "NO EDIT")
                 {
-                    Console.WriteLine("Press a key to update another parameter");
-                    Database.Instance.EditSalesOrder(selectedSalesOrder); 
+                    selectedSalesOrder = EditSalesOrder(selected, selectedSalesOrder);
+
+                    if (selectedSalesOrder.OrderLines != null)
+                    {
+                        Console.WriteLine("Press a key to update another parameter");
+                        Database.Instance.EditSalesOrder(selectedSalesOrder);
+                    }
                 }
+                else
+                {
+                    break;
+                }
+                Console.WriteLine("Press ESC to return to Sales Order screen");
+                //Database.Instance.EditSalesOrder(selectedSalesOrder);
+                company = Database.Instance.SelectCompany(selectedSalesOrder.CompanyID);
             }
-            else
-            {
-                break;
-            }
-            Console.WriteLine("Press ESC to return to Sales Order screen");
-            //Database.Instance.EditSalesOrder(selectedSalesOrder);
-            company = Database.Instance.SelectCompany(selectedSalesOrder.CompanyID);
+            
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 
         ScreenHandler.Display(new SalesOrderScreen(company, customer));
@@ -406,7 +410,15 @@ internal class EditSalesOrderScreen : ScreenHandler
         html2String = html2String.Replace("{completionTime}", salesOrder.CompletionTime.ToString());
         html2String = html2String.Replace("{packedby}", salesOrder.OrderLines[0].pickedBy.ToString()); //TODO: picked by orderline
 
-        string stop = "";
+        File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
+        
+        // relative path
+        /*
+        invoicePath = "..\\Invoices\\";
+        if (!(Directory.Exists(invoicePath)))
+            Directory.CreateDirectory(invoicePath);
+        */
+
         File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
         System.Diagnostics.Process.Start(@"C:\Program Files\Google\Chrome\Application\chrome.exe", invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0, 10) + ".html");
     }
