@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TECHCOOL.UI;
@@ -182,6 +183,9 @@ internal class EditSalesOrderScreen : ScreenHandler
                             Database.Instance.EditOrderline(ol.OLID, ol);
                         }
                         selectedSalesOrder.State = SalesOrder.States.Closed;
+                        selectedSalesOrder.CompletionTime = DateTime.Now;
+                        CreateHTMLInvoice(selectedSalesOrder);
+
                         break;
                     case "Canceled":
                         List<OrderLine> ols2 = Database.Instance.GetOrderLines(selectedSalesOrder.OrderID);
@@ -340,5 +344,65 @@ internal class EditSalesOrderScreen : ScreenHandler
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 
         ScreenHandler.Display(new SalesOrderScreen(company, customer));
+    }
+
+    private void CreateHTMLInvoice(SalesOrder salesOrder)
+    {
+        //TODO: Get relative path
+        string path = @"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Templates\Invoice.html";
+        string logoPath = @"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Images\LNE_logo.png"; //TODO: find logos!!!
+        string invoicePath = @"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Invoices\";
+        if (!(Directory.Exists(invoicePath)))
+            Directory.CreateDirectory(invoicePath);
+
+        string html2String = File.ReadAllText(path);
+        Customer customer = Database.Instance.SelectCustomer(salesOrder.CID);
+        customer.CreateFullName(customer.FirstName, customer.LastName);
+        ContactInfo contactInfo = Database.Instance.SelectContactInfo(customer);
+        Address address = Database.Instance.SelectAddress(contactInfo);
+        html2String = html2String.Replace("{OrderID}", "Sales order: " + salesOrder.OrderID.ToString());
+        html2String = html2String.Replace("{customer}", contactInfo.FullName);
+        html2String = html2String.Replace("{streetNumber}", address.StreetName + " " + address.HouseNumber);
+        html2String = html2String.Replace("{cityZip}", address.ZipCode + " " + address.City);
+        html2String = html2String.Replace("{country}", address.Country);
+        html2String = html2String.Replace("{email}", contactInfo.Email);
+        html2String = html2String.Replace("{phone number}", contactInfo.PhoneNumber);
+
+        try
+        {
+            html2String = html2String.Replace("{logo}", logoPath);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Logo for invoice not found at: " + logoPath);
+        }
+        html2String = html2String.Replace("<!--Orderlines Place holder-->", generateHTMLOrderlies(salesOrder));
+        
+        html2String = html2String.Replace("{Total price}", salesOrder.TotalPrice.ToString());
+        html2String = html2String.Replace("{completionTime}", salesOrder.CompletionTime.ToString());
+
+        string stop = "";
+        File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
+        System.Diagnostics.Process.Start(@"C:\Program Files\Google\Chrome\Application\chrome.exe", invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0, 10) + ".html");
+    }
+
+    private string generateHTMLOrderlies(SalesOrder salesOrder)
+    {
+        string htmlStart = "<tbody>";
+        string htmlOut = "";
+        string htmlEnd = "</tbody>";
+        foreach (OrderLine orderLine in salesOrder.OrderLines)
+        {
+            string html = "<tr><td>{OLID}</td><td>{Product}</td><td>{Quantity}</td><td>{Price each}</td><td>{Sub price}</td></tr>";
+            Product product = Database.Instance.SelectProduct(orderLine.Product.PID);
+            html = html.Replace("{OLID}", orderLine.OLID.ToString());
+            html = html.Replace("{Product}", product.ProductName);
+            html = html.Replace("{Quantity}", orderLine.Quantity.ToString());
+            html = html.Replace("{Price each}", product.SalesPrice.ToString());
+            html = html.Replace("{Sub price}", (product.SalesPrice * orderLine.Quantity).ToString());
+            htmlOut = htmlOut + html;
+        }
+        htmlOut = htmlStart + htmlOut + htmlEnd;
+        return htmlOut;
     }
 }
