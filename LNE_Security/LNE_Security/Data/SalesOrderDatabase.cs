@@ -50,7 +50,8 @@ partial class Database
                 default:
                     line.State = OrderLine.States.Created;
                     break;
-            }  
+            }
+            line.pickedBy = reader.GetValue(5).ToString();
             orderLines.Add(line);
         }
         reader.Close();
@@ -176,7 +177,7 @@ partial class Database
         orderline.State = OrderLine.States.Created;
         sqlConnection.Open();
         string query = @"INSERT INTO [dbo].[Orderline]( [PID], [Quantity], [OrderID], [Status]) VALUES(
-        '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID+ "','" + orderline.State.ToString() + "')";
+        '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID + "','" + orderline.State.ToString() +"')";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         SqlDataReader reader = cmd.ExecuteReader();
         reader.Close();
@@ -310,6 +311,7 @@ partial class Database
                             ",[Quantity] =" + editedOrderline.Quantity.ToString() +
                             ",[OrderID] = " + editedOrderline.OrderID.ToString() +
                             ",[Status] = '" + editedOrderline.State.ToString() +
+                            "',[PickedBy] = '" + editedOrderline.pickedBy.ToString() +
                             "' WHERE OLID =" + OLID.ToString();
         sqlConnection.Open();
         SqlCommand cmd = new SqlCommand(query, sqlConnection);

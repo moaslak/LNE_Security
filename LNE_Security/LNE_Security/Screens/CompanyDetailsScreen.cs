@@ -11,6 +11,9 @@ public class CompanyDetailsScreen : ScreenHandler
 		this.company = Company;
 	}
 
+	/// <summary>
+	/// Displays the screen
+	/// </summary>
 	protected override void Draw()
     {
 		ListPage<Company> CompanylistPage = new ListPage<Company>();

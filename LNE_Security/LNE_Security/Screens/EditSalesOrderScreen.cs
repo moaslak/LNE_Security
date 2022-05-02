@@ -27,12 +27,21 @@ internal class EditSalesOrderScreen : ScreenHandler
         this.salesOrders = SalesOrders;
     }
 
+    /// <summary>
+    /// Gets orderline states
+    /// </summary>
+    /// <returns>state for orderlines</returns>
     private List<OrderLine.States> statesToList()
     {
         List<OrderLine.States> list = Enum.GetValues(typeof(OrderLine.States)).Cast<OrderLine.States>().ToList();
         return list;
     }
 
+    /// <summary>
+    /// Edit orderlines. Bool used to verify edit.
+    /// </summary>
+    /// <param name="OrderID"></param>
+    /// <returns>edited list, bool</returns>
     private (List<OrderLine>, bool) EditOrderLines(UInt32 OrderID)
     {
         bool succes = false;
@@ -145,6 +154,14 @@ internal class EditSalesOrderScreen : ScreenHandler
         return (orderLines, succes);
     }
 
+    /// <summary>
+    /// Edits selected options for sales orders.
+    /// Updates database
+    /// </summary>
+    /// <param name="selected"></param>
+    /// <param name="selectedSalesOrder"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     private SalesOrder EditSalesOrder(Options selected, SalesOrder selectedSalesOrder)
     {
         string newValue = "";
@@ -271,6 +288,9 @@ internal class EditSalesOrderScreen : ScreenHandler
         return selectedSalesOrder;
     }
 
+    /// <summary>
+    /// Show the screen
+    /// </summary>
     protected override void Draw()
     {
         Company company = Database.Instance.SelectCompany(salesOrders[0].CompanyID);
@@ -346,6 +366,10 @@ internal class EditSalesOrderScreen : ScreenHandler
         ScreenHandler.Display(new SalesOrderScreen(company, customer));
     }
 
+    /// <summary>
+    /// Creates the html for the invoices. Gets data from sales orders that get state = Closed
+    /// </summary>
+    /// <param name="salesOrder"></param>
     private void CreateHTMLInvoice(SalesOrder salesOrder)
     {
         //TODO: Get relative path
@@ -380,12 +404,18 @@ internal class EditSalesOrderScreen : ScreenHandler
         
         html2String = html2String.Replace("{Total price}", salesOrder.TotalPrice.ToString());
         html2String = html2String.Replace("{completionTime}", salesOrder.CompletionTime.ToString());
+        html2String = html2String.Replace("{packedby}", salesOrder.OrderLines[0].pickedBy.ToString()); //TODO: picked by orderline
 
         string stop = "";
         File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
         System.Diagnostics.Process.Start(@"C:\Program Files\Google\Chrome\Application\chrome.exe", invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0, 10) + ".html");
     }
 
+    /// <summary>
+    /// generates html for orderlines in sales order.
+    /// </summary>
+    /// <param name="salesOrder"></param>
+    /// <returns>html string</returns>
     private string generateHTMLOrderlies(SalesOrder salesOrder)
     {
         string htmlStart = "<tbody>";

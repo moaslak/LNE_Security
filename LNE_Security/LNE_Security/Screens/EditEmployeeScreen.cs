@@ -66,6 +66,35 @@ public class EditEmployeeScreen : ScreenHandler
             case "Email":
                 this.contact.Email = newValue;
                 break;
+            case "User name":
+                this.employee.UserName = newValue;
+                break;
+            case "Password":
+                this.employee.Password = newValue;
+                
+                int passwordCheck = 0;
+                bool passwordConfirmed = false;
+                do
+                {
+                    Console.WriteLine("Confirm password");
+                    if (Console.ReadLine() == this.employee.Password)
+                        passwordConfirmed = true;
+                    else
+                    {
+                        Console.WriteLine("Incorrect confirmation");
+                        passwordCheck++;
+                        if(passwordCheck == 3)
+                            passwordConfirmed = true;
+                    }
+
+                } while (!(passwordConfirmed));
+                if (passwordCheck == 3 && passwordConfirmed)
+                {
+                    Console.WriteLine("Password no comfirmed!!!");
+                    Console.WriteLine("Password set to: Test!234");
+                    this.employee.Password = "Test!234";
+                }
+                break;
             default:
                 break;
         }
@@ -92,7 +121,10 @@ public class EditEmployeeScreen : ScreenHandler
             Console.WriteLine("Country: " + contact.Address.Country);
             Console.WriteLine("Phonenumber: " + contact.PhoneNumber);
             Console.WriteLine("Email: " + contact.Email);
-
+            Console.WriteLine("User name: " + this.employee.UserName);
+            
+            //Bruges denne???!?!?
+            /*
             ContactListPage.AddColumn("Firstname", "FirstName");
             ContactListPage.AddColumn("Lastname", "LastName");
             AddressListPage.AddColumn("Streetname", "StreetName");
@@ -102,7 +134,8 @@ public class EditEmployeeScreen : ScreenHandler
             AddressListPage.AddColumn("Country", "Country");
             ContactListPage.AddColumn("Phonenumber", "PhoneNumber");
             ContactListPage.AddColumn("Email", "Email");
-
+            */
+            
             ListPage<Options> OptionListPage = new ListPage<Options>();
             string zipCode = address.ZipCode.ToString();
             OptionListPage.AddColumn("Edit", "Option");
@@ -113,16 +146,10 @@ public class EditEmployeeScreen : ScreenHandler
             OptionListPage.Add(new Options("Zipcode", address.ZipCode));
             OptionListPage.Add(new Options("City", address.City));
             OptionListPage.Add(new Options("Country", address.Country));
-
-
-            /*string phoneNumbers = "";
-            foreach(string phonenumber in contact.PhoneNumber)
-            {
-                phoneNumbers = phoneNumbers + phonenumber + "\n";
-            }*/
-
             OptionListPage.Add(new Options("Phonenumber", contact.PhoneNumber));
             OptionListPage.Add(new Options("Email", contact.Email));
+            OptionListPage.Add(new Options("User name", employee.UserName));
+            OptionListPage.Add(new Options("Password", employee.Password));
             OptionListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = OptionListPage.Select();
 
@@ -134,7 +161,7 @@ public class EditEmployeeScreen : ScreenHandler
             {
                 break;
             }
-            Console.WriteLine("Press ESC to return to Company screen");
+            Console.WriteLine("Press ESC to return to Employee screen");
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 
         ScreenHandler.Display(new EmployeeScreen());

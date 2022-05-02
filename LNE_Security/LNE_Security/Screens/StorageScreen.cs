@@ -11,6 +11,10 @@ public class StorageScreen : ScreenHandler
 {
 
 	private Company company { get; set; }
+    private bool loggedIn = false;
+    private string userName { get; set;}
+    private string password { get; set;}
+    Employee employee { get; set; }
 	public StorageScreen(Company Company) : base(Company)
 	{
 		this.company = Company;
@@ -30,36 +34,90 @@ public class StorageScreen : ScreenHandler
     }
     protected override void Draw()
     {
-        Title = company.CompanyName + " Storage Screen";
-        Clear(this);
-        ListPage<SalesOrder> storageListPage = new ListPage<SalesOrder>();
-
-        Console.WriteLine("F1 - Not comfirmed sales orders");
-        Console.WriteLine("F2 - Pick order");
-        Console.WriteLine("F3 - Place/Remove products");
-        Console.WriteLine("F10 - To Main menu");
-        Console.WriteLine("Esc - Close App");
-
-        switch (Console.ReadKey().Key)
+        if(loggedIn == false)
         {
-            case ConsoleKey.F1:
-                ConfirmSalesOrders();
-                break;
-            case ConsoleKey.F2:
-                Pick();
-                break;
-            case ConsoleKey.F3:
-                Put();
-                break;
-            case ConsoleKey.F10:
-                ScreenHandler.Display(new MainMenuScreen(company));
-                break;
-            case ConsoleKey.Escape:
-                Environment.Exit(0);
-                break;
+            Console.WriteLine("Employee login");
+            Console.WriteLine("Enter user name: ");
+            userName = Console.ReadLine();
+
+            try
+            {
+                employee = Database.Instance.SelectEmployee(userName);
+                if(employee != null)
+                {
+                    int passwordCheck = 0;
+                    bool passwordConfirmed = false;
+                    do
+                    {
+                        Console.WriteLine("Enter password");
+                        if (Console.ReadLine() == employee.Password)
+                        {
+                            passwordConfirmed = true;
+                            loggedIn = true;
+                            Console.WriteLine("Login succesful");
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Incorrect password");
+                            passwordCheck++;
+                            if (passwordCheck == 3)
+                                passwordConfirmed = true;
+                        }
+
+                    } while (!(passwordConfirmed));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid login credentials");
+            }
         }
+        if(loggedIn == true)
+        {
+            Title = company.CompanyName + " Storage Screen";
+            
+            Clear(this);
+            ListPage<SalesOrder> storageListPage = new ListPage<SalesOrder>();
+            Console.WriteLine("Logged in as: " + employee.UserName);
+            Console.WriteLine();
+            Console.WriteLine("F1 - Not comfirmed sales orders");
+            Console.WriteLine("F2 - Pick order");
+            Console.WriteLine("F3 - Place/Remove products");
+            Console.WriteLine("F10 - To Main menu");
+            Console.WriteLine("Esc - Close App");
+
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.F1:
+                    ConfirmSalesOrders();
+                    break;
+                case ConsoleKey.F2:
+                    Pick();
+                    break;
+                case ConsoleKey.F3:
+                    Put();
+                    break;
+                case ConsoleKey.F10:
+                    ScreenHandler.Display(new MainMenuScreen(company));
+                    break;
+                case ConsoleKey.Escape:
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+        else
+        {
+            Console.WriteLine("Not logged in. Press a key to return to main menu");
+            Console.ReadKey();
+            ScreenHandler.Display(new MainMenuScreen(company));
+        }
+        
     }
 
+    /// <summary>
+    /// Confirms selected sales order that have state = Created 
+    /// </summary>
     private void ConfirmSalesOrders()
     {
         List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders("Created");
@@ -121,6 +179,10 @@ public class StorageScreen : ScreenHandler
         }
     }
 
+    /// <summary>
+    /// view selected orderline
+    /// </summary>
+    /// <param name="orderLine"></param>
     private void ViewOrderline(OrderLine orderLine)
     {
         Product product = Database.Instance.SelectProduct(orderLine.PID);
@@ -132,6 +194,9 @@ public class StorageScreen : ScreenHandler
         productListPage.Draw();
     }
 
+    /// <summary>
+    /// picks orderlines that have state = Confirmed || Incomplete. When picked, amount is regulated in database.
+    /// </summary>
     private void Pick()
     {
         List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders("Confirmed");
@@ -188,6 +253,7 @@ public class StorageScreen : ScreenHandler
                     Product selectedProduct = productListPage.Select();
 
                     Console.WriteLine("Confirm pick? (y)es/(n)o");
+                    selectedOrderLine.pickedBy = employee.UserName;
                     switch (Console.ReadKey().Key)
                     {
                         case ConsoleKey.Y:
@@ -242,6 +308,9 @@ public class StorageScreen : ScreenHandler
             Console.WriteLine("No confirmed sales orders in database");
     }
 
+    /// <summary>
+    /// inserts products to the database
+    /// </summary>
     private void Put()
     {
         List<Product> products = Database.Instance.GetProducts();

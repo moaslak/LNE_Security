@@ -41,6 +41,7 @@ PID int FOREIGN KEY REFERENCES Product(PID),
 Quantity decimal(18,2),
 OrderID int FOREIGN KEY REFERENCES SalesOrder(OrderID),
 Status varchar(16),
+PickedBy varchar(64),
 PRIMARY KEY(OLID)
 )
 
@@ -81,5 +82,7 @@ PRIMARY KEY(CID)
 CREATE TABLE Employee(
 EID int IDENTITY(1,1),
 ContactInfoID int FOREIGN KEY REFERNECES ContactInfo(ContactInfoID),
+UserName varchar(64) NOT NULL,
+Password varchar(64) NOT NULL,
 PRIMARY KEY(EID)
 )

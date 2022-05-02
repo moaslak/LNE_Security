@@ -28,6 +28,8 @@ partial class Database
             Employee employee = new Employee();
             employee.EID = Convert.ToUInt16(reader.GetValue(0));
             employee.ContactInfoID = Convert.ToUInt16(reader.GetValue(1));
+            employee.UserName = reader.GetValue(2).ToString();
+            employee.Password = reader.GetValue(3).ToString();
             employees.Add(employee);
         }
         reader.Close();
@@ -80,11 +82,25 @@ partial class Database
         return null;
     }
 
+    public Employee SelectEmployee(string userName)
+    {
+        List<Employee> employees = GetEmployees();
+
+        foreach(Employee employee in employees)
+        {
+            if(employee.UserName == userName)
+                return employee;
+        }
+        Console.WriteLine("No employee with user name: " + userName + " found");
+        return null;
+    }
+
     public void EditEmployee(Employee editedEmployee, string option)
     {
         string query = "UPDATE [dbo].[ContactInfo] SET[FirstName] = '" + editedEmployee.ContactInfo.FirstName + "' " +
             ",[LastName] = '" + editedEmployee.ContactInfo.LastName + "', [Email] = '" + editedEmployee.ContactInfo.Email +
-            "', [PhoneNumber] = '" + editedEmployee.ContactInfo.PhoneNumber + "' WHERE ContactInfoID = '" + editedEmployee.ContactInfoID + "'";
+            "', [PhoneNumber] = '" + editedEmployee.ContactInfo.PhoneNumber + 
+            "' WHERE ContactInfoID = '" + editedEmployee.ContactInfoID + "'";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
 
@@ -104,13 +120,21 @@ partial class Database
         reader = cmd.ExecuteReader();
         reader.Close();
 
+        query = "UPDATE [dbo].[Employee] set [UserName] = '" + editedEmployee.UserName +
+            "', [Password] = '" + editedEmployee.Password + "' WHERE EID = '" + editedEmployee.EID + "'";
+        cmd = new SqlCommand(query, sqlConnection);
+
+        //execute the SQLCommand
+        reader = cmd.ExecuteReader();
+        reader.Close();
+
         //close connection
         sqlConnection.Close();
     }
 
     public void DeleteEmployee(UInt16 EID)
     {
-        string query = "DELETE FROM [dbo].[Employee] WHERE CID = " + EID.ToString();
+        string query = "DELETE FROM [dbo].[Employee] WHERE EID = " + EID.ToString();
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
 
@@ -122,7 +146,7 @@ partial class Database
         sqlConnection.Close();
 
         if (SelectEmployee(EID) == null)
-            Console.WriteLine("Employee with CID = " + EID + " was succesfully deleted");
+            Console.WriteLine("Employee with EID = " + EID + " was succesfully deleted");
         else
             Console.WriteLine("Could not find employee to delete");
     }
@@ -132,8 +156,11 @@ partial class Database
 
         string query = @"INSERT INTO [dbo].[Employee] 
             (
-            [ContactInfoID])
-            VALUES('" + employee.ContactInfoID.ToString() + "')";
+            [ContactInfoID],
+            [UserName],
+            [Password])
+            VALUES('" + employee.ContactInfoID.ToString() + "', '" + employee.UserName
+            + "', '" + employee.Password + "')";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
 

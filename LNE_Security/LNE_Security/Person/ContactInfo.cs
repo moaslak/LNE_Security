@@ -28,6 +28,9 @@ public class ContactInfo
             LastName = value;
         }
     }
+    /// <summary>
+    /// Set the full address for contact info. Concats properties.
+    /// </summary>
     public string FullAddress 
     {
         get

@@ -128,6 +128,10 @@ public class SalesOrderScreen : ScreenHandler
         
     }
 
+    /// <summary>
+    /// Displays sales orders for customer
+    /// </summary>
+    /// <param name="customer"></param>
     private void showSalesOrders(Customer customer)
     {
         if(customer == null)

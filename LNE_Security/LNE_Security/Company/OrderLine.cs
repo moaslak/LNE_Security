@@ -16,6 +16,8 @@ public class OrderLine
     public enum States { Created, Confirmed, Packed, Closed, Canceled, Incomplete, Error };
     public States State { get; set; }
 
+    public string pickedBy { get; set; }
+
     public double CalculateLinePrice(Product product)
     {
         if(product == null || product.SalesPrice < 0)
