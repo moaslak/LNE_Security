@@ -57,7 +57,7 @@ public class CompanyScreen : ScreenHandler
             Console.WriteLine("F2 - Edit Company");
             Console.WriteLine("F8 - Delete Company");
             Console.WriteLine("F10 - To Main menu");
-            Console.WriteLine("Esc - Close App");
+
 
             switch (Console.ReadKey().Key)
             {
@@ -72,9 +72,6 @@ public class CompanyScreen : ScreenHandler
                     break;
                 case ConsoleKey.F10:
                     ScreenHandler.Display(new MainMenuScreen(selected));
-                    break;
-                case ConsoleKey.Escape:
-                    Environment.Exit(0);
                     break;
             }
         }

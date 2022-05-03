@@ -15,6 +15,8 @@ public class EditEmployeeScreen : ScreenHandler
     private Address address { get; set; }
     private Options options { get; set; }
     private Employee employee { get; set; }
+
+    private Company company { get; set; }
     public EditEmployeeScreen(Person person, ContactInfo contactInfo, Address address) : base(person)
     {
         this.person = person;
@@ -22,11 +24,13 @@ public class EditEmployeeScreen : ScreenHandler
         this.address = address;
     }
 
-    public EditEmployeeScreen(Employee Employee) : base(Employee)
+    public EditEmployeeScreen(Employee Employee, Company Company) : base(Employee, Company)
     {
         this.employee = Employee;
         contact = employee.ContactInfo;
         address = contact.Address;
+        this.company = Company;
+
     }
 
     public EditEmployeeScreen()
@@ -164,6 +168,6 @@ public class EditEmployeeScreen : ScreenHandler
             Console.WriteLine("Press ESC to return to Employee screen");
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 
-        ScreenHandler.Display(new EmployeeScreen());
+        ScreenHandler.Display(new EmployeeScreen(company));
     }
 }

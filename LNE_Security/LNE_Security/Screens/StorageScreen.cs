@@ -85,7 +85,6 @@ public class StorageScreen : ScreenHandler
             Console.WriteLine("F2 - Pick order");
             Console.WriteLine("F3 - Place/Remove products");
             Console.WriteLine("F10 - To Main menu");
-            Console.WriteLine("Esc - Close App");
 
             switch (Console.ReadKey().Key)
             {
@@ -100,9 +99,6 @@ public class StorageScreen : ScreenHandler
                     break;
                 case ConsoleKey.F10:
                     ScreenHandler.Display(new MainMenuScreen(company));
-                    break;
-                case ConsoleKey.Escape:
-                    Environment.Exit(0);
                     break;
             }
         }
@@ -203,6 +199,7 @@ public class StorageScreen : ScreenHandler
     /// </summary>
     private void Pick()
     {
+        //TODO: show quantity when pick
         List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders("Confirmed");
         List<SalesOrder> incompleteOrders = Database.Instance.GetSalesOrders("Incomplete");
 

@@ -81,7 +81,6 @@ public class SalesOrderScreen : ScreenHandler
             Console.WriteLine("F7 - Delete Sales Orders by customer id");
             Console.WriteLine("F8 - Delete Sales Orders");
             Console.WriteLine("F10 - Back");
-            Console.WriteLine("Esc - Close App");
 
             UInt16 CID = 0;
             switch (Console.ReadKey().Key)
@@ -117,9 +116,6 @@ public class SalesOrderScreen : ScreenHandler
                     break;
                 case ConsoleKey.F10:
                     ScreenHandler.Display(new MainMenuScreen(this.company));
-                    break;
-                case ConsoleKey.Escape:
-                    Environment.Exit(0);
                     break;
                 default:
                     break;

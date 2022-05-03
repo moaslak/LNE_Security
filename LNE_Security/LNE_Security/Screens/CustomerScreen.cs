@@ -121,7 +121,6 @@ public class CustomerScreen : ScreenHandler
             Console.WriteLine("F2 - View/Edit Customer");
             Console.WriteLine("F8 - Delete Customer");
             Console.WriteLine("F10 - To Main menu");
-            Console.WriteLine("Esc - Close App");
             Console.WriteLine();
 
             switch (Console.ReadKey().Key)
@@ -139,11 +138,7 @@ public class CustomerScreen : ScreenHandler
                 case ConsoleKey.F8:
                     Database.Instance.DeleteCustomer(selected.CID); //TODO: kan ikke slette hvis brugeren har en salgsordre, DELETE ON CASCADE
                     break;
-                case ConsoleKey.Escape:
-                    Environment.Exit(0);
-                    break;
             }
-        }
-        
+        } 
     }
 }

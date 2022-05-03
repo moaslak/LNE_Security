@@ -14,18 +14,14 @@ class Program
         }
     }
 
-    // TODO: TITLES!!!
+    //static List<Company> companyList = new List<Company>();
 
-    static List<Company> companyList = new List<Company>();
+
 
     public static void Main(string[] args)
     {
-        companyList = Database.Instance.GetCompanies();
-        //InvoiceMockTest(salesOrder);   
-
-        //MainMenuScreen mainMenu = new MainMenuScreen(companyList[0]);
+        //companyList = Database.Instance.GetCompanies();
         MainMenuScreen mainMenu = new MainMenuScreen();
         ScreenHandler.Display(mainMenu);
-
     }
 }
