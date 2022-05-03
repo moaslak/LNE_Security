@@ -9,6 +9,7 @@ namespace LNE_Security
 
     public class ScreenHandler : Screen
     {
+        
         private Company company1;
 
         static Company company { get; set; }
@@ -17,6 +18,7 @@ namespace LNE_Security
         static ContactInfo contactInfo { get; set; }
 
         static Customer customer { get; set; }
+        static Employee employee { get; set; }
 
         static List<SalesOrder> salesOrders { get; set; }
 
@@ -36,6 +38,12 @@ namespace LNE_Security
         public ScreenHandler(Customer Customer, Company Company)
         {
             customer = Customer;
+            company = Company;
+        }
+
+        public ScreenHandler(Employee Employee, Company Company)
+        {
+            employee = Employee;
             company = Company;
         }
 

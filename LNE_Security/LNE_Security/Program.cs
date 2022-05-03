@@ -14,18 +14,21 @@ class Program
         }
     }
 
-    // TODO: TITLES!!!
+    //static List<Company> companyList = new List<Company>();
 
-    static List<Company> companyList = new List<Company>();
+
 
     public static void Main(string[] args)
     {
-        companyList = Database.Instance.GetCompanies();
-        //InvoiceMockTest(salesOrder);   
-
-        //MainMenuScreen mainMenu = new MainMenuScreen(companyList[0]);
+        Console.WriteLine("Welcome screen");
+        Console.WriteLine("Global keys");
+        Console.WriteLine("F11 - Toggle full screen");
+        Console.WriteLine("Esc - Close App");
+        Console.WriteLine();
+        Console.WriteLine("Press a key to start program");
+        Console.ReadKey();
+        //companyList = Database.Instance.GetCompanies();
         MainMenuScreen mainMenu = new MainMenuScreen();
         ScreenHandler.Display(mainMenu);
-
     }
 }

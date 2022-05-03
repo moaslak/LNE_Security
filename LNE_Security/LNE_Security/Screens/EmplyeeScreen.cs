@@ -143,7 +143,6 @@ public class EmployeeScreen : ScreenHandler
             Console.WriteLine("F2 - View/Edit Employee");
             Console.WriteLine("F8 - Delete Employee");
             Console.WriteLine("F10 - To Main menu");
-            Console.WriteLine("Esc - Close App");
             Console.WriteLine();
 
             switch (Console.ReadKey().Key)
@@ -153,16 +152,13 @@ public class EmployeeScreen : ScreenHandler
                     Console.WriteLine("Press enter to continue");
                     break;
                 case ConsoleKey.F2:
-                    ScreenHandler.Display(new EditEmployeeScreen(selected));
+                    ScreenHandler.Display(new EditEmployeeScreen(selected, company));
                     break;
                 case ConsoleKey.F10:
                     ScreenHandler.Display(new MainMenuScreen(this.company));
                     break;
                 case ConsoleKey.F8:
                     Database.Instance.DeleteEmployee(selected.EID);
-                    break;
-                case ConsoleKey.Escape:
-                    Environment.Exit(0);
                     break;
             }
         }

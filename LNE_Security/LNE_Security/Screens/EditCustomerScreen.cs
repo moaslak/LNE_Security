@@ -101,12 +101,12 @@ public class EditCustomerScreen : ScreenHandler
             Console.WriteLine("Phonenumber: " + contact.PhoneNumber);
             Console.WriteLine("Email: " + contact.Email);
 
-            ContactListPage.AddColumn("Firstname", "FirstName", customer.FirstName.Length);
-            ContactListPage.AddColumn("Lastname", "LastName", customer.LastName.Length);
+            ContactListPage.AddColumn("Firstname", "FirstName", customer.ContactInfo.FirstName.Length);
+            ContactListPage.AddColumn("Lastname", "LastName", customer.ContactInfo.LastName.Length);
             AddressListPage.AddColumn("Streetname", "StreetName", customer.ContactInfo.Address.StreetName.Length);
             AddressListPage.AddColumn("Housenumber", "HouseNumber", customer.ContactInfo.Address.HouseNumber.Length);
             AddressListPage.AddColumn("Zipcode", "ZipCode", customer.ContactInfo.Address.ZipCode.Length);
-            //AddressListPage.AddColumn("City", "City", customer.ContactInfo.Address.);
+            AddressListPage.AddColumn("City", "City", customer.ContactInfo.Address.City.Length);
             AddressListPage.AddColumn("Country", "Country");
             ContactListPage.AddColumn("Phonenumber", "PhoneNumber");
             ContactListPage.AddColumn("Email", "Email");
@@ -121,13 +121,6 @@ public class EditCustomerScreen : ScreenHandler
             OptionListPage.Add(new Options("Zipcode", address.ZipCode));
             OptionListPage.Add(new Options("City", address.City));
             OptionListPage.Add(new Options("Country", address.Country));
-            
-            
-            /*string phoneNumbers = "";
-            foreach(string phonenumber in contact.PhoneNumber)
-            {
-                phoneNumbers = phoneNumbers + phonenumber + "\n";
-            }*/
             
             OptionListPage.Add(new Options("Phonenumber", contact.PhoneNumber));
             OptionListPage.Add(new Options("Email", contact.Email));
