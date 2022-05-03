@@ -71,7 +71,7 @@ namespace LNE_Security
                         Database.Instance.NewProduct();
                         break;
                     case ConsoleKey.F2:
-                        ScreenHandler.Display(new EditProductScreen(selectedProduct));
+                        ScreenHandler.Display(new EditProductScreen(selectedProduct, company));
                         break;
                     case ConsoleKey.F8:
                         Database.Instance.DeleteProduct(selectedProduct.PID);

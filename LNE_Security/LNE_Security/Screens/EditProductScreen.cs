@@ -10,27 +10,29 @@ namespace LNE_Security.Screens
 {
 public class EditProductScreen : ScreenHandler
 {
-        public class Options
+    public class Options
+    {
+        public string Option { get; set; }
+        public string Value { get; set; }
+        public Options(string option, string value)
         {
-            public string Option { get; set; }
-            public string Value { get; set; }
-            public Options(string option, string value)
-            {
-                Value = value;
-                Option = option;
-            }
+            Value = value;
+            Option = option;
         }
-    private Product product;
-        public EditProductScreen(Product Product) : base(Product)
-        {
-            this.product = Product;
-        }
+    }
+    private Product product { get; set; }
+    private Company company { get; set; }
+    public EditProductScreen(Product Product, Company Company) : base(Product, Company)
+    {
+        this.product = Product;
+        this.company = Company;
+    }
 
-        private List<Product.Units> UnitsToList()
-        {
-            List<Product.Units> list = Enum.GetValues(typeof(Product.Units)).Cast<Product.Units>().ToList();
-            return list;
-        }
+    private List<Product.Units> UnitsToList()
+    {
+        List<Product.Units> list = Enum.GetValues(typeof(Product.Units)).Cast<Product.Units>().ToList();
+        return list;
+    }
 
     private void EditProduct(Options selected)
     {
@@ -169,21 +171,23 @@ public class EditProductScreen : ScreenHandler
                 }   
                 optionsListPage.Add(new Options("Back", "NO EDIT"));
                 Options selected = optionsListPage.Select();
-
-                if (selected.Value != "NO EDIT")
+                if(selected != null)
                 {
-                    EditProduct(selected);
-                    Console.WriteLine("Press a key to update another parameter");
+                    if (selected.Value != "NO EDIT")
+                    {
+                        EditProduct(selected);
+                        Console.WriteLine("Press a key to update another parameter");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    Console.WriteLine("Press ESC to return to Product screen");
                 }
-                else
-                {
-                    break;
-                }
-                Console.WriteLine("Press ESC to return to Product screen");
 
             } while ((Console.ReadKey().Key != ConsoleKey.Escape));
             Database.Instance.EditProduct(product.PID, product);
-            ScreenHandler.Display(new ProductDetailsScreen(product));
+            ScreenHandler.Display(new ProductDetailsScreen(product, company));
 
         }
     }
