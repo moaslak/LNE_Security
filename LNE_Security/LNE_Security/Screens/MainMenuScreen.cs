@@ -46,7 +46,6 @@ public class MainMenuScreen : ScreenHandler
         else
             Title = company.CompanyName + " ERP System";
         Clear(this);
-        Console.WriteLine("F11 - Toggle full screen");
         ListPage<Options> MenuOptions = new ListPage<Options>();
         MenuOptions.AddColumn("Option", "Option", "Sales order screen".Length);
         MenuOptions.Add(new Options("Company screen", "F1"));

@@ -9,6 +9,7 @@ namespace LNE_Security
 
     public class ScreenHandler : Screen
     {
+        
         private Company company1;
 
         static Company company { get; set; }

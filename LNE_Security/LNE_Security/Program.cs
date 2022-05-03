@@ -20,6 +20,13 @@ class Program
 
     public static void Main(string[] args)
     {
+        Console.WriteLine("Welcome screen");
+        Console.WriteLine("Global keys");
+        Console.WriteLine("F11 - Toggle full screen");
+        Console.WriteLine("Esc - Close App");
+        Console.WriteLine();
+        Console.WriteLine("Press a key to start program");
+        Console.ReadKey();
         //companyList = Database.Instance.GetCompanies();
         MainMenuScreen mainMenu = new MainMenuScreen();
         ScreenHandler.Display(mainMenu);
