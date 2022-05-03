@@ -17,7 +17,7 @@ inner join ContactInfo on SalesOrder.ContactInfoID = ContactInfo.ContactInfoID
 inner join Customer on SalesOrder.CID = Customer.CID
 
 //new
-select OrderID, OrderTime, CompletionTime, Price, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber from SalesOrder
+select OrderID, OrderTime, CompletionTime, Price, State, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber from SalesOrder
 inner join Company on SalesOrder.CompanyID = Company.CompanyID
 inner join ContactInfo on SalesOrder.ContactInfoID = ContactInfo.ContactInfoID
 inner join Customer on SalesOrder.CID = Customer.CID

@@ -173,7 +173,7 @@ public class EditProductScreen : ScreenHandler
                 if (selected.Value != "NO EDIT")
                 {
                     EditProduct(selected);
-                    Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
+                    Console.WriteLine("Press a key to update another parameter");
                 }
                 else
                 {

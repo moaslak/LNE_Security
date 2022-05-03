@@ -14,14 +14,6 @@ class Program
         }
     }
 
-
-  
-
-
-
-
-
-
     // TODO: TITLES!!!
 
     static List<Company> companyList = new List<Company>();

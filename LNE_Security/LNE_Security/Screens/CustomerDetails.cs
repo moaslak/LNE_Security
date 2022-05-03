@@ -9,11 +9,12 @@ namespace LNE_Security.Screens;
 
 public class CustomerDetails : ScreenHandler
 {
-	// TODO: Kaldes bruges denne?
     private Customer customer { get; set; }
-    public CustomerDetails(Customer Customer) : base(Customer)
+	private Company company { get; set; }
+    public CustomerDetails(Customer Customer, Company Company) : base(Customer, Company)
     {
         this.customer = Customer;
+		this.company = Company;
     }
 
 	protected override void Draw()
@@ -27,22 +28,22 @@ public class CustomerDetails : ScreenHandler
 		Title = customer.FullName + " Customer Details";
 		Clear(this);
 
-		CustomerlistPage.AddColumn("Customer name", "FullName");
-		CustomerlistPage.AddColumn("Address", "FullAddress");
-		SalesListPage.AddColumn("Last Purchase", "OrderTime");
+		CustomerlistPage.AddColumn("Customer name", "FullName", customer.FullName.Length);
+		CustomerlistPage.AddColumn("Address", "FullAddress", customer.ContactInfo.FullAddress.Length);
+		SalesListPage.AddColumn("Last Purchase", "OrderTime"); //TODO: IMPLEMENT
 		Customer selected = CustomerlistPage.Select();
 
 		Console.WriteLine("Selection: " + selected.FullName);
 		Console.WriteLine("F1 - Back");
 		Console.WriteLine("F2 - Edit");
 		Console.WriteLine("F5 - Delete");
-		CustomerScreen customerScreen = new CustomerScreen();
+		CustomerScreen customerScreen = new CustomerScreen(company);
 		EditCustomerScreen editCustomerScreen = new EditCustomerScreen();
 
 		switch (Console.ReadKey().Key)
 		{
 			case ConsoleKey.F1:
-				ScreenHandler.Display(customerScreen);
+				ScreenHandler.Display(customerScreen); // TODO: COMPANY!!!
 				break;
 			case ConsoleKey.F2:
 				ScreenHandler.Display(editCustomerScreen);

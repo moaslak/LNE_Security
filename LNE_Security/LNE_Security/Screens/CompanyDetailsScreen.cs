@@ -11,6 +11,9 @@ public class CompanyDetailsScreen : ScreenHandler
 		this.company = Company;
 	}
 
+	/// <summary>
+	/// Displays the screen
+	/// </summary>
 	protected override void Draw()
     {
 		ListPage<Company> CompanylistPage = new ListPage<Company>();
@@ -21,13 +24,13 @@ public class CompanyDetailsScreen : ScreenHandler
 		Title = company.CompanyName + " Company Details";
 		Clear(this);
 
-		CompanylistPage.AddColumn("Company name", "CompanyName");
-		CompanylistPage.AddColumn("Street name", "StreetName");
-		CompanylistPage.AddColumn("House number", "HouseNumber");
-		CompanylistPage.AddColumn("Zipcode", "ZipCode");
-		CompanylistPage.AddColumn("City", "City");
-		CompanylistPage.AddColumn("Country", "Country");
-		CompanylistPage.AddColumn("Currency", "Currency");
+		CompanylistPage.AddColumn("Company name", "CompanyName", company.CompanyName.Length);
+		CompanylistPage.AddColumn("Street name", "StreetName", company.StreetName.Length);
+		CompanylistPage.AddColumn("House number", "HouseNumber", company.HouseNumber.Length);
+		CompanylistPage.AddColumn("Zipcode", "ZipCode", company.ZipCode.Length);
+		CompanylistPage.AddColumn("City", "City",company.City.Length);
+		CompanylistPage.AddColumn("Country", "Country", company.Country.Length);
+		CompanylistPage.AddColumn("Currency", "Currency",company.Currency.ToString().Length);
 		Company selected = CompanylistPage.Select();
 		
 		Console.WriteLine("Selection: " + selected.CompanyName);

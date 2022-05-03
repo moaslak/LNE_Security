@@ -134,7 +134,6 @@ partial class Database
     public void NewCustomer(Customer customer)
     {
         SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
-        // TODO: fix query
         string query = @"INSERT INTO [dbo].[Customer] 
             (
             [ContactInfoID])
@@ -148,27 +147,6 @@ partial class Database
 
         //close connection
         sqlConnection.Close();
-        /*string CID = "";
-        query = "SELECT CID FROM Customer WHERE FirstName = '" + contactInfo.FirstName + "' AND LastName = '" + contactInfo.LastName
-            +"'";
-        sqlConnection.Open();
-        cmd = new SqlCommand(query, sqlConnection);
-        reader = cmd.ExecuteReader();
-        while (reader.Read())
-        {
-            CID = reader.GetValue(0).ToString();
-        }
-        reader.Close();
-        query = @"INSERT INTO [dbo].[Person]
-           ([Type]
-           ,[ContactInfoID])
-            VALUES
-           ('Customer'" +
-           ",'" + CID + "')";
-        cmd = new SqlCommand(query, sqlConnection);
-        reader = cmd.ExecuteReader();
-        reader.Close();
-        sqlConnection.Close();*/
     }
 
     
@@ -181,80 +159,4 @@ partial class Database
             " @housenumber, @city, @zipcode, @country";
         return people;
     }
-
-    /* // TODO: bruges denne?
-    public SqlConnection DeleteCustomer(ushort id, Person person)
-    {
-        person.ID = id;
-        SqlConnection sqlConnection = new SqlConnection();
-        sqlConnection.Database.Remove(id);
-        return sqlConnection;
-    }
-    */
-
-    /*public List<Customer> InsertCustomer(SqlConnection sqlConnection)
-    {
-        List<Customer> customer = new List<Customer>();
-        string query = "INSERT INTO dbo.Customer(id, firstname, lastname," +
-            " phonenumber, email, streetname, housenumber, city, zipcode, country) " +
-            "VALUES(@id, @firstname, @lastname, @phonenumber, @email, @streetname," +
-            " @housenumber, @city, @zipcode, @country";
-        using (SqlCommand cmd = new SqlCommand(query, sqlConnection))
-        {
-            cmd.Parameters.AddWithValue("@id", customer.ID);
-            cmd.Parameters.AddWithValue("@firstname", customer.ContactInfo.FirstName);
-            cmd.Parameters.AddWithValue("@lastname", customer.ContactInfo.LastName);
-            cmd.Parameters.AddWithValue("@phonenumber", customer.ContactInfo.PhoneNumber);
-            cmd.Parameters.AddWithValue("@email", customer.ContactInfo.Email);
-            cmd.Parameters.AddWithValue("@streetname", customer.Address.StreetName);
-            cmd.Parameters.AddWithValue("@housenumber", customer.Address.HouseNumber);
-            cmd.Parameters.AddWithValue("@city", customer.Address.City);
-            cmd.Parameters.AddWithValue("@zipcode", customer.Address.ZipCode);
-            cmd.Parameters.AddWithValue("@country", customer.Address.Country);
-            sqlConnection.Open();
-            int result = cmd.ExecuteNonQuery();
-        }
-        return customer;
-    }*/
-
-    /*
-public List<Person> GetCustomers(SqlConnection sqlConnection)
-{
-    List<Person> persons = new List<Person>();
-    sqlConnection.Open();
-    string query = "SELECT *, FROM [dbo].[Customer]";
-    SqlCommand cmd = new SqlCommand(query, sqlConnection);
-    SqlDataReader reader = cmd.ExecuteReader();
-
-    StringBuilder stringBuilder = new StringBuilder();
-    while (reader.Read())
-    {
-        for (int i = 0; i <= reader.FieldCount - 1; i++)
-        {
-            stringBuilder.Append(reader.GetValue(i));
-        }
-        stringBuilder.Append("/n");
-        person.ID = (ushort)(Convert.ToUInt16(stringBuilder[0]) - 48);
-
-        person.ContactInfo = GetContactInfo(person, sqlConnection);
-        person.ContactInfo.FirstName = stringBuilder[1].ToString();
-        person.ContactInfo.LastName = stringBuilder[2].ToString();
-        person.ContactInfo.PhoneNumber.Add(stringBuilder[3].ToString()); // TODO: implementér loop
-        person.ContactInfo.Email = stringBuilder[4].ToString();
-        person.Address.StreetName = stringBuilder[5].ToString();
-        person.Address.HouseNumber = stringBuilder[6].ToString();
-        person.Address.City = stringBuilder[7].ToString();
-        person.Address.ZipCode.ToString();
-        person.Address.Country = stringBuilder[9].ToString();
-        persons.Add(person);
-    }
-
-    reader.Close();
-
-    sqlConnection.Close();
-
-    return persons;
-}
-*/
-
 }

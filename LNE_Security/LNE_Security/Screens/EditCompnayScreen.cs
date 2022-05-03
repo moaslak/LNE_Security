@@ -154,9 +154,6 @@ public class EditCompnayScreen : ScreenHandler
                     default:
                         break;
                 }
-
-            
-
         }
 
         switch (selected.Option)
@@ -231,7 +228,7 @@ public class EditCompnayScreen : ScreenHandler
             if(selected.Value != "NO EDIT")
             {
                 EditCompany(selected);
-                Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
+                Console.WriteLine("Press a key to update another parameter");
             }
             else
             {

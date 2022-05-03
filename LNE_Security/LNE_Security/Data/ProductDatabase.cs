@@ -44,6 +44,53 @@ namespace LNE_Security
             //close connection
             sqlConnection.Close();
         }
+
+        /// <summary>
+        /// Used for insert an existing product into a new location
+        /// </summary>
+        /// <param name="product"></param>
+        public void NewProduct(Product product)
+        {
+            string query = @"INSERT INTO [dbo].[Product]
+           ([ProductNumber]
+           ,[ProductName]
+           ,[SalesPrice]
+           ,[CostPrice]
+           ,[AmountInStorage]
+           ,[LocationString]
+           ,[Unit]
+           ,[Description]
+           ,[Profit]
+           ,[ProfitPersent]) ";
+            string VALUES = "VALUES(" + product.ProductNumber.ToString() + ", '" + product.ProductName
+                + "', " + product.SalesPrice.ToString().Replace("'", "") + ", "
+                + product.CostPrice.ToString().Replace("'", "") + ", " + product.AmountInStorage.ToString().Replace("'", "")
+                + ", '" + product.LocationString + "', '" + product.Unit.ToString().Replace("'", "")
+                + "', '" + product.Description + "', " + product.Profit.ToString().Replace("'", "")
+                + ", " + product.ProfitPercent.ToString().Replace(',', '.') + ")";
+
+            query = query + VALUES;
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            SqlDataReader reader;
+            sqlConnection.Open();
+            try
+            {
+                reader = cmd.ExecuteReader();
+                reader.Close();
+            }
+            catch (ArithmeticException ex)
+            {
+                Console.WriteLine("Arithmetic exception");
+                Console.WriteLine("No changes");
+                Console.WriteLine("Press key to continue");
+                Console.ReadKey();
+                reader = null;
+                reader.Close();
+            }
+
+            //close connection
+            sqlConnection.Close();
+        }
         public void NewProduct()
         {
             Console.WriteLine();
@@ -196,12 +243,12 @@ namespace LNE_Security
                 Console.WriteLine("Could not find product to delete");
         }
 
-        public Product SelectProduct(UInt32 ID)
+        public Product SelectProduct(UInt32 PID)
         {
-            List<Product> products = new List<Product>();
+            List<Product> products = GetProducts();
             foreach(Product product in products)
             {
-                if(product.PID == ID) return product;
+                if(product.PID == PID) return product;
             }
             return null;
         }

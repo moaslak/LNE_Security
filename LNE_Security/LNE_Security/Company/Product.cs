@@ -42,7 +42,7 @@ public class Product
     {
         if(CostPrice <= 0 || SalesPrice <= 0) return 0;
 
-    return (SalesPrice/ CostPrice)*100;    
+    return (Math.Round(((SalesPrice/ CostPrice)*100),2));    
     }
 
     public double CalculateProfit(double SalesPrice, double CostPrice)

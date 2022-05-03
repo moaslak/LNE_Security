@@ -12,7 +12,6 @@ namespace LNE_Security;
 
 partial class Database
 {
-    // TODO: finish sales order database
     SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
     public List<OrderLine> GetOrderLines(UInt32 OrderID)
@@ -33,8 +32,8 @@ partial class Database
             string state = reader.GetValue(4).ToString();
             switch (state)
             {
-                case "Done":
-                    line.State = OrderLine.States.Done;
+                case "Closed":
+                    line.State = OrderLine.States.Closed;
                     break;
                 case "Packed":
                     line.State = OrderLine.States.Packed;
@@ -45,10 +44,14 @@ partial class Database
                 case "Created":
                     line.State = OrderLine.States.Created;
                     break;
+                case "Canceled":
+                    line.State = OrderLine.States.Canceled;
+                    break;
                 default:
                     line.State = OrderLine.States.Created;
                     break;
-            }  
+            }
+            line.pickedBy = reader.GetValue(5).ToString();
             orderLines.Add(line);
         }
         reader.Close();
@@ -132,15 +135,16 @@ partial class Database
 
         Product selectedProduct = new Product();
 
-        productListPage.AddColumn("Product Number", "ProductNumber", 10);
-        productListPage.AddColumn("Product Name", "ProductName", 25);
-        productListPage.AddColumn("Amount In Storage", "AmountInStorage");
-        productListPage.AddColumn("Cost Price", "CostPrice");
-        productListPage.AddColumn("Sales Price", "SalesPrice");
+        productListPage.AddColumn("Product Number", "ProductNumber", "Product Number".Length);
+        productListPage.AddColumn("Product Name", "ProductName", "Product Name".Length);
+        productListPage.AddColumn("Amount In Storage", "AmountInStorage", "Amount In Storage".Length);
+        productListPage.AddColumn("Cost Price", "CostPrice", "Cost Price".Length);
+        productListPage.AddColumn("Sales Price", "SalesPrice", "Sales Price".Length);
         if (productList.Count == 0)
             productListPage.Draw();
         else
             selectedProduct = productListPage.Select();
+        //TODO: exception handling
         Console.WriteLine("Selection : " + selectedProduct.ProductName);
         orderline.Product = selectedProduct;
         double quantity = 0;
@@ -174,7 +178,7 @@ partial class Database
         orderline.State = OrderLine.States.Created;
         sqlConnection.Open();
         string query = @"INSERT INTO [dbo].[Orderline]( [PID], [Quantity], [OrderID], [Status]) VALUES(
-        '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID+ "','" + orderline.State.ToString() + "')";
+    '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID + "','" + orderline.State.ToString() + "')";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         SqlDataReader reader = cmd.ExecuteReader();
         reader.Close();
@@ -198,8 +202,10 @@ partial class Database
         else
             orderline.OLID = 1;
 
-        selectedProduct.AmountInStorage = amountInStore - quantity; //TODO: trækkes fra i Storage, når state == packed
+        //selectedProduct.AmountInStorage = amountInStore - quantity; //TODO: trækkes fra i Storage, når state == packed
         Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
+
+        
 
         return orderline;
     }
@@ -209,14 +215,15 @@ partial class Database
         Console.WriteLine();
         Console.WriteLine("New sales order");
 
-        salesOrder.OrderTime = DateTime.Now;
         salesOrder.CID = customer.CID;
         salesOrder.FullName = customer.ContactInfo.FullName;
-
+        salesOrder.CompanyID = companyID;
         SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
-        DateTime randomDate = new DateTime(1900, 1, 1, 0, 0, 0); //TODO: insæt alt data på en gang
-        string query = "INSERT INTO[dbo].[SalesOrder] (OrderTime, CID) VALUES('" + randomDate.ToString("s").Replace("T", " ") + "', '" + customer.CID.ToString() +"')";
+        DateTime randomDate = RandomDay(); // Need OrderID for Orderlines
+        string query = "INSERT INTO[dbo].[SalesOrder] (OrderTime, ContactInfoID, CID, CompanyID) VALUES('" + 
+            randomDate.ToString("s").Replace("T", " ") + "', '"+ customer.ContactInfoID.ToString() + "', '" +
+            customer.CID.ToString() + "',' " + salesOrder.CompanyID +"')";
         
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
@@ -230,7 +237,11 @@ partial class Database
         foreach(SalesOrder so in salesOrders)
         {
             if (so.OrderTime == randomDate && salesOrder.CID == customer.CID)
+            {
                 salesOrder.OrderID = so.OrderID;
+                salesOrder.OrderTime = DateTime.Now;
+            }
+                
         }
         bool Done = false;
         do
@@ -241,7 +252,7 @@ partial class Database
             {
                 case ConsoleKey.Escape:
                     Done = true;
-                    salesOrder.OLID = salesOrder.OrderLines[0].OLID; // TODO: fix this
+                    //salesOrder.OLID = salesOrder.OrderLines[0].OLID; // TODO: fix this
                     break;
                 default:
                     break;
@@ -250,14 +261,15 @@ partial class Database
 
         salesOrder.TotalPrice = salesOrder.CalculateTotalPrice(salesOrder.OrderLines);
 
-
+        salesOrder.State = SalesOrder.States.Created;
         query = @"UPDATE [dbo].[SalesOrder]
             SET [OrderTime] = '" + salesOrder.OrderTime.ToString("s").Replace("T", " ") +
             
           "', [ContactInfoID] = '" + customer.ContactInfoID.ToString() +
           "', [CID] = '" + customer.CID +
           "', [CompanyID] = '" + companyID.ToString() +
-          "', [Price] = '" + salesOrder.CalculateTotalPrice(salesOrder.OrderLines) + "' WHERE OrderID = '" + salesOrder.OrderID+"'";
+          "', [Price] = '" + salesOrder.TotalPrice + 
+          "', [State] = '" + salesOrder.State.ToString() + "'  WHERE OrderID = '" + salesOrder.OrderID+"'";
         cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
         
@@ -281,15 +293,29 @@ partial class Database
         return null;
     }
 
-    public void EditOrderline(UInt16 OLID, OrderLine editedOrderline)
+    public void EditOrderlineState(UInt16 OLID, string state)
     {
         
         string query = @"UPDATE [dbo].[Orderline]
-            SET[PID] = " + editedOrderline.PID.ToString() +
-            ",[Quantity] =" + editedOrderline.Quantity.ToString() +
-            ",[OrderID] = " + editedOrderline.OrderID.ToString() +
-            ",[Status] = '" + editedOrderline.State.ToString() +
-            "' WHERE OLID =" + OLID.ToString();
+        SET[Status] = '" + state +
+                            "' WHERE OLID =" + OLID.ToString();
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+        sqlConnection.Close();
+    }
+
+    public void EditOrderline(UInt16 OLID, OrderLine editedOrderline)
+    {
+        string query = @"UPDATE [dbo].[Orderline]
+        SET[PID] = " + editedOrderline.PID.ToString() +
+                            ",[Quantity] =" + editedOrderline.Quantity.ToString() +
+                            ",[OrderID] = " + editedOrderline.OrderID.ToString() +
+                            ",[Status] = '" + editedOrderline.State.ToString() +
+                            "',[PickedBy] = '" + editedOrderline.pickedBy.ToString() +
+                            "' WHERE OLID =" + OLID.ToString();
         sqlConnection.Open();
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
 
@@ -299,6 +325,14 @@ partial class Database
     }
     public void EditSalesOrder(SalesOrder editedSalesOrder)
     {
+        /*
+        if(editedSalesOrder.State == SalesOrder.States.Closed || editedSalesOrder.State == SalesOrder.States.Canceled)
+        {
+            Console.WriteLine("Cannot edit Salesorder with state: " + editedSalesOrder.State.ToString());
+            Console.WriteLine("Press a key to return");
+            Console.ReadKey();
+            return;
+        }*/
         if(editedSalesOrder != null)
         {
             UInt32 orderID = editedSalesOrder.OrderID;
@@ -310,10 +344,10 @@ partial class Database
                 SET [OrderTime] = '" + editedSalesOrder.OrderTime.ToString("s").Replace("T", " ") + "'" +
                     ", [CompletionTime] = '" + editedSalesOrder.CompletionTime.ToString() + "'" +
                 //",[CID] = '" + editedSalesOrder.CID + "'" +
-                //",[ContactInfoID] = '" + editedSalesOrder.ContactInfoID + "'" +
-                //",[CompanyID] = '" + editedSalesOrder.CompanyID + "'" +
-                //",[OLID] = '" + editedSalesOrder.OLID + "'" +
+                ",[ContactInfoID] = '" + editedSalesOrder.ContactInfoID + "'" +
+                ",[CompanyID] = '" + editedSalesOrder.CompanyID + "'" +
                 ",[Price] = '" + editedSalesOrder.TotalPrice + "'" +
+                ",[State] = '" + editedSalesOrder.State.ToString() +"'" +
                 " WHERE OrderID = " + orderID;
             SqlCommand cmd = new SqlCommand(query, sqlConnection);
             sqlConnection.Open();
@@ -339,6 +373,95 @@ partial class Database
                 return salesOrder;
         }
         return null;
+    }
+
+    public SalesOrder SelectSalesOrder(UInt32 orderID)
+    {
+        string query = @"SELECT * FROM [dbo].[SalesOrder]";
+        query = query + "WHERE OrderID = " + orderID;
+
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+        SalesOrder salesOrder = new SalesOrder();
+        DateTime dateTime = new DateTime();
+        while (reader.Read())
+        {
+            
+            salesOrder.OrderID = Convert.ToUInt16(reader.GetValue(0).ToString());
+            string dateTimeString = reader.GetValue(1).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.OrderTime = dateTime;
+            }
+            catch (FormatException ex)
+            {
+                salesOrder.OrderTime = DateTime.MinValue;
+            }
+            dateTimeString = reader.GetValue(2).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.CompletionTime = dateTime;
+            }
+            catch (FormatException ex)
+            {
+                salesOrder.CompletionTime = null;
+            }
+            try
+            {
+                salesOrder.ContactInfoID = Convert.ToUInt16(reader.GetValue(3));
+            }
+            catch (InvalidCastException ex)
+            {
+                salesOrder.ContactInfoID = 0;
+            }
+
+            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(4)));
+            salesOrder.CompanyID = (ushort)(Convert.ToUInt16(reader.GetValue(5)));
+            try
+            {
+                salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(6));
+            }
+            catch (InvalidCastException ex)
+            {
+                salesOrder.TotalPrice = 0;
+            }
+            try
+            {
+                string state = reader.GetValue(7).ToString();
+                switch (state)
+                {
+                    case "Created":
+                        salesOrder.State = SalesOrder.States.Created;
+                        break;
+                    case "Confirmed":
+                        salesOrder.State = SalesOrder.States.Confirmed;
+                        break;
+                    case "Packed":
+                        salesOrder.State = SalesOrder.States.Packed;
+                        break;
+                    case "Closed":
+                        salesOrder.State = SalesOrder.States.Closed;
+                        break;
+                    case "Canceled":
+                        salesOrder.State = SalesOrder.States.Canceled;
+                        break;
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                salesOrder.State = SalesOrder.States.Error;
+            }
+
+            salesOrder.FullName = contactInfo.FullName;
+        }
+        reader.Close();
+        sqlConnection.Close();
+
+        return salesOrder;
     }
     public List<SalesOrder> GetSalesOrders(Customer customer)
     {
@@ -389,6 +512,7 @@ partial class Database
             }
 
             salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(4)));
+            salesOrder.CompanyID = (ushort)(Convert.ToUInt16(reader.GetValue(5)));
             try
             {
                 salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(6));
@@ -397,8 +521,41 @@ partial class Database
             {
                 salesOrder.TotalPrice = 0;
             }
-            
+            try
+            {
+                string state = reader.GetValue(7).ToString();
+                switch (state)
+                {
+                    case "Created":
+                        salesOrder.State = SalesOrder.States.Created;
+                        break;
+                    case "Confirmed":
+                        salesOrder.State = SalesOrder.States.Confirmed;
+                        break;
+                    case "Packed":
+                        salesOrder.State = SalesOrder.States.Packed;
+                        break;
+                    case "Closed":
+                        salesOrder.State = SalesOrder.States.Closed;
+                        break;
+                    case "Canceled":
+                        salesOrder.State = SalesOrder.States.Canceled;
+                        break;
+                    case "Incomplete":
+                        salesOrder.State = SalesOrder.States.Incomplete;
+                        break;
+                    case "Error":
+                        salesOrder.State = SalesOrder.States.Error;
+                        break;
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                salesOrder.State = SalesOrder.States.Error;
+            }
+
             salesOrder.FullName = contactInfo.FullName;
+            
             salesOrders.Add(salesOrder);
         }
         reader.Close();
@@ -434,15 +591,155 @@ partial class Database
             {
                 salesOrder.OrderTime = DateTime.MinValue;
             }
-
-            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(2)));
-            salesOrder.FullName = reader.GetValue(3).ToString();
-            salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(4));
+            dateTimeString = reader.GetValue(2).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.CompletionTime = dateTime;
+            }
+            catch(Exception ex)
+            {
+                salesOrder.CompletionTime = null;
+            }
+            try
+            {
+                salesOrder.ContactInfoID = (ushort)(Convert.ToUInt16(reader.GetValue(3)));
+            }
+            catch(InvalidCastException ex)
+            {
+                salesOrder.ContactInfoID = 0;
+            }
+            try
+            {
+                salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(4).ToString()));
+            }
+            catch(InvalidCastException ex)
+            {
+                salesOrder.CID = 0;
+            }
+            try
+            {
+                salesOrder.CompanyID = (ushort)Convert.ToDouble(reader.GetValue(5));
+            }
+            catch (InvalidCastException ex)
+            {
+                salesOrder.CompanyID = 0;
+            }
+            try
+            {
+                salesOrder.TotalPrice = Convert.ToDouble(reader.GetValue(6));
+            }
+            catch(InvalidCastException ex)
+            {
+                salesOrder.TotalPrice = 0;
+            }
+            try
+            {
+                string state = reader.GetValue(7).ToString();
+                switch (state)
+                {
+                    case "Created":
+                        salesOrder.State = SalesOrder.States.Created;
+                        break;
+                    case "Confirmed":
+                        salesOrder.State = SalesOrder.States.Confirmed;
+                        break;
+                    case "Packed":
+                        salesOrder.State = SalesOrder.States.Packed;
+                        break;
+                    case "Closed":
+                        salesOrder.State = SalesOrder.States.Closed;
+                        break;
+                    case "Canceled":
+                        salesOrder.State = SalesOrder.States.Canceled;
+                        break;
+                }
+            }
+            catch(ArgumentNullException ex)
+            {
+                salesOrder.State = SalesOrder.States.Error;
+            }
             salesOrders.Add(salesOrder);
         }
         reader.Close();
         sqlConnection.Close();
+
         return salesOrders;
+    }
+
+    public List<SalesOrder> GetSalesOrders(string state)
+    {
+        List<SalesOrder> salesOrders = new List<SalesOrder>();
+
+        string dateTimeString = "";
+        DateTime dateTime = new DateTime();
+
+        string query = @"SELECT * FROM [dbo].[SalesOrder]";
+        query = query + " WHERE State = '" + state +"'";
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            SalesOrder salesOrder = new SalesOrder();
+            salesOrder.OrderID = Convert.ToUInt16(reader.GetValue(0).ToString());
+            dateTimeString = reader.GetValue(1).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.OrderTime = dateTime;
+            }
+            catch (FormatException ex)
+            {
+                salesOrder.OrderTime = DateTime.MinValue;
+            }
+            dateTimeString = reader.GetValue(2).ToString();
+            try
+            {
+                DateTime.TryParse(dateTimeString, out dateTime);
+                salesOrder.CompletionTime = dateTime;
+            }
+            catch (FormatException ex)
+            {
+                salesOrder.CompletionTime = null;
+            }
+            try
+            {
+                salesOrder.ContactInfoID = Convert.ToUInt16(reader.GetValue(3));
+            }
+            catch (InvalidCastException ex)
+            {
+                salesOrder.ContactInfoID = 0;
+            }
+
+            salesOrder.CID = (ushort)(Convert.ToUInt16(reader.GetValue(4)));
+            salesOrder.CompanyID = (ushort)(Convert.ToUInt16(reader.GetValue(5)));
+            try
+            {
+                salesOrder.TotalPrice = (double)Convert.ToDouble(reader.GetValue(6));
+            }
+            catch (InvalidCastException ex)
+            {
+                salesOrder.TotalPrice = 0;
+            }
+
+            salesOrder.FullName = contactInfo.FullName;
+
+            salesOrders.Add(salesOrder);
+        }
+        reader.Close();
+        sqlConnection.Close();
+
+        return salesOrders;
+    }
+    private DateTime RandomDay()
+    {
+        Random gen = new Random();
+        DateTime start = new DateTime(1995, 1, 1);
+        int range = (DateTime.Today - start).Days;
+        return start.AddDays(gen.Next(range));
     }
 }
 

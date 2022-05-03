@@ -58,6 +58,34 @@ public class EmployeeScreen : ScreenHandler
         contactInfo.AddressId = Database.Instance.NewAddress(contactInfo.Address);
 
         Employee newEmployee = new Employee();
+        Console.WriteLine("Enter user name: ");
+        newEmployee.UserName = Console.ReadLine();
+        Console.WriteLine("Enter password: ");
+        newEmployee.Password = Console.ReadLine();
+
+        int passwordCheck = 0;
+        bool passwordConfirmed = false;
+        do
+        {
+            Console.WriteLine("Confirm password");
+            if (Console.ReadLine() == newEmployee.Password)
+                passwordConfirmed = true;
+            else
+            {
+                Console.WriteLine("Incorrect confirmation");
+                passwordCheck++;
+                if (passwordCheck == 3)
+                    passwordConfirmed = true;
+            }
+
+        } while (!(passwordConfirmed));
+        if (passwordCheck == 3 && passwordConfirmed)
+        {
+            Console.WriteLine("Password no comfirmed!!!");
+            Console.WriteLine("Password set to: Test!234");
+            newEmployee.Password = "Test!234";
+        }
+
         newEmployee.ContactInfoID = Database.Instance.NewContactInfo(contactInfo);
         newEmployee.ContactInfo = contactInfo;
         newEmployee.Address = contactInfo.Address;
@@ -103,36 +131,41 @@ public class EmployeeScreen : ScreenHandler
             EmployeeListPage.AddColumn("Employee Name", "FullName");
             EmployeeListPage.AddColumn("Phonenumber", "PhoneNumber");
             EmployeeListPage.AddColumn("Email", "Email");
+            EmployeeListPage.AddColumn("User name", "UserName");
+            
             selected = EmployeeListPage.Select();
-            Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
+            
         }
-
-        Console.WriteLine("F1 - New Employee");
-        //Console.WriteLine("F2 - Edit");
-        Console.WriteLine("F2 - View/Edit Employee");
-        Console.WriteLine("F8 - Delete Employee");
-        Console.WriteLine("F10 - To Main menu");
-        Console.WriteLine("Esc - Close App");
-        Console.WriteLine();
-
-        switch (Console.ReadKey().Key)
+        if(selected != null)
         {
-            case ConsoleKey.F1:
-                newEmployee();
-                Console.WriteLine("Press enter to continue");
-                break;
-            case ConsoleKey.F2:
-                ScreenHandler.Display(new EditEmployeeScreen(selected));
-                break;
-            case ConsoleKey.F10:
-                ScreenHandler.Display(new MainMenuScreen(this.company));
-                break;
-            case ConsoleKey.F8:
-                Database.Instance.DeleteEmployee(selected.EID);
-                break;
-            case ConsoleKey.Escape:
-                Environment.Exit(0);
-                break;
+            Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
+            Console.WriteLine("F1 - New Employee");
+            Console.WriteLine("F2 - View/Edit Employee");
+            Console.WriteLine("F8 - Delete Employee");
+            Console.WriteLine("F10 - To Main menu");
+            Console.WriteLine("Esc - Close App");
+            Console.WriteLine();
+
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.F1:
+                    newEmployee();
+                    Console.WriteLine("Press enter to continue");
+                    break;
+                case ConsoleKey.F2:
+                    ScreenHandler.Display(new EditEmployeeScreen(selected));
+                    break;
+                case ConsoleKey.F10:
+                    ScreenHandler.Display(new MainMenuScreen(this.company));
+                    break;
+                case ConsoleKey.F8:
+                    Database.Instance.DeleteEmployee(selected.EID);
+                    break;
+                case ConsoleKey.Escape:
+                    Environment.Exit(0);
+                    break;
+            }
         }
+        
     }
 }

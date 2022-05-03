@@ -33,6 +33,11 @@ namespace LNE_Security
             product = Product;
             company = Company;
         }
+        public ScreenHandler(Customer Customer, Company Company)
+        {
+            customer = Customer;
+            company = Company;
+        }
 
         public ScreenHandler(Person person)
         {

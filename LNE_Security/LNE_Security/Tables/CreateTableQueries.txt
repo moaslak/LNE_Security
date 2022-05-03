@@ -16,7 +16,7 @@ FirstName VARCHAR(64),
 LastName VARCHAR(64),
 Email VARCHAR(64),
 PhoneNumber VARCHAR(16)
-AddressID int FOREIGN REFERENCES Address(AddressID),
+AddressID int FOREIGN KEY REFERENCES Address(AddressID),
 PRIMARY KEY(Id)
 )
 
@@ -41,6 +41,7 @@ PID int FOREIGN KEY REFERENCES Product(PID),
 Quantity decimal(18,2),
 OrderID int FOREIGN KEY REFERENCES SalesOrder(OrderID),
 Status varchar(16),
+PickedBy varchar(64),
 PRIMARY KEY(OLID)
 )
 
@@ -52,6 +53,7 @@ ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
 CID int FOREIGN KEY REFERENCES Customer(CID),
 CompanyID int FOREIGN KEY REFERENCES Company(CompanyID),
 Price money,
+State VARCHAR(16),
 PRIMARY KEY(OrderID)
 )
 
@@ -80,5 +82,7 @@ PRIMARY KEY(CID)
 CREATE TABLE Employee(
 EID int IDENTITY(1,1),
 ContactInfoID int FOREIGN KEY REFERNECES ContactInfo(ContactInfoID),
+UserName varchar(64) NOT NULL,
+Password varchar(64) NOT NULL,
 PRIMARY KEY(EID)
 )
