@@ -59,7 +59,6 @@ public class ProductDetailsScreen : ScreenHandler
                 break;
             case ConsoleKey.F2:
                 ScreenHandler.Display(new EditProductScreen(product, company));
-
                 break;
             default:
                 break;
