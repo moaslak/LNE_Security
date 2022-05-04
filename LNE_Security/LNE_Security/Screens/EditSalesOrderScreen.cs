@@ -377,13 +377,16 @@ internal class EditSalesOrderScreen : ScreenHandler
     private void CreateHTMLInvoice(SalesOrder salesOrder)
     {
         //TODO: Get relative path
-        string path = @"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Templates\Invoice.html";
-        string logoPath = @"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Images\LNE_logo.png"; //TODO: find logos!!!
-        string invoicePath = @"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Invoices\";
+        string templatePath = @"..\\Templates\Invoice.html";
+        string logoPath = @"..\\Images\LNE_logo.png";
+        string invoicePath = "..\\Invoices\\";
         if (!(Directory.Exists(invoicePath)))
             Directory.CreateDirectory(invoicePath);
 
-        string html2String = File.ReadAllText(path);
+        if (!(Directory.Exists(invoicePath)))
+            Directory.CreateDirectory(invoicePath);
+
+        string html2String = File.ReadAllText(templatePath);
         Customer customer = Database.Instance.SelectCustomer(salesOrder.CID);
         customer.CreateFullName(customer.FirstName, customer.LastName);
         ContactInfo contactInfo = Database.Instance.SelectContactInfo(customer);
@@ -410,17 +413,12 @@ internal class EditSalesOrderScreen : ScreenHandler
         html2String = html2String.Replace("{completionTime}", salesOrder.CompletionTime.ToString());
         html2String = html2String.Replace("{packedby}", salesOrder.OrderLines[0].pickedBy.ToString()); //TODO: picked by orderline
 
-        File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
+        File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + 
+            salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
         
-        // relative path
-        /*
-        invoicePath = "..\\Invoices\\";
-        if (!(Directory.Exists(invoicePath)))
-            Directory.CreateDirectory(invoicePath);
-        */
-
-        File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
-        System.Diagnostics.Process.Start(@"C:\Program Files\Google\Chrome\Application\chrome.exe", invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0, 10) + ".html");
+        System.Diagnostics.Process.Start(@"C:\Program Files\Google\Chrome\Application\chrome.exe", 
+            Path.GetFullPath(invoicePath) + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + 
+            salesOrder.CompletionTime.ToString().Substring(0, 10) + ".html");
     }
 
     /// <summary>

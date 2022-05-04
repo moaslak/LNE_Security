@@ -44,7 +44,7 @@ namespace LNE_Security
                 productListPage.AddColumn("Product Number", "ProductNumber", "Product Number".Length);
                 productListPage.AddColumn("Product Name", "ProductName", 25);
                 productListPage.AddColumn("Amount In Storage", "AmountInStorage", "Amount In Storage".Length);
-                productListPage.AddColumn("Cost Price " + company.Currency.ToString(), "CostPrice", "Cost Price ".Length + 3); // TODO: FIX ME!!!
+                productListPage.AddColumn("Cost Price " + company.Currency.ToString(), "CostPrice", "Cost Price ".Length + 3);
                 productListPage.AddColumn("Sales Price " + company.Currency.ToString(), "SalesPrice", "Sales Price ".Length + 3);
                 if (products.Count == 0)
                     productListPage.Draw();
