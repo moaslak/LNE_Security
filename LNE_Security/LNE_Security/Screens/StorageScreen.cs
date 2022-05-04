@@ -199,7 +199,6 @@ public class StorageScreen : ScreenHandler
     /// </summary>
     private void Pick()
     {
-        //TODO: show quantity when pick
         List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders("Confirmed");
         List<SalesOrder> incompleteOrders = Database.Instance.GetSalesOrders("Incomplete");
 
@@ -217,20 +216,24 @@ public class StorageScreen : ScreenHandler
         if (salesOrders.Count > 0)
         {
             int maxFullnameLength = 0;
+            int maxOrderIDLength = 0;
             foreach(SalesOrder so in salesOrders)
             {
                 if (so.FullName.Length > maxFullnameLength)
                     maxFullnameLength = so.FullName.Length;
+                if(so.OrderID.ToString().Length > maxOrderIDLength)
+                    maxOrderIDLength = so.OrderID.ToString().Length;
             }
 
-            salesOrderListpage.AddColumn("Order ID", "OrderID", "Order ID".Length); //TODO: FIX LENGTHSS
-            salesOrderListpage.AddColumn("Customer", "FullName", maxFullnameLength);
+            salesOrderListpage.AddColumn("Order ID", "OrderID", ColumnLength("Order ID", maxOrderIDLength));
+            salesOrderListpage.AddColumn("Customer", "FullName", ColumnLength("Customer", maxFullnameLength));
             SalesOrder salesOrder = salesOrderListpage.Select();
 
             List<OrderLine> orderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
             ListPage<OrderLine> listPage = new ListPage<OrderLine>();
 
             int count = 0;
+            int maxOLIDLength = 0;
             foreach (OrderLine orderLine in orderLines)
             {
                 if (orderLine.State == OrderLine.States.Confirmed || orderLine.State == OrderLine.States.Created)
@@ -239,12 +242,14 @@ public class StorageScreen : ScreenHandler
                     orderLine.Product = Database.Instance.SelectProduct(orderLine.PID);
                     listPage.Add(orderLine);
                     count++;
+                    if(orderLine.OLID.ToString().Length > maxOLIDLength)
+                        maxOrderIDLength=orderLine.OLID.ToString().Length;
                 }
             }
             if (count > 0)
             {
-                listPage.AddColumn("OLID", "OLID", "OLID".Length); //TODO: FIX LENGTHSS
-                listPage.AddColumn("Status", "State", "Confirmed".Length);
+                listPage.AddColumn("OLID", "OLID", ColumnLength("OLID", maxOrderIDLength));
+                listPage.AddColumn("Status", "State", "Incomplete".Length);
                 OrderLine selectedOrderLine = listPage.Select();
 
                 if (selectedOrderLine.State != OrderLine.States.Packed)
