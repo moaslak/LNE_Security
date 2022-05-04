@@ -64,7 +64,6 @@ public class EditEmployeeScreen : ScreenHandler
                 this.address.City = newValue;
                 break;
             case "Phonenumber":
-                //this.contact.PhoneNumber.Add(newValue);
                 this.contact.PhoneNumber = newValue;
                 break;
             case "Email":
@@ -126,19 +125,6 @@ public class EditEmployeeScreen : ScreenHandler
             Console.WriteLine("Phonenumber: " + contact.PhoneNumber);
             Console.WriteLine("Email: " + contact.Email);
             Console.WriteLine("User name: " + this.employee.UserName);
-            
-            //Bruges denne???!?!?
-            /*
-            ContactListPage.AddColumn("Firstname", "FirstName");
-            ContactListPage.AddColumn("Lastname", "LastName");
-            AddressListPage.AddColumn("Streetname", "StreetName");
-            AddressListPage.AddColumn("Housenumber", "HouseNumber");
-            AddressListPage.AddColumn("Zipcode", "ZipCode");
-            AddressListPage.AddColumn("City", "City");
-            AddressListPage.AddColumn("Country", "Country");
-            ContactListPage.AddColumn("Phonenumber", "PhoneNumber");
-            ContactListPage.AddColumn("Email", "Email");
-            */
             
             ListPage<Options> OptionListPage = new ListPage<Options>();
             string zipCode = address.ZipCode.ToString();

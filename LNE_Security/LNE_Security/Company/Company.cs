@@ -39,7 +39,7 @@ public class Company
     public string FirstName { get; set; }
     public string LastName { get; set; }
 
-    public string? CompanyName { get; set; }
+    public string CompanyName { get; set; }
     public string? Country { get; set; }
     public string? StreetName { get; set; }
     public enum Currencies { DKK, USD, EUR, YEN }

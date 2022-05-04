@@ -36,16 +36,30 @@ namespace LNE_Security
             ListPage<String> selectedList = new ListPage<String>();
             List<Product> products = Database.Instance.GetProducts();
             Product selectedProduct = new Product();
+
+            int maxProductNumberLength = 0;
+            int maxProductNameLength = 0;
+            int maxAmountInStorageLength = 0;
+            
             if (products.Count > 0)
             {
                 foreach (Product product in products)
+                {
                     productListPage.Add(product);
+                    if(product.ProductNumber.ToString().Length > maxProductNumberLength)
+                        maxProductNumberLength = product.ProductNumber.ToString().Length;
+                    if(product.ProductName.Length > maxProductNameLength)
+                        maxProductNameLength = product.ProductName.Length;
+                    if(product.AmountInStorage.ToString().Length > maxAmountInStorageLength)
+                        maxAmountInStorageLength = product.AmountInStorage.ToString().Length;
+                }
+                    
 
-                productListPage.AddColumn("Product Number", "ProductNumber", "Product Number".Length);
-                productListPage.AddColumn("Product Name", "ProductName", 25);
-                productListPage.AddColumn("Amount In Storage", "AmountInStorage", "Amount In Storage".Length);
-                productListPage.AddColumn("Cost Price " + company.Currency.ToString(), "CostPrice", "Cost Price ".Length + 3);
-                productListPage.AddColumn("Sales Price " + company.Currency.ToString(), "SalesPrice", "Sales Price ".Length + 3);
+                productListPage.AddColumn("Product number", "ProductNumber", ColumnLength("Product Number", maxProductNumberLength));
+                productListPage.AddColumn("Product name", "ProductName", ColumnLength("Product name", maxProductNameLength));
+                productListPage.AddColumn("Amount in storage", "AmountInStorage", ColumnLength("Amount in storage", maxAmountInStorageLength));
+                productListPage.AddColumn("Cost price " + company.Currency.ToString(), "CostPrice", "Cost price ".Length + company.Currency.ToString().Length);
+                productListPage.AddColumn("Sales price " + company.Currency.ToString(), "SalesPrice", "Sales price ".Length + company.Currency.ToString().Length);
                 if (products.Count == 0)
                     productListPage.Draw();
                 else

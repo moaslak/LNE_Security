@@ -45,7 +45,7 @@ public class CompanyScreen : ScreenHandler
                 CompanyListPage.Add(company);
             CompanyListPage.AddColumn("Company name", "CompanyName", "Company name".Length);
             CompanyListPage.AddColumn("Country", "Country", maxCountryLength);
-            CompanyListPage.AddColumn("Currency", "Currency", maxCountryLength);
+            CompanyListPage.AddColumn("Currency", "Currency", ColumnLength("Currency", maxCurrencyLength));
             Console.WriteLine("Choose Company");
             selected = CompanyListPage.Select();
             

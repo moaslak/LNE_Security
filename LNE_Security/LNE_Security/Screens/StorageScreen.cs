@@ -252,12 +252,13 @@ public class StorageScreen : ScreenHandler
                     Product product = Database.Instance.SelectProduct(selectedOrderLine.PID);
                     ListPage<Product> productListPage = new ListPage<Product>();
                     productListPage.Add(product);
-                    productListPage.AddColumn("PID", "PID", 5);
-                    productListPage.AddColumn("Product Number", "ProductNumber", "Product Number".Length);
-                    productListPage.AddColumn("Product Name", "ProductName", "Product Name".Length);
-                    productListPage.AddColumn("Amount in storage", "AmountInStorage", "Amount in storage".Length);
-                    productListPage.AddColumn("Location", "LocationString", "Location".Length);
-                    productListPage.AddColumn("Description", "Description", product.Description.Length);
+                    productListPage.AddColumn("PID", "PID", ColumnLength("PID", product.PID.ToString()));
+                    productListPage.AddColumn("Product number", "ProductNumber", ColumnLength("Product number", product.ProductNumber.ToString()));
+                    productListPage.AddColumn("Product name", "ProductName", ColumnLength("Product name", product.ProductName));
+                    productListPage.AddColumn("Amount in storage", "AmountInStorage", ColumnLength("Amount in storage", product.AmountInStorage.ToString()));
+                    productListPage.AddColumn("Location", "LocationString", ColumnLength("Location", product.LocationString));
+                    productListPage.AddColumn("Description", "Description", ColumnLength("Description", product.Description));
+                    
                     Product selectedProduct = productListPage.Select();
 
                     Console.WriteLine("Confirm pick? (y)es/(n)o");
@@ -437,5 +438,5 @@ public class StorageScreen : ScreenHandler
             Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
             Console.WriteLine(add + " " + selectedProduct.ProductName + " added to location: " + selectedProduct.LocationString);
         }
-    }
+    } 
 }

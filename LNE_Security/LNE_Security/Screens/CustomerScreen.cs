@@ -90,7 +90,8 @@ public class CustomerScreen : ScreenHandler
             catch (System.NullReferenceException ex)
             {
                 Console.WriteLine(ex.Message);
-            } 
+            }
+            
             if(customer.FullName.Length > maxFullnameLength)
                 maxFullnameLength = customer.FullName.Length;
             if(customer.Email.Length > maxEmailLength)
@@ -109,8 +110,8 @@ public class CustomerScreen : ScreenHandler
             Console.WriteLine("Choose Customer");
             CustomerListPage.AddColumn("Customer ID", "CID", "Customer ID".Length);
             CustomerListPage.AddColumn("Customer Name", "FullName", maxFullnameLength);
-            CustomerListPage.AddColumn("Phonenumber", "PhoneNumber", maxPhoneNumberLength);
-            CustomerListPage.AddColumn("Email", "Email", maxEmailLength);
+            CustomerListPage.AddColumn("Phonenumber", "PhoneNumber", ColumnLength("Phonenumber", maxPhoneNumberLength));
+            CustomerListPage.AddColumn("Email", "Email", ColumnLength("Email", maxEmailLength));
             selected = CustomerListPage.Select();
             
         }

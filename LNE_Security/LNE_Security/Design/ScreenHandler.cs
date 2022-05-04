@@ -78,5 +78,20 @@ namespace LNE_Security
         {
 
         }
+
+        protected int ColumnLength(string title, string data)
+        {
+            int length = title.Length;
+            if(data.Length > length)
+                length = data.Length;
+            return length;
+        }
+
+        protected int ColumnLength(string title, int length)
+        {
+            if (length > title.Length)
+                return length;
+            return title.Length;
+        }
     }
 }

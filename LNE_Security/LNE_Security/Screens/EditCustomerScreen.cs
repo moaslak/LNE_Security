@@ -68,7 +68,6 @@ public class EditCustomerScreen : ScreenHandler
                 this.address.City = newValue;
                 break;
             case "Phonenumber":
-                //this.contact.PhoneNumber.Add(newValue);
                 this.contact.PhoneNumber = newValue;
                 break;
             case "Email":
@@ -100,16 +99,6 @@ public class EditCustomerScreen : ScreenHandler
             Console.WriteLine("Country: " + contact.Address.Country);
             Console.WriteLine("Phonenumber: " + contact.PhoneNumber);
             Console.WriteLine("Email: " + contact.Email);
-
-            ContactListPage.AddColumn("Firstname", "FirstName", customer.ContactInfo.FirstName.Length);
-            ContactListPage.AddColumn("Lastname", "LastName", customer.ContactInfo.LastName.Length);
-            AddressListPage.AddColumn("Streetname", "StreetName", customer.ContactInfo.Address.StreetName.Length);
-            AddressListPage.AddColumn("Housenumber", "HouseNumber", customer.ContactInfo.Address.HouseNumber.Length);
-            AddressListPage.AddColumn("Zipcode", "ZipCode", customer.ContactInfo.Address.ZipCode.Length);
-            AddressListPage.AddColumn("City", "City", customer.ContactInfo.Address.City.Length);
-            AddressListPage.AddColumn("Country", "Country");
-            ContactListPage.AddColumn("Phonenumber", "PhoneNumber");
-            ContactListPage.AddColumn("Email", "Email");
 
             ListPage<Options> OptionListPage = new ListPage<Options>();
             string zipCode = address.ZipCode.ToString();

@@ -302,7 +302,8 @@ internal class EditSalesOrderScreen : ScreenHandler
             ListPage<SalesOrder> SalesOrderListPage = new ListPage<SalesOrder>();
 
             int fullNameMaxLength = 0;
-
+            int maxOrderIDLength = 0;
+            int maxCIDLength = 0;
             foreach(SalesOrder salesOrder in salesOrders)
             {
                 salesOrder.OrderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
@@ -311,8 +312,13 @@ internal class EditSalesOrderScreen : ScreenHandler
                 customer = Database.Instance.SelectCustomer(salesOrder.CID);
                 if(salesOrder.FullName.Length > fullNameMaxLength)
                     fullNameMaxLength = salesOrder.FullName.Length;
+                if (salesOrder.OrderID.ToString().Length > maxOrderIDLength)
+                    maxOrderIDLength = salesOrder.OrderID.ToString().Length;
+                if(salesOrder.CID.ToString().Length > maxCIDLength)
+                    maxCIDLength = salesOrder.CID.ToString().Length;
             }
-            
+
+            int maxTotalPriceLength = 0;
             for (int i = 0; i < salesOrders.Count; i++)
             {
                 salesOrders[i].OrderLines = Database.Instance.GetOrderLines(salesOrders[i].OrderID);
@@ -322,14 +328,16 @@ internal class EditSalesOrderScreen : ScreenHandler
                     salesOrders[i].OrderLines[j].Product = Database.Instance.SelectProduct(salesOrders[i].OrderLines[j].PID);
                 }
                 salesOrders[i].TotalPrice = salesOrders[i].CalculateTotalPrice(salesOrders[i].OrderLines);
+                if (salesOrders[i].TotalPrice.ToString().Length > maxTotalPriceLength)
+                    maxTotalPriceLength = salesOrders[i].TotalPrice.ToString().Length;
             }
             
-            SalesOrderListPage.AddColumn("ID", "OrderID", 10);
-            SalesOrderListPage.AddColumn("Order time", "OrderTime", salesOrders[0].OrderTime.ToString().Length);
-            SalesOrderListPage.AddColumn("Customer Id", "CID", "Customer Id".Length);
-            SalesOrderListPage.AddColumn("Name", "FullName", fullNameMaxLength);
-            SalesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", "Price ".Length + 3);
-            SalesOrderListPage.AddColumn("State", "State", 9);
+            SalesOrderListPage.AddColumn("Order ID", "OrderID", ColumnLength("Order ID", maxOrderIDLength));
+            SalesOrderListPage.AddColumn("Order time", "OrderTime", salesOrders[0].OrderTime.ToString().Length); //HACK: grim løsning
+            SalesOrderListPage.AddColumn("Customer Id", "CID", ColumnLength("Customer Id", maxCIDLength));
+            SalesOrderListPage.AddColumn("Name", "FullName", ColumnLength("Name", fullNameMaxLength));
+            SalesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", ColumnLength("Price " + company.Currency.ToString(), maxTotalPriceLength));
+            SalesOrderListPage.AddColumn("State", "State", 10); //  "incomplete".length
             SalesOrder selectedSalesOrder = SalesOrderListPage.Select();
 
             if(selectedSalesOrder != null && selectedSalesOrder.State != SalesOrder.States.Closed)
