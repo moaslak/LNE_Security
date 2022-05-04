@@ -48,7 +48,8 @@ public class MainMenuScreen : ScreenHandler
         Clear(this);
         ListPage<Options> MenuOptions = new ListPage<Options>();
         MenuOptions.AddColumn("Option", "Option", "Sales order screen".Length);
-        MenuOptions.Add(new Options("Company screen", "F1"));
+        if(company.Role == 0)
+            MenuOptions.Add(new Options("Company screen", "F1"));
         MenuOptions.Add(new Options("Customer screen", "F2"));
         MenuOptions.Add(new Options("Employee screen", "F3"));
         MenuOptions.Add(new Options("Product screen", "F4"));

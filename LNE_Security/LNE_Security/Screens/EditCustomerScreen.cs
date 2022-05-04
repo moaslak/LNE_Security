@@ -127,7 +127,7 @@ public class EditCustomerScreen : ScreenHandler
             Console.WriteLine("Press ESC to return to Company screen");
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 
-        CustomerScreen customerScreen = new CustomerScreen(company);
-        ScreenHandler.Display(customerScreen);
+
+        ScreenHandler.Display(new CustomerDetails(this.customer, company));
     }
 }

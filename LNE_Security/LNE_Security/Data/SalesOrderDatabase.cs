@@ -144,69 +144,68 @@ partial class Database
             productListPage.Draw();
         else
             selectedProduct = productListPage.Select();
-        //TODO: exception handling
-        Console.WriteLine("Selection : " + selectedProduct.ProductName);
-        orderline.Product = selectedProduct;
-        double quantity = 0;
-        do
-        {
-            Console.Write("How many: ");
-        } while (!(double.TryParse(Console.ReadLine(), out quantity)));
-        double amountInStore = selectedProduct.AmountInStorage;
-        if (quantity > amountInStore)
-        {
-            Console.WriteLine("Not enough in store.");
-            Console.WriteLine("Amount in store: " + amountInStore);
 
-            char choice = '0';
+        if(selectedProduct != null)
+        {
+            Console.WriteLine("Selection : " + selectedProduct.ProductName);
+            orderline.Product = selectedProduct;
+            double quantity = 0;
             do
             {
-                Console.WriteLine("Add available to orderline? (Y)es/(N)o");
-            } while (!(char.TryParse(Console.ReadLine(), out choice)) && (Char.ToLower(choice) != 'y' || Char.ToLower(choice) != 'n'));
-
-            switch (choice)
+                Console.Write("How many: ");
+            } while (!(double.TryParse(Console.ReadLine(), out quantity)));
+            double amountInStore = selectedProduct.AmountInStorage;
+            if (quantity > amountInStore)
             {
-                case 'y':
-                    quantity = amountInStore;
-                    break;
-                case 'n':
-                    orderline.Product = null;
-                    return orderline;
-            }
-        }
-        orderline.Quantity = quantity;
-        orderline.State = OrderLine.States.Created;
-        sqlConnection.Open();
-        string query = @"INSERT INTO [dbo].[Orderline]( [PID], [Quantity], [OrderID], [Status]) VALUES(
-    '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID + "','" + orderline.State.ToString() + "')";
-        SqlCommand cmd = new SqlCommand(query, sqlConnection);
-        SqlDataReader reader = cmd.ExecuteReader();
-        reader.Close();
-        query = "SELECT OLID FROM [Orderline]";
-        cmd = new SqlCommand(query, sqlConnection);
-        reader = cmd.ExecuteReader();
-        while (reader.Read())
-        {
-            OLIDs.Add(Convert.ToUInt16(reader.GetValue(0)));
-        }
-        sqlConnection.Close();
+                Console.WriteLine("Not enough in store.");
+                Console.WriteLine("Amount in store: " + amountInStore);
 
-        if (OLIDs.Count > 0 && OLIDs.Count > 1)
-        {
-            foreach (UInt16 id in OLIDs)
+                char choice = '0';
+                do
+                {
+                    Console.WriteLine("Add available to orderline? (Y)es/(N)o");
+                } while (!(char.TryParse(Console.ReadLine(), out choice)) && (Char.ToLower(choice) != 'y' || Char.ToLower(choice) != 'n'));
+
+                switch (choice)
+                {
+                    case 'y':
+                        quantity = amountInStore;
+                        break;
+                    case 'n':
+                        orderline.Product = null;
+                        return orderline;
+                }
+            }
+            orderline.Quantity = quantity;
+            orderline.State = OrderLine.States.Created;
+            sqlConnection.Open();
+            string query = @"INSERT INTO [dbo].[Orderline]( [PID], [Quantity], [OrderID], [Status]) VALUES(
+            '" + selectedProduct.PID + "','" + quantity.ToString() + "','" + OrderID + "','" + orderline.State.ToString() + "')";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+            query = "SELECT OLID FROM [Orderline]";
+            cmd = new SqlCommand(query, sqlConnection);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
             {
-                if (id > orderline.OLID)
-                    orderline.OLID = id;
+                OLIDs.Add(Convert.ToUInt16(reader.GetValue(0)));
             }
+            sqlConnection.Close();
+
+            if (OLIDs.Count > 0 && OLIDs.Count > 1)
+            {
+                foreach (UInt16 id in OLIDs)
+                {
+                    if (id > orderline.OLID)
+                        orderline.OLID = id;
+                }
+            }
+            else
+                orderline.OLID = 1;
+
+            Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
         }
-        else
-            orderline.OLID = 1;
-
-        //selectedProduct.AmountInStorage = amountInStore - quantity; //TODO: trækkes fra i Storage, når state == packed
-        Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
-
-        
-
         return orderline;
     }
     public void NewSalesOrder(Customer customer, UInt16 companyID)

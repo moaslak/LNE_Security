@@ -21,6 +21,22 @@ public class CustomerDetails : ScreenHandler
 	{
 		ListPage<Customer> CustomerlistPage = new ListPage<Customer>();
 		ListPage<SalesOrder> SalesListPage = new ListPage<SalesOrder>();
+		List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(customer);
+
+		ContactInfo contactInfo = Database.Instance.SelectContactInfo(customer);
+		Address address = Database.Instance.SelectAddress(contactInfo);
+		customer.FullAddress = contactInfo.FullAddress;
+		DateTime? newestCompletedOrder = new DateTime();
+		foreach(SalesOrder SalesOrder in salesOrders)
+        {
+			if (SalesOrder.CompletionTime > newestCompletedOrder)
+            {
+				newestCompletedOrder = SalesOrder.CompletionTime;
+			}
+			customer.newestOrder = newestCompletedOrder;
+				
+        }
+		
 		CustomerlistPage.Add(customer);
 
 		ListPage<string> SelectedList = new ListPage<string>();
@@ -28,28 +44,27 @@ public class CustomerDetails : ScreenHandler
 		Title = customer.FullName + " Customer Details";
 		Clear(this);
 
-		CustomerlistPage.AddColumn("Customer name", "FullName", customer.FullName.Length);
-		CustomerlistPage.AddColumn("Address", "FullAddress", customer.ContactInfo.FullAddress.Length);
-		SalesListPage.AddColumn("Last Purchase", "OrderTime"); //TODO: IMPLEMENT
-		Customer selected = CustomerlistPage.Select();
+		CustomerlistPage.AddColumn("Customer name", "FullName", ColumnLength("Customer name", customer.FullName));
+		CustomerlistPage.AddColumn("Address", "FullAddress", ColumnLength("Address", customer.ContactInfo.FullAddress));
+		CustomerlistPage.AddColumn("Last purchase", "newestOrder", newestCompletedOrder.ToString().Length);
+		CustomerlistPage.Draw();
 
-		Console.WriteLine("Selection: " + selected.FullName);
-		Console.WriteLine("F1 - Back");
+		Console.WriteLine("Selection: " + customer.FullName);
 		Console.WriteLine("F2 - Edit");
-		Console.WriteLine("F5 - Delete");
+		Console.WriteLine("F8 - Delete");
+		Console.WriteLine("F10 - Back");
 		CustomerScreen customerScreen = new CustomerScreen(company);
-		EditCustomerScreen editCustomerScreen = new EditCustomerScreen();
 
 		switch (Console.ReadKey().Key)
 		{
-			case ConsoleKey.F1:
+			case ConsoleKey.F10:
 				ScreenHandler.Display(customerScreen);
 				break;
 			case ConsoleKey.F2:
-				ScreenHandler.Display(editCustomerScreen);
+				ScreenHandler.Display(new EditCustomerScreen(customer, company));
 				break;
-			case ConsoleKey.F5:
-				Database.Instance.DeleteCustomer(selected.CID);
+			case ConsoleKey.F8:
+				Database.Instance.DeleteCustomer(customer.CID);
 				break;
 			default:
 				break;

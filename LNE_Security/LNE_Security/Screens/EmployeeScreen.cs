@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TECHCOOL.UI;
 using LNE_Security;
+using System.Security;
 
 namespace LNE_Security.Screens;
 
@@ -58,17 +59,17 @@ public class EmployeeScreen : ScreenHandler
         contactInfo.AddressId = Database.Instance.NewAddress(contactInfo.Address);
 
         Employee newEmployee = new Employee();
-        Console.WriteLine("Enter user name: ");
+        newEmployee.CompanyID = company.CompanyID;
+        Console.Write("Enter user name: ");
         newEmployee.UserName = Console.ReadLine();
-        Console.WriteLine("Enter password: ");
-        newEmployee.Password = Console.ReadLine();
-
+        Console.Write("Enter password: ");
+        newEmployee.Password = newEmployee.GetPassword().ToString();
         int passwordCheck = 0;
         bool passwordConfirmed = false;
         do
         {
-            Console.WriteLine("Confirm password");
-            if (Console.ReadLine() == newEmployee.Password)
+            Console.Write("Confirm password: ");
+            if (newEmployee.Password == newEmployee.GetPassword())
                 passwordConfirmed = true;
             else
             {
@@ -91,7 +92,6 @@ public class EmployeeScreen : ScreenHandler
         newEmployee.Address = contactInfo.Address;
         Database.Instance.NewEmployee(newEmployee);
     }
-
     private void viewCustomer(Employee employee)
     {
         Console.Write("Name: " + employee.FullName + "\n");
@@ -102,7 +102,7 @@ public class EmployeeScreen : ScreenHandler
     {
         ListPage<Employee> EmployeeListPage = new ListPage<Employee>();
         ListPage<ContactInfo> ContactListPage = new ListPage<ContactInfo>();
-        List<Employee> employees = Database.Instance.GetEmployees();
+        List<Employee> employees = Database.Instance.GetEmployees(company.CompanyID);
 
         int maxFullnameLength = 0;
         int maxEmailLength = 0;

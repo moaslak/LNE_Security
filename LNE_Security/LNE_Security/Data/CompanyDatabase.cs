@@ -58,6 +58,9 @@ partial class Database
             }
             company.CVR = reader.GetValue(3).ToString();
             company.ContactInfoID = Convert.ToUInt16(reader.GetValue(4));
+            company.Role = Convert.ToInt32(reader.GetValue(5));
+            company.Password = reader.GetValue(6).ToString();
+
             companies.Add(company);
         }
         reader.Close();
@@ -89,7 +92,8 @@ partial class Database
         string query = @"UPDATE [dbo].[Company]
             SET[CompanyName] = '" + editedCompany.CompanyName +
             "',[Currency] = '" + editedCompany.Currency +
-            "',[CVR] = '" + editedCompany.CVR + "' WHERE CompanyID = " + editedCompany.CompanyID;
+            "',[CVR] = '" + editedCompany.CVR + 
+            "',[Password] = '" + editedCompany.Password + "' WHERE CompanyID = " + editedCompany.CompanyID;
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
         
@@ -201,8 +205,10 @@ partial class Database
         Console.Write("Contact email: ");
         newCompany.contactInfo.Email = Console.ReadLine();
         Console.Write("Contact phonenumber: ");
+        newCompany.Role = 1;
         newCompany.contactInfo.PhoneNumber = Console.ReadLine();
-
+        Console.Write("Enter password: ");
+        newCompany.Password = newCompany.GetPassword();
         Address address = new Address();
         address.StreetName = newCompany.contactInfo.Address.StreetName;
         address.HouseNumber = newCompany.contactInfo.Address.HouseNumber;
@@ -218,15 +224,19 @@ partial class Database
 
         address.AddressID = Database.Instance.NewAddress(address);
         newCompany.ContactInfoID = Database.Instance.NewContactInfo(address, newCompany);
-
+        
         string query = @"INSERT INTO [dbo].[Company]
         ([CompanyName]
         ,[Currency]
         ,[CVR]
-        ,[ContactInfoID]) VALUES('" + newCompany.CompanyName + 
+        ,[ContactInfoID]
+        ,[Role]
+        ,[Password]) VALUES('" + newCompany.CompanyName + 
         "','" + newCompany.Currency + 
         "','" + newCompany.CVR + 
-        "','" + newCompany.ContactInfoID + "')";
+        "','" + newCompany.ContactInfoID + 
+        "','" + newCompany.Role.ToString() +
+        "','" + newCompany.Password + "')";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
 

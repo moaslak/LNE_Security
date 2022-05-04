@@ -80,7 +80,8 @@ public class SalesOrderScreen : ScreenHandler
             }
 
             salesOrderListPage.AddColumn("Sales order id", "OrderID", ColumnLength("Sales order id", maxOrderIDLength));
-            salesOrderListPage.AddColumn("Date", "OrderTime", salesOrders[0].OrderTime.ToString().Length); //HACK: grimt hack
+            if(salesOrders.Count > 0)
+                salesOrderListPage.AddColumn("Date", "OrderTime", salesOrders[0].OrderTime.ToString().Length); //HACK: grimt hack
             salesOrderListPage.AddColumn("CID", "CID", ColumnLength("CID", maxCIDLength));
             salesOrderListPage.AddColumn("Name", "FullName", ColumnLength("Name", fullNameMaxLength));
             salesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", ColumnLength("Price " + company.Currency.ToString(), maxTotalPriceLength));

@@ -70,6 +70,64 @@ partial class Database
         return employees;
     }
 
+    public List<Employee> GetEmployees(UInt16 CompanyID)
+    {
+        SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+        List<Employee> employees = new List<Employee>();
+
+        string query = @"SELECT * FROM [dbo].[Employee] WHERE CompanyID = " + CompanyID.ToString();
+        sqlConnection.Open();
+
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Employee employee = new Employee();
+            employee.EID = Convert.ToUInt16(reader.GetValue(0));
+            employee.ContactInfoID = Convert.ToUInt16(reader.GetValue(1));
+            employee.UserName = reader.GetValue(2).ToString();
+            employee.Password = reader.GetValue(3).ToString();
+            employees.Add(employee);
+        }
+        reader.Close();
+        sqlConnection.Close();
+        foreach (Employee employee in employees)
+        {
+            query = "SELECT * FROM [dbo].[ContactInfo] WHERE ContactInfoID = '" + employee.ContactInfoID + "'";
+            sqlConnection.Open();
+            cmd = new SqlCommand(query, sqlConnection);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                employee.ContactInfo.FirstName = reader.GetValue(1).ToString();
+                employee.ContactInfo.LastName = reader.GetValue(2).ToString();
+                employee.ContactInfo.Email = reader.GetValue(3).ToString();
+                employee.ContactInfo.PhoneNumber = reader.GetValue(4).ToString();
+                employee.ContactInfo.AddressId = Convert.ToUInt16(reader.GetValue(5));
+            }
+            reader.Close();
+            sqlConnection.Close();
+
+            query = "SELECT * FROM [dbo].[Address] WHERE AddressID = '" + employee.ContactInfo.AddressId.ToString() + "'";
+            sqlConnection.Open();
+            cmd = new SqlCommand(query, sqlConnection);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                employee.ContactInfo.Address.StreetName = reader.GetValue(1).ToString();
+                employee.ContactInfo.Address.HouseNumber = reader.GetValue(2).ToString();
+                employee.ContactInfo.Address.ZipCode = reader.GetValue(3).ToString();
+                employee.ContactInfo.Address.City = reader.GetValue(4).ToString();
+                employee.ContactInfo.Address.Country = reader.GetValue(5).ToString();
+            }
+            reader.Close();
+            sqlConnection.Close();
+        }
+
+        return employees;
+    }
+
     public Employee SelectEmployee(UInt16 EID)
     {
         List<Employee> employees = GetEmployees();
@@ -158,9 +216,10 @@ partial class Database
             (
             [ContactInfoID],
             [UserName],
-            [Password])
+            [Password],
+            [CompanyID])
             VALUES('" + employee.ContactInfoID.ToString() + "', '" + employee.UserName
-            + "', '" + employee.Password + "')";
+            + "', '" + employee.Password + "','" + employee.CompanyID + "')";
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
 

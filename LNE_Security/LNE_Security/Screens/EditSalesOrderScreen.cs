@@ -70,7 +70,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 return (orderLines, succes);
             }
         }
-        OrderLine selected = orderLineListPage.Select(); // TODO: finish edit
+        OrderLine selected = orderLineListPage.Select();
 
         ListPage<Options> OptionListPage = new ListPage<Options>();
         OptionListPage.AddColumn("Edit", "Option");
@@ -268,7 +268,7 @@ internal class EditSalesOrderScreen : ScreenHandler
         {
             if( selectedSalesOrder.OrderLines.Count == 0)
             {
-                Console.WriteLine("no orderlines in sales order");// TODO: Denne kaldes når man ænder først gang
+                Console.WriteLine("no orderlines in sales order");
                 return selectedSalesOrder;
             }
             if (this.salesOrders[i].OrderID == selectedSalesOrder.OrderID && success)
@@ -387,7 +387,6 @@ internal class EditSalesOrderScreen : ScreenHandler
     /// <param name="salesOrder"></param>
     private void CreateHTMLInvoice(SalesOrder salesOrder)
     {
-        //TODO: Get relative path
         string templatePath = @"..\\Templates\Invoice.html";
         string logoPath = @"..\\Images\LNE_logo.png";
         string invoicePath = "..\\Invoices\\";
@@ -422,7 +421,7 @@ internal class EditSalesOrderScreen : ScreenHandler
         
         html2String = html2String.Replace("{Total price}", salesOrder.TotalPrice.ToString());
         html2String = html2String.Replace("{completionTime}", salesOrder.CompletionTime.ToString());
-        html2String = html2String.Replace("{packedby}", salesOrder.OrderLines[0].pickedBy.ToString()); //TODO: picked by orderline
+        html2String = html2String.Replace("{packedby}", salesOrder.OrderLines[0].pickedBy.ToString()); //HACK: picked by orderline
 
         File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + 
             salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);

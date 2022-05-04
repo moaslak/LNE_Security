@@ -11,6 +11,11 @@ public class Customer : Person
     private Person _person { get; set; }
 
     public UInt16 CID { get; set; }
+    public UInt16 CompanyID { get; set; }  
+
+    public DateTime? newestOrder { get;set; }
+
+    public string FullAddress { get; set; }
     
 
     public override Person DeletePerson(ContactInfo contactInfo, Database database, Address address)

@@ -40,8 +40,12 @@ public class EditEmployeeScreen : ScreenHandler
     private void EditEmployee(Options selected)
     {
         string newValue = "";
-        Console.Write("Enter new " + selected.Option.ToString() + ": ");
-        newValue = Console.ReadLine();
+        if(selected.Option != "Password")
+        {
+            Console.Write("Enter new " + selected.Option.ToString() + ": ");
+            newValue = Console.ReadLine();
+        }
+            
         string zipcode = address.ZipCode.ToString();
         switch (selected.Option)
         {
@@ -73,14 +77,14 @@ public class EditEmployeeScreen : ScreenHandler
                 this.employee.UserName = newValue;
                 break;
             case "Password":
-                this.employee.Password = newValue;
-                
+                Console.Write("Enter new password: ");
+                this.employee.Password = this.employee.GetPassword();
                 int passwordCheck = 0;
                 bool passwordConfirmed = false;
                 do
                 {
-                    Console.WriteLine("Confirm password");
-                    if (Console.ReadLine() == this.employee.Password)
+                    Console.Write("Confirm password: ");
+                    if (this.employee.Password == this.employee.GetPassword())
                         passwordConfirmed = true;
                     else
                     {
