@@ -34,7 +34,7 @@ public class EditCompnayScreen : ScreenHandler
     private void EditCompany(Options selected)
     {
         string newValue = "";
-        if(selected.Option != "Currency")
+        if(selected.Option != "Currency" || selected.Option != "Password")
         {
             Console.Write("New value: ");
             newValue = Console.ReadLine();
@@ -77,6 +77,9 @@ public class EditCompnayScreen : ScreenHandler
             case "Company name":
                 this.company.CompanyName = newValue;
                 break;
+            case "CVR":
+                this.company.CVR = newValue;
+                break;
             case "Street name":
                 this.company.StreetName = newValue;
                 break;
@@ -92,12 +95,50 @@ public class EditCompnayScreen : ScreenHandler
             case "Country": 
                 this.company.Country = newValue;
                 break;
+            case "Email":
+                this.company.Email = newValue;
+                break;
+            case "Phonenumber":
+                this.company.PhoneNumber = newValue;
+                break;
+            case "First Name":
+                this.company.FirstName = newValue;
+                break;
+            case "Last Name":
+                this.company.LastName = newValue;
+                break;
+            case "Password":
+                Console.Write("Enter new password: ");
+                this.company.Password = this.company.GetPassword();
+                int passwordCheck = 0;
+                bool passwordConfirmed = false;
+                do
+                {
+                    Console.Write("Confirm password: ");
+                    if (this.company.Password == this.company.GetPassword())
+                        passwordConfirmed = true;
+                    else
+                    {
+                        Console.WriteLine("Incorrect confirmation");
+                        passwordCheck++;
+                        if (passwordCheck == 3)
+                            passwordConfirmed = true;
+                    }
+
+                } while (!(passwordConfirmed));
+                if (passwordCheck == 3 && passwordConfirmed)
+                {
+                    Console.WriteLine("Password no comfirmed!!!");
+                    Console.WriteLine("Password set to: Test!234");
+                    this.company.Password = "Test!234";
+                }
+                break;
             default:
                 break;
         }
 
         Company editedCompany = this.company;
-        Database.Instance.EditCompany(editedCompany.Id, this.company);
+        Database.Instance.EditCompany(editedCompany.CompanyID, this.company);
     }
 
     /// <summary>
@@ -139,9 +180,6 @@ public class EditCompnayScreen : ScreenHandler
                     default:
                         break;
                 }
-
-            
-
         }
 
         switch (selected.Option)
@@ -149,20 +187,23 @@ public class EditCompnayScreen : ScreenHandler
             case "Company name":
                 this.company.CompanyName = newValue;
                 break;
+            case "CVR":
+                this.company.CVR = newValue;
+                break;
             case "Street name":
-                this.company.StreetName = newValue;
+                this.company.contactInfo.Address.StreetName = newValue;
                 break;
             case "House number":
-                this.company.HouseNumber = newValue;
+                this.company.contactInfo.Address.HouseNumber = newValue;
                 break;
             case "Zip code":
-                this.company.ZipCode = newValue;
+                this.company.contactInfo.Address.ZipCode = newValue;
                 break;
             case "City":
-                this.company.City = newValue;
+                this.company.contactInfo.Address.City = newValue;
                 break;
             case "Country":
-                this.company.Country = newValue;
+                this.company.contactInfo.Address.Country = newValue;
                 break;
             default:
                 break;
@@ -175,14 +216,18 @@ public class EditCompnayScreen : ScreenHandler
             Title = company.CompanyName + " Edit company screen";
             Clear(this);
             ListPage<Company> CompanyListPage = new ListPage<Company>();
-
-            CompanyListPage.AddColumn("Company name", "CompanyName");
-            CompanyListPage.AddColumn("Street name", "StreetName");
-            CompanyListPage.AddColumn("House number", "HouseNumber");
-            CompanyListPage.AddColumn("Zip code", "ZipCode");
-            CompanyListPage.AddColumn("City", "City");
-            CompanyListPage.AddColumn("Country", "Country");
-            CompanyListPage.AddColumn("Currency", "Currency");
+            CompanyListPage.AddColumn("Company name", "CompanyName", ColumnLength("Company name", company.CompanyName));
+            CompanyListPage.AddColumn("CVR", "CVR", ColumnLength("CVR", company.CVR));
+            CompanyListPage.AddColumn("First name", "FirstName", ColumnLength("First name", company.FirstName));
+            CompanyListPage.AddColumn("Last name", "LastName", ColumnLength("Last name", company.LastName));
+            CompanyListPage.AddColumn("Email", "Email", ColumnLength("Email", company.Email));
+            CompanyListPage.AddColumn("Phonenumber", "PhoneNumber", ColumnLength("Phonenumber", company.PhoneNumber));
+            CompanyListPage.AddColumn("Street name", "StreetName", ColumnLength("Street name", company.StreetName));
+            CompanyListPage.AddColumn("House number", "HouseNumber", ColumnLength("House number", company.HouseNumber));
+            CompanyListPage.AddColumn("Zip code", "ZipCode", ColumnLength("Zip code", company.ZipCode));
+            CompanyListPage.AddColumn("City", "City", ColumnLength("City", company.City));
+            CompanyListPage.AddColumn("Country", "Country", ColumnLength("Country", company.Country));
+            CompanyListPage.AddColumn("Currency", "Currency", "Currency".Length);
             CompanyListPage.Add(company);
             CompanyListPage.Draw();
 
@@ -190,6 +235,11 @@ public class EditCompnayScreen : ScreenHandler
 
             optionsListPage.AddColumn("Edit", "Option");
             optionsListPage.Add(new Options("Company name", company.CompanyName));
+            optionsListPage.Add(new Options("CVR", company.CVR));
+            optionsListPage.Add(new Options("First Name", company.contactInfo.FirstName));
+            optionsListPage.Add(new Options("Last Name", company.contactInfo.LastName));
+            optionsListPage.Add(new Options("Email", company.contactInfo.Email));
+            optionsListPage.Add(new Options("Phonenumber", company.contactInfo.PhoneNumber));
             optionsListPage.Add(new Options("Street name", company.StreetName));
             optionsListPage.Add(new Options("House number", company.HouseNumber));
             optionsListPage.Add(new Options("Zip code", company.ZipCode));
@@ -204,7 +254,7 @@ public class EditCompnayScreen : ScreenHandler
             if(selected.Value != "NO EDIT")
             {
                 EditCompany(selected);
-                Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
+                Console.WriteLine("Press a key to update another parameter");
             }
             else
             {

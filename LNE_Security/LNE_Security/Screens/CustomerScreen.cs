@@ -23,6 +23,11 @@ public class CustomerScreen : ScreenHandler
     public CustomerScreen()
     {
     }
+    private Company company { get; set; }
+    public CustomerScreen(Company Company) : base(Company)
+    {
+        this.company = Company;
+    }
 
     public void newCustomer()
     {
@@ -35,20 +40,29 @@ public class CustomerScreen : ScreenHandler
         contactInfo.FirstName = Console.ReadLine();
         Console.Write("Enter last name: ");
         contactInfo.LastName = Console.ReadLine();
+        Console.Write("Enter email: ");
+        contactInfo.Email = Console.ReadLine();
+        Console.Write("Enter phonenumber: ");
+        contactInfo.PhoneNumber = Console.ReadLine();
+        
         Console.Write("Enter street name: ");
-        address.StreetName = Console.ReadLine();
+        contactInfo.Address.StreetName = Console.ReadLine();
         Console.Write("Enter house number: ");
-        address.HouseNumber = Console.ReadLine();
+        contactInfo.Address.HouseNumber = Console.ReadLine();
         Console.Write("Enter zip code: ");
-        address.ZipCode = Console.ReadLine();
+        contactInfo.Address.ZipCode = Console.ReadLine();
         Console.Write("Enter city: ");
-        address.City = Console.ReadLine();
+        contactInfo.Address.City = Console.ReadLine();
         Console.Write("Enter country: ");
-        address.Country = Console.ReadLine();
+        contactInfo.Address.Country = Console.ReadLine();
+        contactInfo.AddressId = Database.Instance.NewAddress(contactInfo.Address);
+        
         Customer newCustomer = new Customer();
+        newCustomer.ContactInfoID = Database.Instance.NewContactInfo(contactInfo);
         newCustomer.ContactInfo = contactInfo;
-        newCustomer.Address = address;
-        Database.Instance.NewCustomer(contactInfo, address);
+        newCustomer.Address = contactInfo.Address;
+        newCustomer.CompanyID = company.CompanyID;
+        Database.Instance.NewCustomer(newCustomer);
     }
 
     private void viewCustomer(Customer customer)
@@ -61,54 +75,93 @@ public class CustomerScreen : ScreenHandler
     {
         ListPage<Customer> CustomerListPage = new ListPage<Customer>();
         ListPage<ContactInfo> ContactListPage = new ListPage<ContactInfo>();
-        List<Customer> customers = Database.Instance.GetCustomers();
-        
-        foreach(Customer customer in customers)
+        List<Customer> customers = Database.Instance.GetCustomers(company.CompanyID);
+        int maxFullnameLength = 0;
+        int maxEmailLength = 0;
+        int maxPhoneNumberLength = 0;
+        int maxCIDLength = 0;
+        foreach (Customer customer in customers)
         {
-            customer.FullName = customer.ContactInfo.FullName;
-            CustomerListPage.Add(customer);
+            try
+            {
+                customer.FullName = customer.ContactInfo.FullName;
+                customer.Email = customer.ContactInfo.Email;
+                customer.PhoneNumber = customer.ContactInfo.PhoneNumber;
+                CustomerListPage.Add(customer);
+            }
+            catch (System.NullReferenceException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+            if(customer.FullName.Length > maxFullnameLength)
+                maxFullnameLength = customer.FullName.Length;
+            if(customer.Email.Length > maxEmailLength)
+                maxEmailLength = customer.Email.Length;
+            if(customer.PhoneNumber.Length > maxPhoneNumberLength)
+                maxPhoneNumberLength = customer.PhoneNumber.Length;
+            if(customer.CID.ToString().Length > maxCIDLength)
+                maxCIDLength = customer.CID.ToString().Length;
         }
  
-        //string name = $"{Customer.ContactInfo.FirstName} {Customer.ContactInfo.LastName}";
-        //Title = Customer.ContactInfo.FullName + " Customer name";
         Title = "Customer screen";
         Clear(this);
+        Customer selected = new Customer();
 
-        Console.WriteLine("Choose Customer");
-        CustomerListPage.AddColumn("Customer ID", "ID");
-        CustomerListPage.AddColumn("Customer Name", "FullName");
-        CustomerListPage.AddColumn("Phonenumber", "PhoneNumbers");
-        CustomerListPage.AddColumn("Email", "Email");
-        Customer selected = CustomerListPage.Select();
-        
 
-        Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
-        Console.WriteLine("F1 - New Customer");
-        //Console.WriteLine("F2 - Edit");
-        Console.WriteLine("F2 - View/Edit Customer");
-        Console.WriteLine("F8 - Delete Customer");
-        Console.WriteLine("F10 - To Main menu");
-        Console.WriteLine("Esc - Close App");
-        Console.WriteLine();
-        
-        switch (Console.ReadKey().Key)
+        if(customers.Count != 0)
         {
-            case ConsoleKey.F1:
-                newCustomer();
-                Console.WriteLine("Press enter to continue");
-                break;
-            case ConsoleKey.F2:
-                ScreenHandler.Display(new EditCustomerScreen(selected));
-                break;
-            case ConsoleKey.F10:
-                ScreenHandler.Display(new MainMenuScreen(Customer));
-                break;
-            case ConsoleKey.F8:
-                Database.Instance.DeleteCustomer(selected.ID);
-                break;
-            case ConsoleKey.Escape:
-                Environment.Exit(0);
-                break;
+            Console.WriteLine("Choose Customer");
+            CustomerListPage.AddColumn("Customer ID", "CID", ColumnLength("Customer ID",maxCIDLength));
+            CustomerListPage.AddColumn("Customer name", "FullName", ColumnLength("Customer name", maxFullnameLength));
+            CustomerListPage.AddColumn("Phonenumber", "PhoneNumber", ColumnLength("Phonenumber", maxPhoneNumberLength));
+            CustomerListPage.AddColumn("Email", "Email", ColumnLength("Email", maxEmailLength));
+            selected = CustomerListPage.Select();
+            
+        }
+        if (selected != null)
+        {
+            Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
+            Console.WriteLine("F1 - New Customer");
+            Console.WriteLine("F2 - Customer details");
+            Console.WriteLine("F8 - Delete Customer");
+            Console.WriteLine("F9 - Delete old sales orders");
+            Console.WriteLine("F10 - To Main menu");
+            Console.WriteLine();
+
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.F1:
+                    newCustomer();
+                    Console.WriteLine("Press enter to continue");
+                    break;
+                case ConsoleKey.F2:
+                    ScreenHandler.Display(new CustomerDetails(selected, company));
+                    break;
+                case ConsoleKey.F10:
+                    ScreenHandler.Display(new MainMenuScreen(this.company));
+                    break;
+                case ConsoleKey.F8:
+                    DeleteSalesOrdersForCustomer(selected);
+                    Database.Instance.DeleteCustomer(selected.CID);
+                    break;
+                case ConsoleKey.F9:
+                    DeleteSalesOrdersForCustomer(selected);
+                    break;
+            }
+        } 
+    }
+
+    private void DeleteSalesOrdersForCustomer(Customer customer)
+    {
+        List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(customer);
+        DateTime dateTime = DateTime.Now.AddYears(-3);
+        foreach (SalesOrder salesOrder in salesOrders)
+        {
+            if(salesOrder.CompletionTime <= dateTime)
+            {
+                Database.Instance.DeleteSalesOrder(salesOrder.OrderID, customer);
+            }
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿Company view
+select CompanyID, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country FROM company
+inner join ContactInfo On Company.ContactInfoID=ContactInfo.ContactInfoID
+inner join Address on ContactInfo.AddressID = Address.AddressID
+
+Customer view
+CREATE VIEW CustomerView as select CID, FirstName, LastName, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country, CompanyName FROM customer
+inner join ContactInfo On Customer.ContactInfoID=ContactInfo.ContactInfoID
+inner join Address on ContactInfo.AddressID = Address.AddressID
+inner join Company on Customer.CompanyID = Company.CompanyID
+
+//new
+CREATE VIEW SalesOrderView as select OrderID, OrderTime, CompletionTime, Price, State, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber from SalesOrder
+inner join Company on SalesOrder.CompanyID = Company.CompanyID
+inner join ContactInfo on SalesOrder.ContactInfoID = ContactInfo.ContactInfoID
+inner join Customer on SalesOrder.CID = Customer.CID
+
+
+Employee view
+CREATE VIEW EmployeeView as select EID, FirstName, LastName, UserName, Password, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country, CompanyName FROM Employee
+inner join ContactInfo On Employee.ContactInfoID=ContactInfo.ContactInfoID
+inner join Address on ContactInfo.AddressID = Address.AddressID
+inner join Company on Employee.CompanyID = Company.CompanyID

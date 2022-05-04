@@ -1,31 +1,7 @@
 ﻿use LNE_Security
 
-CREATE TABLE Product(
-Id int IDENTITY(1,1),
-ProductNumber int,
-ProductName varchar(64),
-SalesPrice money,
-CostPrice money,
-AmountInStorage decimal(8,2),
-LocationString varchar(8),
-Unit nchar(5),
-Description varchar(128),
-Profit money,
-ProfitPersent decimal(5,2),
-PRIMARY KEY(Id)
-)
-
-CREATE TABLE SalesOrder(
-Id int IDENTITY(1,1),
-Date DATETIME,
-CID int,
-FullName VARCHAR(64),
-Price money,
-PRIMARY KEY(Id)
-)
-
 CREATE TABLE Address(
-Id int IDENTITY(1,1),
+AddressID int IDENTITY(1,1),
 StreetName VARCHAR(128),
 HouseNumber VARCHAR(16),
 City VARCHAR(64),
@@ -35,34 +11,81 @@ PRIMARY KEY(Id)
 )
 
 CREATE TABLE ContactInfo(
-Id int IDENTITY(1,1),
+ContactInfoID int IDENTITY(1,1),
 FirstName VARCHAR(64),
 LastName VARCHAR(64),
 Email VARCHAR(64),
 PhoneNumber VARCHAR(16)
+AddressID int FOREIGN KEY REFERENCES Address(AddressID),
 PRIMARY KEY(Id)
 )
 
+CREATE TABLE Product(
+PID int IDENTITY(1,1),
+ProductNumber int,
+ProductName varchar(64),
+SalesPrice money,
+CostPrice money,
+AmountInStorage decimal(18,2),
+LocationString varchar(8),
+Unit nchar(5),
+Description varchar(128),
+Profit money,
+ProfitPersent decimal(5,2),
+PRIMARY KEY(PID)
+)
+
+CREATE TABLE Orderline(
+OLID int IDENTITY(1,1),
+PID int FOREIGN KEY REFERENCES Product(PID),
+Quantity decimal(18,2),
+OrderID int FOREIGN KEY REFERENCES SalesOrder(OrderID),
+Status varchar(16),
+PickedBy varchar(64),
+PRIMARY KEY(OLID)
+)
+
+CREATE TABLE SalesOrder(
+OrderID int IDENTITY(1,1),
+OrderTime DATETIME,
+CompletionTime DATETIME,
+ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
+CID int FOREIGN KEY REFERENCES Customer(CID),
+CompanyID int FOREIGN KEY REFERENCES Company(CompanyID),
+Price money,
+State VARCHAR(16),
+PRIMARY KEY(OrderID)
+)
+
+CREATE TABLE Company(
+CompanyID int IDENTITY(1,1),
+CompanyName varchar(128),
+Currency char(3),
+CVR varchar(32),
+ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
+Role int,
+PRIMARY KEY(CompanyID)
+)
+
 CREATE TABLE Person(
-Id int IDENTITY(1,1),
-FirstName VARCHAR(64),
-LastName VARCHAR(64),
-Address VARCHAR(128),
+PersonID int IDENTITY(1,1),
 Type CHAR(8),
+ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
 PRIMARY KEY(Id)
 )
 
 CREATE TABLE Customer(
-Id int IDENTITY(1,1),
-FirstName VARCHAR(32),
-LastName VARCHAR(32),
-Address VARCHAR(128),
-PRIMARY KEY(Id)
+CID int IDENTITY(1,1),
+ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
+CompanyID int FOREIGN KEY REFERENCES Company(CompanyID)
+PRIMARY KEY(CID)
 )
 
-CREATE TABLE UserLogin(
-Id int IDENTITY(1,1),
-UserName VARCHAR(32),
-Password VARCHAR(32),
-PRIMARY KEY(Id)
+CREATE TABLE Employee(
+EID int IDENTITY(1,1),
+ContactInfoID int FOREIGN KEY REFERNECES ContactInfo(ContactInfoID),
+UserName varchar(64) NOT NULL,
+Password varchar(64) NOT NULL,
+CompanyID int FOREIGN KEY REFERENCES Company(CompanyID),
+PRIMARY KEY(EID)
 )

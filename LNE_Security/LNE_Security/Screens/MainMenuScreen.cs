@@ -39,7 +39,10 @@ public class MainMenuScreen : ScreenHandler
         this.product = Product;
     }
 
+    public MainMenuScreen()
+    {
 
+    }
     protected override void Draw()
     {
         if (company == null)
@@ -47,43 +50,53 @@ public class MainMenuScreen : ScreenHandler
         else
             Title = company.CompanyName + " ERP System";
         Clear(this);
-
         ListPage<Options> MenuOptions = new ListPage<Options>();
-        MenuOptions.AddColumn("Option", "Option");
-        MenuOptions.Add(new Options("Company screen", "F1"));
+        MenuOptions.AddColumn("Option", "Option", "Sales order screen".Length);
+        if(company.Role == 0)
+            MenuOptions.Add(new Options("Company screen", "F1"));
         MenuOptions.Add(new Options("Customer screen", "F2"));
         MenuOptions.Add(new Options("Employee screen", "F3"));
         MenuOptions.Add(new Options("Product screen", "F4"));
         MenuOptions.Add(new Options("Sales order screen", "F5"));
+        MenuOptions.Add(new Options("Storage screen", "F6"));
         MenuOptions.Add(new Options("Close App", "ESC"));
+        Console.WriteLine();
 
         Options selected = MenuOptions.Select();
-
-        switch (selected.KeyPress)
-        {
-            case "F1":
-                ScreenHandler.Display(new CompanyScreen(company));
-                break;
-            case "F2":
-                ScreenHandler.Display(new CustomerScreen(customer));
-                break;
-            case "F3":
-                Console.WriteLine("NOT IMPLEMENTET");
-                break;
-            case "F4":
-                ScreenHandler.Display(new ProductScreen(product));
-                break;
-            case "F5":
-                if (company == null)
-                    Console.WriteLine("Select company first");
-                else
-                    ScreenHandler.Display(new SalesOrderScreen(company, customer));
-                break;
-            case "ESC":
-                Environment.Exit(0);
-                break;
-        }
         
-
+        if (selected != null)
+        {
+            switch (selected.KeyPress)
+            {
+                case "F1":
+                    ScreenHandler.Display(new CompanyScreen(company));
+                    break;
+                case "F2":
+                    ScreenHandler.Display(new CustomerScreen(company));
+                    break;
+                case "F3":
+                    ScreenHandler.Display(new EmployeeScreen(company));
+                    break;
+                case "F4":
+                    ScreenHandler.Display(new ProductScreen(company));
+                    break;
+                case "F5":
+                    if (company == null)
+                        Console.WriteLine("Select company first");
+                    else
+                        ScreenHandler.Display(new SalesOrderScreen(company, customer));
+                    break;
+                case "F6":
+                    if (company == null)
+                        Console.WriteLine("Select company first");
+                    else
+                        ScreenHandler.Display(new StorageScreen(company));
+                    break;
+                case "ESC":
+                    Environment.Exit(0);
+                    break;
+            }
+        }
     }
 }
+

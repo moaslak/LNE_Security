@@ -14,7 +14,7 @@ public class Product
     public double SalesPrice { get; set; }
     public double CostPrice { get; set; }
     public double AmountInStorage { get; set; }
-    public UInt32 ID { get; set; }// TODO: PID
+    public UInt32 PID { get; set; }
 
     public Location? Location = new Location();
     public string LocationString { get; set; }
@@ -42,7 +42,7 @@ public class Product
     {
         if(CostPrice <= 0 || SalesPrice <= 0) return 0;
 
-    return (SalesPrice/ CostPrice)*100;    
+    return (Math.Round(((SalesPrice/ CostPrice)*100),2));    
     }
 
     public double CalculateProfit(double SalesPrice, double CostPrice)

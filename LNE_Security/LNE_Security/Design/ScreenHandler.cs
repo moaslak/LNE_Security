@@ -9,6 +9,7 @@ namespace LNE_Security
 
     public class ScreenHandler : Screen
     {
+        
         private Company company1;
 
         static Company company { get; set; }
@@ -17,6 +18,7 @@ namespace LNE_Security
         static ContactInfo contactInfo { get; set; }
 
         static Customer customer { get; set; }
+        static Employee employee { get; set; }
 
         static List<SalesOrder> salesOrders { get; set; }
 
@@ -31,6 +33,17 @@ namespace LNE_Security
         public ScreenHandler(Product Product, Company Company)
         {
             product = Product;
+            company = Company;
+        }
+        public ScreenHandler(Customer Customer, Company Company)
+        {
+            customer = Customer;
+            company = Company;
+        }
+
+        public ScreenHandler(Employee Employee, Company Company)
+        {
+            employee = Employee;
             company = Company;
         }
 
@@ -64,6 +77,21 @@ namespace LNE_Security
         protected override void Draw()
         {
 
+        }
+
+        protected int ColumnLength(string title, string data)
+        {
+            int length = title.Length;
+            if(data.Length > length)
+                length = data.Length;
+            return length;
+        }
+
+        protected int ColumnLength(string title, int length)
+        {
+            if (length > title.Length)
+                return length;
+            return title.Length;
         }
     }
 }

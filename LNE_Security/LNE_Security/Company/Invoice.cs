@@ -9,12 +9,13 @@ namespace LNE_Security;
 
 public class Invoice : Sales
 {
+    public UInt32 IID { get; set; }
     public UInt32 OrderID { get; set; }
 
     public DateTime? OrderTime {  get; set; }
     public DateTime CompletionTime { get; set; }
     public ushort CustomerID { get; set; }
-    public enum States { None, Created, Confirmed, Packed, Done};
+    public enum States { Created, Confirmed, Packed, Done};
     public States State{ get; set; }
     public double TotalPrice { get; set; }
     public List<OrderLine> OrderLines { get; set; }

@@ -14,33 +14,18 @@ class Program
         }
     }
 
-
-  
-
-
-
-
-
-
-    // TODO: TITLES!!!
-
-    static List<Company> companyList = new List<Company>();
-
     public static void Main(string[] args)
     {
-        companyList = Database.Instance.GetCompanies();
-        //InvoiceMockTest(salesOrder);   
-
-        /*foreach (Company company in companyList)
-        {
-            if (company.Country == "Denmark")
-                company.Currency = Company.Currencies.DKK;
-            else
-                company.Currency = Company.Currencies.USD;
-        }*/
-
-        MainMenuScreen mainMenu = new MainMenuScreen(companyList[0]);
-        ScreenHandler.Display(mainMenu);
-
+        //HACK:
+        Company Admin = Database.Instance.SelectCompany(11); 
+       
+        Console.WriteLine("Welcome screen");
+        Console.WriteLine("Global keys");
+        Console.WriteLine("F11 - Toggle full screen");
+        Console.WriteLine("Esc - Close App");
+        Console.WriteLine();
+        Console.WriteLine("Press a key to start program");
+        Console.ReadKey();
+        ScreenHandler.Display(new MainMenuScreen(Admin));
     }
 }

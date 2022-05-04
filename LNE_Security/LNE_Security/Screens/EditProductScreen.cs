@@ -10,27 +10,29 @@ namespace LNE_Security.Screens
 {
 public class EditProductScreen : ScreenHandler
 {
-        public class Options
+    public class Options
+    {
+        public string Option { get; set; }
+        public string Value { get; set; }
+        public Options(string option, string value)
         {
-            public string Option { get; set; }
-            public string Value { get; set; }
-            public Options(string option, string value)
-            {
-                Value = value;
-                Option = option;
-            }
+            Value = value;
+            Option = option;
         }
-    private Product product;
-        public EditProductScreen(Product Product) : base(Product)
-        {
-            this.product = Product;
-        }
+    }
+    private Product product { get; set; }
+    private Company company { get; set; }
+    public EditProductScreen(Product Product, Company Company) : base(Product, Company)
+    {
+        this.product = Product;
+        this.company = Company;
+    }
 
-        private List<Product.Units> UnitsToList()
-        {
-            List<Product.Units> list = Enum.GetValues(typeof(Product.Units)).Cast<Product.Units>().ToList();
-            return list;
-        }
+    private List<Product.Units> UnitsToList()
+    {
+        List<Product.Units> list = Enum.GetValues(typeof(Product.Units)).Cast<Product.Units>().ToList();
+        return list;
+    }
 
     private void EditProduct(Options selected)
     {
@@ -137,55 +139,55 @@ public class EditProductScreen : ScreenHandler
                 product.Profit = product.CalculateProfit(product.SalesPrice, product.CostPrice);
                 product.ProfitPercent = product.CalculateProfitPercent(product.SalesPrice, product.CostPrice);
 
-                ProductListPage.AddColumn("Product Number", "ProductNumber");
-                ProductListPage.AddColumn("Product Name", "ProductName");
-                ProductListPage.AddColumn("Description", "Description");
-                ProductListPage.AddColumn("Cost Price", "CostPrice");
-                ProductListPage.AddColumn("Sales Price", "SalesPrice");
-                ProductListPage.AddColumn("Unit", "Unit");
+                ProductListPage.AddColumn("Product number", "ProductNumber", ColumnLength("Product number", product.ProductNumber));
+                ProductListPage.AddColumn("Product name", "ProductName", ColumnLength("Product name", product.ProductName));
+                ProductListPage.AddColumn("Description", "Description", ColumnLength("Description", product.Description));
+                ProductListPage.AddColumn("Cost price", "CostPrice", ColumnLength("Cost price", product.CostPrice.ToString()));
+                ProductListPage.AddColumn("Sales price", "SalesPrice", ColumnLength("Sales price", product.SalesPrice.ToString()));
+                ProductListPage.AddColumn("Unit", "Unit", ColumnLength("Unit", product.Unit.ToString()));
                 if (product.Unit != Product.Units.hours)
                 {
-                    product.LocationString = product.Location.Location2String(product.Location);
-                    string loc = product.LocationString;
-                    ProductListPage.AddColumn("Amount In Storage", "AmountInStorage");
-                    ProductListPage.AddColumn("Location", "LocationString");
+                    ProductListPage.AddColumn("Amount in storage", "AmountInStorage", ColumnLength("Amount in storage", product.AmountInStorage.ToString()));
+                    ProductListPage.AddColumn("Location", "LocationString", ColumnLength("Location", product.LocationString));
                 }
-                ProductListPage.AddColumn("Profit Percent", "ProfitPercent");
-                ProductListPage.AddColumn("Profit", "Profit");
+                ProductListPage.AddColumn("Profit percent", "ProfitPercent", ColumnLength("Profit percent", product.ProfitPercent.ToString()));
+                ProductListPage.AddColumn("Profit", "Profit", ColumnLength("Profit", product.Profit.ToString()));
 
                 ProductListPage.Draw();
 
                 ListPage<Options> optionsListPage = new ListPage<Options>();
 
                 optionsListPage.AddColumn("Edit", "Option");
-                optionsListPage.Add(new Options("Product Number", product.ProductNumber.ToString()));
-                optionsListPage.Add(new Options("Product Name", product.ProductName));
+                optionsListPage.Add(new Options("Product number", product.ProductNumber.ToString()));
+                optionsListPage.Add(new Options("Product name", product.ProductName));
                 optionsListPage.Add(new Options("Description", product.Description));
-                optionsListPage.Add(new Options("Cost Price", product.CostPrice.ToString()));
-                optionsListPage.Add(new Options("Sales Price", product.SalesPrice.ToString()));
+                optionsListPage.Add(new Options("Cost price", product.CostPrice.ToString()));
+                optionsListPage.Add(new Options("Sales price", product.SalesPrice.ToString()));
                 optionsListPage.Add(new Options("Unit", product.Unit.ToString()));
                 if (product.Unit != Product.Units.hours)
                 {
-                    optionsListPage.Add(new Options("Amount In Storage", product.AmountInStorage.ToString()));
+                    optionsListPage.Add(new Options("Amount in storage", product.AmountInStorage.ToString()));
                     optionsListPage.Add(new Options("Location", product.LocationString));
                 }   
                 optionsListPage.Add(new Options("Back", "NO EDIT"));
                 Options selected = optionsListPage.Select();
-
-                if (selected.Value != "NO EDIT")
+                if(selected != null)
                 {
-                    EditProduct(selected);
-                    Console.WriteLine("Press a key to update another parameter"); // TODO: Denne skal gerne væk
+                    if (selected.Value != "NO EDIT")
+                    {
+                        EditProduct(selected);
+                        Console.WriteLine("Press a key to update another parameter");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    Console.WriteLine("Press ESC to return to Product screen");
                 }
-                else
-                {
-                    break;
-                }
-                Console.WriteLine("Press ESC to return to Product screen");
 
             } while ((Console.ReadKey().Key != ConsoleKey.Escape));
-            Database.Instance.EditProduct(product.ID, product);
-            ScreenHandler.Display(new ProductDetailsScreen(product));
+            Database.Instance.EditProduct(product.PID, product);
+            ScreenHandler.Display(new ProductDetailsScreen(product, company));
 
         }
     }

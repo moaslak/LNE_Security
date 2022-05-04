@@ -17,6 +17,16 @@ namespace LNE_Security
         {
             this.product = product;
         }
+        public ProductScreen(Company Company) : base(Company)
+        {
+            this.company = Company;
+        }
+
+        public ProductScreen(Company Company, Product Product)
+        {
+            this.company = Company;
+            this.product = Product;
+        }
         protected override void Draw()
         {
             Title = "Product";
@@ -25,53 +35,68 @@ namespace LNE_Security
             ListPage<Product> productListPage = new ListPage<Product>();
             ListPage<String> selectedList = new ListPage<String>();
             List<Product> products = Database.Instance.GetProducts();
-            foreach (Product product in products)
-                productListPage.Add(product);
-
             Product selectedProduct = new Product();
 
-            productListPage.AddColumn("Product Number", "ProductNumber", 10);
-            productListPage.AddColumn("Product Name", "ProductName", 25);
-            productListPage.AddColumn("Amount In Storage", "AmountInStorage");
-            productListPage.AddColumn("Cost Price", "CostPrice");
-            productListPage.AddColumn("Sales Price", "SalesPrice");
-            if (products.Count == 0)
-                productListPage.Draw();
-            else
-                selectedProduct = productListPage.Select();
-            Console.WriteLine("Selection : " + selectedProduct.ProductName);
-
-
-            Console.WriteLine("Enter - product details");
-            Console.WriteLine("F1 - New product");
-            Console.WriteLine("F2 - Edit product");
-            Console.WriteLine("F8 - Delete product");
-            Console.WriteLine("F10 - Back");
-            Console.WriteLine("Esc - Close app");
-            switch (Console.ReadKey().Key)
-            {
-                case ConsoleKey.Enter:
-                    ScreenHandler.Display(new ProductDetailsScreen(selectedProduct)); // kunne man kalde ProductDetailsScreen direkte i Display()? ScreenHandler.Display(new ProdcuctDetailsScreen(product)); Erklæring er måske ikke nødvendig.
-                    break;
-                case ConsoleKey.F1:
-                    Database.Instance.NewProduct();
-                    break;
-                case ConsoleKey.F2:
-                    ScreenHandler.Display(new EditProductScreen(selectedProduct));
-                    break;
-                case ConsoleKey.Escape:
-                    Environment.Exit(0);
-                    break;
-                case ConsoleKey.F8:
-                    Database.Instance.DeleteProduct(selectedProduct.ID);
-                    break;
-                case ConsoleKey.F10:
-                    ScreenHandler.Display(new MainMenuScreen(company));
-                    break;
-                default:
-                    break;
-            }
+            int maxProductNumberLength = 0;
+            int maxProductNameLength = 0;
+            int maxAmountInStorageLength = 0;
             
+            if (products.Count > 0)
+            {
+                foreach (Product product in products)
+                {
+                    productListPage.Add(product);
+                    if(product.ProductNumber.ToString().Length > maxProductNumberLength)
+                        maxProductNumberLength = product.ProductNumber.ToString().Length;
+                    if(product.ProductName.Length > maxProductNameLength)
+                        maxProductNameLength = product.ProductName.Length;
+                    if(product.AmountInStorage.ToString().Length > maxAmountInStorageLength)
+                        maxAmountInStorageLength = product.AmountInStorage.ToString().Length;
+                }
+                    
+
+                productListPage.AddColumn("Product number", "ProductNumber", ColumnLength("Product Number", maxProductNumberLength));
+                productListPage.AddColumn("Product name", "ProductName", ColumnLength("Product name", maxProductNameLength));
+                productListPage.AddColumn("Amount in storage", "AmountInStorage", ColumnLength("Amount in storage", maxAmountInStorageLength));
+                productListPage.AddColumn("Cost price " + company.Currency.ToString(), "CostPrice", "Cost price ".Length + company.Currency.ToString().Length);
+                productListPage.AddColumn("Sales price " + company.Currency.ToString(), "SalesPrice", "Sales price ".Length + company.Currency.ToString().Length);
+                if (products.Count == 0)
+                    productListPage.Draw();
+                else
+                    selectedProduct = productListPage.Select();
+                
+                
+            }
+            if(selectedProduct != null)
+            {
+                Console.WriteLine("Selection : " + selectedProduct.ProductName);
+                Console.WriteLine("Enter - product details");
+
+                Console.WriteLine("F1 - New product");
+                Console.WriteLine("F2 - Edit product");
+                Console.WriteLine("F8 - Delete product");
+                Console.WriteLine("F10 - Back");
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.Enter:
+                        ScreenHandler.Display(new ProductDetailsScreen(selectedProduct, company));
+                        break;
+                    case ConsoleKey.F1:
+                        Database.Instance.NewProduct();
+                        break;
+                    case ConsoleKey.F2:
+                        ScreenHandler.Display(new EditProductScreen(selectedProduct, company));
+                        break;
+                    case ConsoleKey.F8:
+                        Database.Instance.DeleteProduct(selectedProduct.PID);
+                        break;
+                    case ConsoleKey.F10:
+                        ScreenHandler.Display(new MainMenuScreen(this.company));
+                        break;
+                    default:
+                        break;
+                }
+            }  
         }
     }
 }

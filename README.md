@@ -12,4 +12,8 @@ Vi bruger kun Csharp coding convention https://docs.microsoft.com/en-us/dotnet/c
 Al kode skal godkendes af en anden inden det kan merges ind på master.  
 Vi skal kommentere vores kode så vidt muligt med ///  
 Vores klasser, variabler og metoder skal være på engelsk  
-Vi starter hver gang med et lille møde angående dagens opgaver og uddelegere opgaverne
+Vi starter hver gang med et lille møde angående dagens opgaver og uddelegere opgaverne.  
+
+## Licence
+All code, except TECHCOOL extension, written by **moaslak** and **stef663k**.  
+Code if free to copy, if the writers are creditted.

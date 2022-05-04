@@ -8,44 +8,44 @@ using static LNE_Security.Screens.EditCompnayScreen;
 
 namespace LNE_Security.Screens;
 
-public class EditCustomerScreen : ScreenHandler
+public class EditEmployeeScreen : ScreenHandler
 {
     private Person person { get; set; }
     private ContactInfo contact { get; set; }
     private Address address { get; set; }
     private Options options { get; set; }
-    private Customer customer { get; set; }
+    private Employee employee { get; set; }
+
     private Company company { get; set; }
-    public EditCustomerScreen(Person person, ContactInfo contactInfo, Address address) : base(person)
+    public EditEmployeeScreen(Person person, ContactInfo contactInfo, Address address) : base(person)
     {
         this.person = person;
         this.contact = contactInfo;
         this.address = address;
     }
 
-    public EditCustomerScreen(Customer Customer) : base(Customer)
+    public EditEmployeeScreen(Employee Employee, Company Company) : base(Employee, Company)
     {
-        this.customer = Customer;
-        contact = customer.ContactInfo;
-        address = contact.Address;
-    }
-    public EditCustomerScreen(Customer Customer, Company Company) : base(Customer, Company)
-    {
-        this.customer = Customer;
-        contact = customer.ContactInfo;
+        this.employee = Employee;
+        contact = employee.ContactInfo;
         address = contact.Address;
         this.company = Company;
+
     }
 
-    public EditCustomerScreen()
+    public EditEmployeeScreen()
     {
     }
 
-    private void EditCustomer(Options selected)
+    private void EditEmployee(Options selected)
     {
         string newValue = "";
-        Console.Write("Enter new " + selected.Option.ToString() + ": ");
-        newValue = Console.ReadLine();
+        if(selected.Option != "Password")
+        {
+            Console.Write("Enter new " + selected.Option.ToString() + ": ");
+            newValue = Console.ReadLine();
+        }
+            
         string zipcode = address.ZipCode.ToString();
         switch (selected.Option)
         {
@@ -73,17 +73,46 @@ public class EditCustomerScreen : ScreenHandler
             case "Email":
                 this.contact.Email = newValue;
                 break;
+            case "User name":
+                this.employee.UserName = newValue;
+                break;
+            case "Password":
+                Console.Write("Enter new password: ");
+                this.employee.Password = this.employee.GetPassword();
+                int passwordCheck = 0;
+                bool passwordConfirmed = false;
+                do
+                {
+                    Console.Write("Confirm password: ");
+                    if (this.employee.Password == this.employee.GetPassword())
+                        passwordConfirmed = true;
+                    else
+                    {
+                        Console.WriteLine("Incorrect confirmation");
+                        passwordCheck++;
+                        if(passwordCheck == 3)
+                            passwordConfirmed = true;
+                    }
+
+                } while (!(passwordConfirmed));
+                if (passwordCheck == 3 && passwordConfirmed)
+                {
+                    Console.WriteLine("Password no comfirmed!!!");
+                    Console.WriteLine("Password set to: Test!234");
+                    this.employee.Password = "Test!234";
+                }
+                break;
             default:
                 break;
         }
-        Customer customer = this.customer;
-        Database.Instance.EditCustomer(this.customer, selected.Option);
+        Employee employee = this.employee;
+        Database.Instance.EditEmployee(this.employee, selected.Option);
     }
     protected override void Draw()
     {
         do
         {
-            Title = contact.FullName + " Edit Customer Screen";
+            Title = contact.FullName + " Edit Employee Screen";
             Clear(this);
 
             ListPage<Person> PersonListPage = new ListPage<Person>();
@@ -99,7 +128,8 @@ public class EditCustomerScreen : ScreenHandler
             Console.WriteLine("Country: " + contact.Address.Country);
             Console.WriteLine("Phonenumber: " + contact.PhoneNumber);
             Console.WriteLine("Email: " + contact.Email);
-
+            Console.WriteLine("User name: " + this.employee.UserName);
+            
             ListPage<Options> OptionListPage = new ListPage<Options>();
             string zipCode = address.ZipCode.ToString();
             OptionListPage.AddColumn("Edit", "Option");
@@ -112,22 +142,22 @@ public class EditCustomerScreen : ScreenHandler
             OptionListPage.Add(new Options("Country", address.Country));
             OptionListPage.Add(new Options("Phonenumber", contact.PhoneNumber));
             OptionListPage.Add(new Options("Email", contact.Email));
-            
+            OptionListPage.Add(new Options("User name", employee.UserName));
+            OptionListPage.Add(new Options("Password", employee.Password));
             OptionListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = OptionListPage.Select();
 
-            if(selected.Value != "NO EDIT")
+            if (selected.Value != "NO EDIT")
             {
-                EditCustomer(selected);
+                EditEmployee(selected);
             }
             else
             {
                 break;
             }
-            Console.WriteLine("Press ESC to return to Company screen");
+            Console.WriteLine("Press ESC to return to Employee screen");
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 
-
-        ScreenHandler.Display(new CustomerDetails(this.customer, company));
+        ScreenHandler.Display(new EmployeeScreen(company));
     }
 }
