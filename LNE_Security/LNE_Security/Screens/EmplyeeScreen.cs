@@ -104,6 +104,12 @@ public class EmployeeScreen : ScreenHandler
         ListPage<ContactInfo> ContactListPage = new ListPage<ContactInfo>();
         List<Employee> employees = Database.Instance.GetEmployees();
 
+        int maxFullnameLength = 0;
+        int maxEmailLength = 0;
+        int maxPhoneNumberLength = 0;
+        int maxEIDLength = 0;
+        int maxUserNameLength = 0;
+
         foreach (Employee employee in employees)
         {
             try
@@ -112,6 +118,16 @@ public class EmployeeScreen : ScreenHandler
                 employee.Email = employee.ContactInfo.Email;
                 employee.PhoneNumber = employee.ContactInfo.PhoneNumber;
                 EmployeeListPage.Add(employee);
+                if (employee.FullName.Length > maxFullnameLength)
+                    maxFullnameLength = employee.FullName.Length;
+                if (employee.Email.Length > maxEmailLength)
+                    maxEmailLength = employee.Email.Length;
+                if (employee.PhoneNumber.Length > maxPhoneNumberLength)
+                    maxPhoneNumberLength = employee.PhoneNumber.Length;
+                if(employee.EID.ToString().Length > maxEIDLength)
+                    maxEIDLength = employee.EID.ToString().Length;
+                if(employee.UserName.ToString().Length > maxUserNameLength)
+                    maxUserNameLength = employee.UserName.ToString().Length;
             }
             catch (System.NullReferenceException ex)
             {
@@ -127,11 +143,11 @@ public class EmployeeScreen : ScreenHandler
         if (employees.Count != 0)
         {
             Console.WriteLine("Choose Employee");
-            EmployeeListPage.AddColumn("Employee ID", "EID");
-            EmployeeListPage.AddColumn("Employee Name", "FullName");
-            EmployeeListPage.AddColumn("Phonenumber", "PhoneNumber");
-            EmployeeListPage.AddColumn("Email", "Email");
-            EmployeeListPage.AddColumn("User name", "UserName");
+            EmployeeListPage.AddColumn("Employee ID", "EID", ColumnLength("Employee ID", maxEIDLength));
+            EmployeeListPage.AddColumn("Employee name", "FullName", ColumnLength("Employee name", maxFullnameLength));
+            EmployeeListPage.AddColumn("Phone number", "PhoneNumber", ColumnLength("Phone number", maxPhoneNumberLength));
+            EmployeeListPage.AddColumn("Email", "Email", ColumnLength("Email", maxEmailLength));
+            EmployeeListPage.AddColumn("User name", "UserName", ColumnLength("User name", maxUserNameLength));
             
             selected = EmployeeListPage.Select();
             

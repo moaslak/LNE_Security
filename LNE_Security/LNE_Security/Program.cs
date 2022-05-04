@@ -14,10 +14,6 @@ class Program
         }
     }
 
-    //static List<Company> companyList = new List<Company>();
-
-
-
     public static void Main(string[] args)
     {
         Console.WriteLine("Welcome screen");
@@ -27,7 +23,6 @@ class Program
         Console.WriteLine();
         Console.WriteLine("Press a key to start program");
         Console.ReadKey();
-        //companyList = Database.Instance.GetCompanies();
         MainMenuScreen mainMenu = new MainMenuScreen();
         ScreenHandler.Display(mainMenu);
     }

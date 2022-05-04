@@ -90,7 +90,8 @@ public class CustomerScreen : ScreenHandler
             catch (System.NullReferenceException ex)
             {
                 Console.WriteLine(ex.Message);
-            } 
+            }
+            
             if(customer.FullName.Length > maxFullnameLength)
                 maxFullnameLength = customer.FullName.Length;
             if(customer.Email.Length > maxEmailLength)
@@ -109,8 +110,8 @@ public class CustomerScreen : ScreenHandler
             Console.WriteLine("Choose Customer");
             CustomerListPage.AddColumn("Customer ID", "CID", "Customer ID".Length);
             CustomerListPage.AddColumn("Customer Name", "FullName", maxFullnameLength);
-            CustomerListPage.AddColumn("Phonenumber", "PhoneNumber", maxPhoneNumberLength);
-            CustomerListPage.AddColumn("Email", "Email", maxEmailLength);
+            CustomerListPage.AddColumn("Phonenumber", "PhoneNumber", ColumnLength("Phonenumber", maxPhoneNumberLength));
+            CustomerListPage.AddColumn("Email", "Email", ColumnLength("Email", maxEmailLength));
             selected = CustomerListPage.Select();
             
         }
@@ -120,6 +121,7 @@ public class CustomerScreen : ScreenHandler
             Console.WriteLine("F1 - New Customer");
             Console.WriteLine("F2 - View/Edit Customer");
             Console.WriteLine("F8 - Delete Customer");
+            Console.WriteLine("F9 - Delete old sales orders");
             Console.WriteLine("F10 - To Main menu");
             Console.WriteLine();
 
@@ -136,9 +138,26 @@ public class CustomerScreen : ScreenHandler
                     ScreenHandler.Display(new MainMenuScreen(this.company));
                     break;
                 case ConsoleKey.F8:
-                    Database.Instance.DeleteCustomer(selected.CID); //TODO: kan ikke slette hvis brugeren har en salgsordre, DELETE ON CASCADE
+                    DeleteSalesOrdersForCustomer(selected);
+                    Database.Instance.DeleteCustomer(selected.CID);
+                    break;
+                case ConsoleKey.F9:
+                    DeleteSalesOrdersForCustomer(selected);
                     break;
             }
         } 
+    }
+
+    private void DeleteSalesOrdersForCustomer(Customer customer)
+    {
+        List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(customer);
+        DateTime dateTime = DateTime.Now.AddYears(-3);
+        foreach (SalesOrder salesOrder in salesOrders)
+        {
+            if(salesOrder.CompletionTime <= dateTime)
+            {
+                Database.Instance.DeleteSalesOrder(salesOrder.OrderID, customer);
+            }
+        }
     }
 }

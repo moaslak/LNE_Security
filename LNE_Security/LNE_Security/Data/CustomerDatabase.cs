@@ -118,9 +118,17 @@ partial class Database
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
 
-        //execute the SQLCommand
-        SqlDataReader reader = cmd.ExecuteReader();
-        reader.Close();
+        try
+        {
+            //execute the SQLCommand
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Cannot delete customer that have sales orders");
+        }
+        
 
         //close connection
         sqlConnection.Close();

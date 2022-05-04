@@ -139,34 +139,34 @@ public class EditProductScreen : ScreenHandler
                 product.Profit = product.CalculateProfit(product.SalesPrice, product.CostPrice);
                 product.ProfitPercent = product.CalculateProfitPercent(product.SalesPrice, product.CostPrice);
 
-                ProductListPage.AddColumn("Product Number", "ProductNumber");
-                ProductListPage.AddColumn("Product Name", "ProductName");
-                ProductListPage.AddColumn("Description", "Description");
-                ProductListPage.AddColumn("Cost Price", "CostPrice");
-                ProductListPage.AddColumn("Sales Price", "SalesPrice");
-                ProductListPage.AddColumn("Unit", "Unit");
+                ProductListPage.AddColumn("Product number", "ProductNumber", ColumnLength("Product number", product.ProductNumber));
+                ProductListPage.AddColumn("Product name", "ProductName", ColumnLength("Product name", product.ProductName));
+                ProductListPage.AddColumn("Description", "Description", ColumnLength("Description", product.Description));
+                ProductListPage.AddColumn("Cost price", "CostPrice", ColumnLength("Cost price", product.CostPrice.ToString()));
+                ProductListPage.AddColumn("Sales price", "SalesPrice", ColumnLength("Sales price", product.SalesPrice.ToString()));
+                ProductListPage.AddColumn("Unit", "Unit", ColumnLength("Unit", product.Unit.ToString()));
                 if (product.Unit != Product.Units.hours)
                 {
-                    ProductListPage.AddColumn("Amount In Storage", "AmountInStorage");
-                    ProductListPage.AddColumn("Location", "LocationString");
+                    ProductListPage.AddColumn("Amount in storage", "AmountInStorage", ColumnLength("Amount in storage", product.AmountInStorage.ToString()));
+                    ProductListPage.AddColumn("Location", "LocationString", ColumnLength("Location", product.LocationString));
                 }
-                ProductListPage.AddColumn("Profit Percent", "ProfitPercent");
-                ProductListPage.AddColumn("Profit", "Profit");
+                ProductListPage.AddColumn("Profit percent", "ProfitPercent", ColumnLength("Profit percent", product.ProfitPercent.ToString()));
+                ProductListPage.AddColumn("Profit", "Profit", ColumnLength("Profit", product.Profit.ToString()));
 
                 ProductListPage.Draw();
 
                 ListPage<Options> optionsListPage = new ListPage<Options>();
 
                 optionsListPage.AddColumn("Edit", "Option");
-                optionsListPage.Add(new Options("Product Number", product.ProductNumber.ToString()));
-                optionsListPage.Add(new Options("Product Name", product.ProductName));
+                optionsListPage.Add(new Options("Product number", product.ProductNumber.ToString()));
+                optionsListPage.Add(new Options("Product name", product.ProductName));
                 optionsListPage.Add(new Options("Description", product.Description));
-                optionsListPage.Add(new Options("Cost Price", product.CostPrice.ToString()));
-                optionsListPage.Add(new Options("Sales Price", product.SalesPrice.ToString()));
+                optionsListPage.Add(new Options("Cost price", product.CostPrice.ToString()));
+                optionsListPage.Add(new Options("Sales price", product.SalesPrice.ToString()));
                 optionsListPage.Add(new Options("Unit", product.Unit.ToString()));
                 if (product.Unit != Product.Units.hours)
                 {
-                    optionsListPage.Add(new Options("Amount In Storage", product.AmountInStorage.ToString()));
+                    optionsListPage.Add(new Options("Amount in storage", product.AmountInStorage.ToString()));
                     optionsListPage.Add(new Options("Location", product.LocationString));
                 }   
                 optionsListPage.Add(new Options("Back", "NO EDIT"));

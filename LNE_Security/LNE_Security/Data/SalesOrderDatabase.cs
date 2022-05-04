@@ -95,9 +95,9 @@ partial class Database
         Console.ReadKey();
     }
 
-    public void DeleteSalesOrder(UInt32 ID, Customer customer)
-    {
-        string query = "DELETE FROM [dbo].[SalesOrder] WHERE OrderID = " + ID.ToString();
+    public void DeleteSalesOrder(UInt32 OrderID, Customer customer)
+    {        
+        string query = "DELETE FROM [dbo].[SalesOrder] WHERE OrderID = " + OrderID.ToString();
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
 
@@ -107,10 +107,10 @@ partial class Database
 
         //close connection
         sqlConnection.Close();
-        SalesOrder salesOrder = SelectSalesOrder(ID, customer);
+        SalesOrder salesOrder = SelectSalesOrder(OrderID, customer);
         if (salesOrder == null)
         {
-            Console.WriteLine("Sales order with ID = " + ID + " was succesfully deleted");
+            Console.WriteLine("Sales order with ID = " + OrderID + " was succesfully deleted");
             Console.WriteLine("Press a key to continue");
             Console.ReadKey();
         }

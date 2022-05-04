@@ -302,7 +302,8 @@ internal class EditSalesOrderScreen : ScreenHandler
             ListPage<SalesOrder> SalesOrderListPage = new ListPage<SalesOrder>();
 
             int fullNameMaxLength = 0;
-
+            int maxOrderIDLength = 0;
+            int maxCIDLength = 0;
             foreach(SalesOrder salesOrder in salesOrders)
             {
                 salesOrder.OrderLines = Database.Instance.GetOrderLines(salesOrder.OrderID);
@@ -311,8 +312,13 @@ internal class EditSalesOrderScreen : ScreenHandler
                 customer = Database.Instance.SelectCustomer(salesOrder.CID);
                 if(salesOrder.FullName.Length > fullNameMaxLength)
                     fullNameMaxLength = salesOrder.FullName.Length;
+                if (salesOrder.OrderID.ToString().Length > maxOrderIDLength)
+                    maxOrderIDLength = salesOrder.OrderID.ToString().Length;
+                if(salesOrder.CID.ToString().Length > maxCIDLength)
+                    maxCIDLength = salesOrder.CID.ToString().Length;
             }
-            
+
+            int maxTotalPriceLength = 0;
             for (int i = 0; i < salesOrders.Count; i++)
             {
                 salesOrders[i].OrderLines = Database.Instance.GetOrderLines(salesOrders[i].OrderID);
@@ -322,22 +328,23 @@ internal class EditSalesOrderScreen : ScreenHandler
                     salesOrders[i].OrderLines[j].Product = Database.Instance.SelectProduct(salesOrders[i].OrderLines[j].PID);
                 }
                 salesOrders[i].TotalPrice = salesOrders[i].CalculateTotalPrice(salesOrders[i].OrderLines);
+                if (salesOrders[i].TotalPrice.ToString().Length > maxTotalPriceLength)
+                    maxTotalPriceLength = salesOrders[i].TotalPrice.ToString().Length;
             }
             
-            SalesOrderListPage.AddColumn("ID", "OrderID", 10);
-            SalesOrderListPage.AddColumn("Order time", "OrderTime", salesOrders[0].OrderTime.ToString().Length);
-            SalesOrderListPage.AddColumn("Customer Id", "CID", "Customer Id".Length);
-            SalesOrderListPage.AddColumn("Name", "FullName", fullNameMaxLength);
-            SalesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", "Price ".Length + 3);
-            SalesOrderListPage.AddColumn("State", "State", 9);
+            SalesOrderListPage.AddColumn("Order ID", "OrderID", ColumnLength("Order ID", maxOrderIDLength));
+            SalesOrderListPage.AddColumn("Order time", "OrderTime", salesOrders[0].OrderTime.ToString().Length); //HACK: grim løsning
+            SalesOrderListPage.AddColumn("Customer Id", "CID", ColumnLength("Customer Id", maxCIDLength));
+            SalesOrderListPage.AddColumn("Name", "FullName", ColumnLength("Name", fullNameMaxLength));
+            SalesOrderListPage.AddColumn("Price " + company.Currency.ToString(), "TotalPrice", ColumnLength("Price " + company.Currency.ToString(), maxTotalPriceLength));
+            SalesOrderListPage.AddColumn("State", "State", 10); //  "incomplete".length
             SalesOrder selectedSalesOrder = SalesOrderListPage.Select();
 
-            if(selectedSalesOrder != null)
+            if(selectedSalesOrder != null && selectedSalesOrder.State != SalesOrder.States.Closed)
             {
                 ListPage<Options> optionsListPage = new ListPage<Options>();
 
                 optionsListPage.AddColumn("Edit", "Option");
-                //optionsListPage.Add(new Options("Customer Id", selectedSalesOrder.CID.ToString()));
                 optionsListPage.Add(new Options("Total price", selectedSalesOrder.TotalPrice.ToString()));
                 optionsListPage.Add(new Options("Completion Time", selectedSalesOrder.CompletionTime.ToString()));
                 optionsListPage.Add(new Options("State", selectedSalesOrder.State.ToString()));
@@ -361,8 +368,12 @@ internal class EditSalesOrderScreen : ScreenHandler
                     break;
                 }
                 Console.WriteLine("Press ESC to return to Sales Order screen");
-                //Database.Instance.EditSalesOrder(selectedSalesOrder);
                 company = Database.Instance.SelectCompany(selectedSalesOrder.CompanyID);
+            }
+            else
+            {
+                Console.WriteLine("Can not edit a closed sales order");
+                Console.WriteLine("Press ESC to return to Sales Order screen");
             }
             
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
@@ -377,13 +388,16 @@ internal class EditSalesOrderScreen : ScreenHandler
     private void CreateHTMLInvoice(SalesOrder salesOrder)
     {
         //TODO: Get relative path
-        string path = @"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Templates\Invoice.html";
-        string logoPath = @"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Images\LNE_logo.png"; //TODO: find logos!!!
-        string invoicePath = @"C:\Dropbox\TECHCOLLEGE\Hovedforløb_1\Repository\LNE_Security\LNE_Security\LNE_Security\Invoices\";
+        string templatePath = @"..\\Templates\Invoice.html";
+        string logoPath = @"..\\Images\LNE_logo.png";
+        string invoicePath = "..\\Invoices\\";
         if (!(Directory.Exists(invoicePath)))
             Directory.CreateDirectory(invoicePath);
 
-        string html2String = File.ReadAllText(path);
+        if (!(Directory.Exists(invoicePath)))
+            Directory.CreateDirectory(invoicePath);
+
+        string html2String = File.ReadAllText(templatePath);
         Customer customer = Database.Instance.SelectCustomer(salesOrder.CID);
         customer.CreateFullName(customer.FirstName, customer.LastName);
         ContactInfo contactInfo = Database.Instance.SelectContactInfo(customer);
@@ -410,17 +424,12 @@ internal class EditSalesOrderScreen : ScreenHandler
         html2String = html2String.Replace("{completionTime}", salesOrder.CompletionTime.ToString());
         html2String = html2String.Replace("{packedby}", salesOrder.OrderLines[0].pickedBy.ToString()); //TODO: picked by orderline
 
-        File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
+        File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + 
+            salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
         
-        // relative path
-        /*
-        invoicePath = "..\\Invoices\\";
-        if (!(Directory.Exists(invoicePath)))
-            Directory.CreateDirectory(invoicePath);
-        */
-
-        File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
-        System.Diagnostics.Process.Start(@"C:\Program Files\Google\Chrome\Application\chrome.exe", invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + salesOrder.CompletionTime.ToString().Substring(0, 10) + ".html");
+        System.Diagnostics.Process.Start(@"C:\Program Files\Google\Chrome\Application\chrome.exe", 
+            Path.GetFullPath(invoicePath) + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + 
+            salesOrder.CompletionTime.ToString().Substring(0, 10) + ".html");
     }
 
     /// <summary>
