@@ -63,6 +63,7 @@ CompanyName varchar(128),
 Currency char(3),
 CVR varchar(32),
 ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
+Role int,
 PRIMARY KEY(CompanyID)
 )
 

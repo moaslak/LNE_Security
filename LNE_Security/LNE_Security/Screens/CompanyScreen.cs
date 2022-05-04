@@ -43,7 +43,7 @@ public class CompanyScreen : ScreenHandler
         {
             foreach (Company company in CompanyList)
                 CompanyListPage.Add(company);
-            CompanyListPage.AddColumn("Company name", "CompanyName", "Company name".Length);
+            CompanyListPage.AddColumn("Company name", "CompanyName", ColumnLength("Company name", company.CompanyName));
             CompanyListPage.AddColumn("Country", "Country", maxCountryLength);
             CompanyListPage.AddColumn("Currency", "Currency", ColumnLength("Currency", maxCurrencyLength));
             Console.WriteLine("Choose Company");
@@ -71,7 +71,8 @@ public class CompanyScreen : ScreenHandler
                     Database.Instance.DeleteCompany(selected.CompanyID);
                     break;
                 case ConsoleKey.F10:
-                    ScreenHandler.Display(new MainMenuScreen(selected));
+                    
+                    ScreenHandler.Display(new MainMenuScreen(this.company));
                     break;
             }
         }

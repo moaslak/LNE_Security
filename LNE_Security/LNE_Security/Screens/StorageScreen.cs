@@ -43,7 +43,7 @@ public class StorageScreen : ScreenHandler
             try
             {
                 employee = Database.Instance.SelectEmployee(userName);
-                if(employee != null)
+                if(employee != null && employee.CompanyID == company.CompanyID)
                 {
                     int passwordCheck = 0;
                     bool passwordConfirmed = false;
@@ -223,7 +223,7 @@ public class StorageScreen : ScreenHandler
                     maxFullnameLength = so.FullName.Length;
             }
 
-            salesOrderListpage.AddColumn("Order ID", "OrderID", "Order ID".Length);
+            salesOrderListpage.AddColumn("Order ID", "OrderID", "Order ID".Length); //TODO: FIX LENGTHSS
             salesOrderListpage.AddColumn("Customer", "FullName", maxFullnameLength);
             SalesOrder salesOrder = salesOrderListpage.Select();
 
@@ -243,7 +243,7 @@ public class StorageScreen : ScreenHandler
             }
             if (count > 0)
             {
-                listPage.AddColumn("OLID", "OLID", "OLID".Length);
+                listPage.AddColumn("OLID", "OLID", "OLID".Length); //TODO: FIX LENGTHSS
                 listPage.AddColumn("Status", "State", "Confirmed".Length);
                 OrderLine selectedOrderLine = listPage.Select();
 

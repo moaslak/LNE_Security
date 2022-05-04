@@ -34,7 +34,7 @@ public class EditCompnayScreen : ScreenHandler
     private void EditCompany(Options selected)
     {
         string newValue = "";
-        if(selected.Option != "Currency")
+        if(selected.Option != "Currency" || selected.Option != "Password")
         {
             Console.Write("New value: ");
             newValue = Console.ReadLine();
@@ -106,6 +106,32 @@ public class EditCompnayScreen : ScreenHandler
                 break;
             case "Last Name":
                 this.company.LastName = newValue;
+                break;
+            case "Password":
+                Console.Write("Enter new password: ");
+                this.company.Password = this.company.GetPassword();
+                int passwordCheck = 0;
+                bool passwordConfirmed = false;
+                do
+                {
+                    Console.Write("Confirm password: ");
+                    if (this.company.Password == this.company.GetPassword())
+                        passwordConfirmed = true;
+                    else
+                    {
+                        Console.WriteLine("Incorrect confirmation");
+                        passwordCheck++;
+                        if (passwordCheck == 3)
+                            passwordConfirmed = true;
+                    }
+
+                } while (!(passwordConfirmed));
+                if (passwordCheck == 3 && passwordConfirmed)
+                {
+                    Console.WriteLine("Password no comfirmed!!!");
+                    Console.WriteLine("Password set to: Test!234");
+                    this.company.Password = "Test!234";
+                }
                 break;
             default:
                 break;

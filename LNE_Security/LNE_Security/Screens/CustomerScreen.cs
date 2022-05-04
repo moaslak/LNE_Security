@@ -61,6 +61,7 @@ public class CustomerScreen : ScreenHandler
         newCustomer.ContactInfoID = Database.Instance.NewContactInfo(contactInfo);
         newCustomer.ContactInfo = contactInfo;
         newCustomer.Address = contactInfo.Address;
+        newCustomer.CompanyID = company.CompanyID;
         Database.Instance.NewCustomer(newCustomer);
     }
 
@@ -74,10 +75,11 @@ public class CustomerScreen : ScreenHandler
     {
         ListPage<Customer> CustomerListPage = new ListPage<Customer>();
         ListPage<ContactInfo> ContactListPage = new ListPage<ContactInfo>();
-        List<Customer> customers = Database.Instance.GetCustomers();
+        List<Customer> customers = Database.Instance.GetCustomers(company.CompanyID);
         int maxFullnameLength = 0;
         int maxEmailLength = 0;
         int maxPhoneNumberLength = 0;
+        int maxCIDLength = 0;
         foreach (Customer customer in customers)
         {
             try
@@ -98,6 +100,8 @@ public class CustomerScreen : ScreenHandler
                 maxEmailLength = customer.Email.Length;
             if(customer.PhoneNumber.Length > maxPhoneNumberLength)
                 maxPhoneNumberLength = customer.PhoneNumber.Length;
+            if(customer.CID.ToString().Length > maxCIDLength)
+                maxCIDLength = customer.CID.ToString().Length;
         }
  
         Title = "Customer screen";
@@ -108,8 +112,8 @@ public class CustomerScreen : ScreenHandler
         if(customers.Count != 0)
         {
             Console.WriteLine("Choose Customer");
-            CustomerListPage.AddColumn("Customer ID", "CID", "Customer ID".Length);
-            CustomerListPage.AddColumn("Customer Name", "FullName", maxFullnameLength);
+            CustomerListPage.AddColumn("Customer ID", "CID", ColumnLength("Customer ID",maxCIDLength));
+            CustomerListPage.AddColumn("Customer name", "FullName", ColumnLength("Customer name", maxFullnameLength));
             CustomerListPage.AddColumn("Phonenumber", "PhoneNumber", ColumnLength("Phonenumber", maxPhoneNumberLength));
             CustomerListPage.AddColumn("Email", "Email", ColumnLength("Email", maxEmailLength));
             selected = CustomerListPage.Select();
@@ -119,7 +123,7 @@ public class CustomerScreen : ScreenHandler
         {
             Console.WriteLine("Selection: " + selected.ContactInfo.FullName);
             Console.WriteLine("F1 - New Customer");
-            Console.WriteLine("F2 - View/Edit Customer");
+            Console.WriteLine("F2 - Customer details");
             Console.WriteLine("F8 - Delete Customer");
             Console.WriteLine("F9 - Delete old sales orders");
             Console.WriteLine("F10 - To Main menu");
@@ -132,7 +136,7 @@ public class CustomerScreen : ScreenHandler
                     Console.WriteLine("Press enter to continue");
                     break;
                 case ConsoleKey.F2:
-                    ScreenHandler.Display(new EditCustomerScreen(selected, company));
+                    ScreenHandler.Display(new CustomerDetails(selected, company));
                     break;
                 case ConsoleKey.F10:
                     ScreenHandler.Display(new MainMenuScreen(this.company));

@@ -59,6 +59,7 @@ public class EmployeeScreen : ScreenHandler
         contactInfo.AddressId = Database.Instance.NewAddress(contactInfo.Address);
 
         Employee newEmployee = new Employee();
+        newEmployee.CompanyID = company.CompanyID;
         Console.Write("Enter user name: ");
         newEmployee.UserName = Console.ReadLine();
         Console.Write("Enter password: ");
@@ -101,7 +102,7 @@ public class EmployeeScreen : ScreenHandler
     {
         ListPage<Employee> EmployeeListPage = new ListPage<Employee>();
         ListPage<ContactInfo> ContactListPage = new ListPage<ContactInfo>();
-        List<Employee> employees = Database.Instance.GetEmployees();
+        List<Employee> employees = Database.Instance.GetEmployees(company.CompanyID);
 
         int maxFullnameLength = 0;
         int maxEmailLength = 0;
