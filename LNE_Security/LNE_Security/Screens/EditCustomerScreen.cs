@@ -121,9 +121,9 @@ public class EditCustomerScreen : ScreenHandler
             OptionListPage.Add(new Options("Zipcode", address.ZipCode));
             OptionListPage.Add(new Options("City", address.City));
             OptionListPage.Add(new Options("Country", address.Country));
-            
             OptionListPage.Add(new Options("Phonenumber", contact.PhoneNumber));
             OptionListPage.Add(new Options("Email", contact.Email));
+            
             OptionListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = OptionListPage.Select();
 

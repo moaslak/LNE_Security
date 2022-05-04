@@ -332,12 +332,11 @@ internal class EditSalesOrderScreen : ScreenHandler
             SalesOrderListPage.AddColumn("State", "State", 9);
             SalesOrder selectedSalesOrder = SalesOrderListPage.Select();
 
-            if(selectedSalesOrder != null)
+            if(selectedSalesOrder != null && selectedSalesOrder.State != SalesOrder.States.Closed)
             {
                 ListPage<Options> optionsListPage = new ListPage<Options>();
 
                 optionsListPage.AddColumn("Edit", "Option");
-                //optionsListPage.Add(new Options("Customer Id", selectedSalesOrder.CID.ToString()));
                 optionsListPage.Add(new Options("Total price", selectedSalesOrder.TotalPrice.ToString()));
                 optionsListPage.Add(new Options("Completion Time", selectedSalesOrder.CompletionTime.ToString()));
                 optionsListPage.Add(new Options("State", selectedSalesOrder.State.ToString()));
@@ -361,8 +360,12 @@ internal class EditSalesOrderScreen : ScreenHandler
                     break;
                 }
                 Console.WriteLine("Press ESC to return to Sales Order screen");
-                //Database.Instance.EditSalesOrder(selectedSalesOrder);
                 company = Database.Instance.SelectCompany(selectedSalesOrder.CompanyID);
+            }
+            else
+            {
+                Console.WriteLine("Can not edit a closed sales order");
+                Console.WriteLine("Press ESC to return to Sales Order screen");
             }
             
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));

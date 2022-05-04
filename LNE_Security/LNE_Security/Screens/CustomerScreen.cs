@@ -120,6 +120,7 @@ public class CustomerScreen : ScreenHandler
             Console.WriteLine("F1 - New Customer");
             Console.WriteLine("F2 - View/Edit Customer");
             Console.WriteLine("F8 - Delete Customer");
+            Console.WriteLine("F9 - Delete old sales orders");
             Console.WriteLine("F10 - To Main menu");
             Console.WriteLine();
 
@@ -136,9 +137,26 @@ public class CustomerScreen : ScreenHandler
                     ScreenHandler.Display(new MainMenuScreen(this.company));
                     break;
                 case ConsoleKey.F8:
-                    Database.Instance.DeleteCustomer(selected.CID); //TODO: kan ikke slette hvis brugeren har en salgsordre, DELETE ON CASCADE
+                    DeleteSalesOrdersForCustomer(selected);
+                    Database.Instance.DeleteCustomer(selected.CID);
+                    break;
+                case ConsoleKey.F9:
+                    DeleteSalesOrdersForCustomer(selected);
                     break;
             }
         } 
+    }
+
+    private void DeleteSalesOrdersForCustomer(Customer customer)
+    {
+        List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(customer);
+        DateTime dateTime = DateTime.Now.AddYears(-3);
+        foreach (SalesOrder salesOrder in salesOrders)
+        {
+            if(salesOrder.CompletionTime <= dateTime)
+            {
+                Database.Instance.DeleteSalesOrder(salesOrder.OrderID, customer);
+            }
+        }
     }
 }

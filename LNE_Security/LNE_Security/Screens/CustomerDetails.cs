@@ -43,7 +43,7 @@ public class CustomerDetails : ScreenHandler
 		switch (Console.ReadKey().Key)
 		{
 			case ConsoleKey.F1:
-				ScreenHandler.Display(customerScreen); // TODO: COMPANY!!!
+				ScreenHandler.Display(customerScreen);
 				break;
 			case ConsoleKey.F2:
 				ScreenHandler.Display(editCustomerScreen);
