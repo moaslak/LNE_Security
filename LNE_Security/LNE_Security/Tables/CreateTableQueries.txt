@@ -76,6 +76,7 @@ PRIMARY KEY(Id)
 CREATE TABLE Customer(
 CID int IDENTITY(1,1),
 ContactInfoID int FOREIGN KEY REFERENCES ContactInfo(ContactInfoID),
+CompanyID int FOREIGN KEY REFERENCES Company(CompanyID)
 PRIMARY KEY(CID)
 )
 
@@ -84,5 +85,6 @@ EID int IDENTITY(1,1),
 ContactInfoID int FOREIGN KEY REFERNECES ContactInfo(ContactInfoID),
 UserName varchar(64) NOT NULL,
 Password varchar(64) NOT NULL,
+CompanyID int FOREIGN KEY REFERENCES Company(CompanyID),
 PRIMARY KEY(EID)
 )

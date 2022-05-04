@@ -4,26 +4,20 @@ inner join ContactInfo On Company.ContactInfoID=ContactInfo.ContactInfoID
 inner join Address on ContactInfo.AddressID = Address.AddressID
 
 Customer view
-select CID, FirstName, LastName, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country FROM customer
+CREATE VIEW CustomerView as select CID, FirstName, LastName, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country, CompanyName FROM customer
 inner join ContactInfo On Customer.ContactInfoID=ContactInfo.ContactInfoID
 inner join Address on ContactInfo.AddressID = Address.AddressID
-
-Sales Order View // old
-select SalesOrder.OrderID, OrderTime, CompletionTime, price, Quantity, ProductName, SalesPrice, CostPrice, AmountInStorage, LocationString, Unit, Description, Profit, ProfitPersent, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber from SalesOrder
-inner join Orderline on SalesOrder.OLID = Orderline.OLID
-inner join Product on Orderline.PID = Product.PID
-inner join Company on SalesOrder.CompanyID = Company.CompanyID
-inner join ContactInfo on SalesOrder.ContactInfoID = ContactInfo.ContactInfoID
-inner join Customer on SalesOrder.CID = Customer.CID
+inner join Company on Customer.CompanyID = Company.CompanyID
 
 //new
-select OrderID, OrderTime, CompletionTime, Price, State, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber from SalesOrder
+CREATE VIEW SalesOrderView as select OrderID, OrderTime, CompletionTime, Price, State, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber from SalesOrder
 inner join Company on SalesOrder.CompanyID = Company.CompanyID
 inner join ContactInfo on SalesOrder.ContactInfoID = ContactInfo.ContactInfoID
 inner join Customer on SalesOrder.CID = Customer.CID
 
 
 Employee view
-select EID, FirstName, LastName, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country FROM employee
+CREATE VIEW EmployeeView as select EID, FirstName, LastName, UserName, Password, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country, CompanyName FROM Employee
 inner join ContactInfo On Employee.ContactInfoID=ContactInfo.ContactInfoID
 inner join Address on ContactInfo.AddressID = Address.AddressID
+inner join Company on Employee.CompanyID = Company.CompanyID
