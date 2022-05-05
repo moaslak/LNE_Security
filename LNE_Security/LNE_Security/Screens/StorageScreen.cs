@@ -235,7 +235,7 @@ public class StorageScreen : ScreenHandler
             int maxOLIDLength = 0;
             foreach (OrderLine orderLine in orderLines)
             {
-                if (orderLine.State == OrderLine.States.Confirmed || orderLine.State == OrderLine.States.Created)
+                if (orderLine.State == OrderLine.States.Confirmed || orderLine.State == OrderLine.States.Incomplete)
                 {
                     orderLine.PID = orderLine.Product.PID;
                     orderLine.Product = Database.Instance.SelectProduct(orderLine.PID, company);
