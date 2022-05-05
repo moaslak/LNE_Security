@@ -14,35 +14,4 @@ public class Customer : Person
     public UInt16 CompanyID { get; set; }  
 
     public DateTime? newestOrder { get;set; }
-
-    public string FullAddress { get; set; }
-    
-
-    public override Person DeletePerson(ContactInfo contactInfo, Database database, Address address)
-    {
-        //database = new Database();
-        contactInfo = new ContactInfo();
-        address = new Address();
-        _person.DeletePerson(contactInfo, database, address);
-        return null;
-    }
-
-    public override Person GetPerson(ContactInfo contactInfo)
-    {
-        contactInfo = new ContactInfo();
-        return _person;
-    }
-
-    public override Person UpdatePerson(ContactInfo contactInfo, Database database, Address address)
-    {
-        contactInfo = new ContactInfo();
-        //database = new Database();
-        address = new Address();
-        return _person;
-    }
-
-    public string CreateFullName(string FirstName, string LastName)
-    {
-        return FirstName + " " + LastName;
-    }
 }

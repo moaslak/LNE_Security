@@ -31,7 +31,7 @@ LocationString varchar(8),
 Unit nchar(5),
 Description varchar(128),
 Profit money,
-ProfitPersent decimal(5,2),
+ProfitPersent decimal(18,2),
 PRIMARY KEY(PID)
 )
 
