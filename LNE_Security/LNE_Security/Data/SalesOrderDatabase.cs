@@ -210,7 +210,7 @@ partial class Database
         }
         return orderline;
     }
-    public void NewSalesOrder(Customer customer, UInt16 companyID)
+    public void NewSalesOrder(Customer customer, Company company)
     {
         SalesOrder salesOrder = new SalesOrder();
         Console.WriteLine();
@@ -218,7 +218,7 @@ partial class Database
 
         salesOrder.CID = customer.CID;
         salesOrder.FullName = customer.ContactInfo.FullName;
-        salesOrder.CompanyID = companyID;
+        salesOrder.CompanyID = company.CompanyID;
         SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
         DateTime randomDate = RandomDay(); // Need OrderID for Orderlines
@@ -268,7 +268,7 @@ partial class Database
             
           "', [ContactInfoID] = '" + customer.ContactInfoID.ToString() +
           "', [CID] = '" + customer.CID +
-          "', [CompanyID] = '" + companyID.ToString() +
+          "', [CompanyID] = '" + company.CompanyID.ToString() +
           "', [Price] = '" + salesOrder.TotalPrice + 
           "', [State] = '" + salesOrder.State.ToString() + "'  WHERE OrderID = '" + salesOrder.OrderID+"'";
         cmd = new SqlCommand(query, sqlConnection);

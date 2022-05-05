@@ -387,8 +387,9 @@ internal class EditSalesOrderScreen : ScreenHandler
     /// <param name="salesOrder"></param>
     private void CreateHTMLInvoice(SalesOrder salesOrder)
     {
+        Company company = Database.Instance.SelectCompany(salesOrder.CompanyID);
         string templatePath = @"..\\Templates\Invoice.html";
-        string logoPath = @"..\\Images\LNE_logo.png";
+        string logoPath = @"..\\Images\"+ company.CompanyName +"_logo.png";
         string invoicePath = "..\\Invoices\\";
         if (!(Directory.Exists(invoicePath)))
             Directory.CreateDirectory(invoicePath);

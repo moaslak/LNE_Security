@@ -69,6 +69,7 @@ public class CompanyScreen : ScreenHandler
                     break;
                 case ConsoleKey.F8:
                     Database.Instance.DeleteCompany(selected.CompanyID);
+                    Database.Instance.DeleteContactInfo(selected.ContactInfoID);
                     break;
                 case ConsoleKey.F10:
                     

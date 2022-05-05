@@ -9,6 +9,17 @@ namespace LNE_Security;
 
 partial class Database
 {
+    public void DeleteContactInfo(UInt16 contactInfoID)
+    {
+        string query = @"DELETE FROM [dbo].[ContactInfo] WHERE ContactInfoID = " + contactInfoID;
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        sqlConnection.Open();
+
+        //execute the SQLCommand
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+        sqlConnection.Close();
+    }
     public UInt16 NewContactInfo(ContactInfo contactInfo)
     {
         Address address = contactInfo.Address;

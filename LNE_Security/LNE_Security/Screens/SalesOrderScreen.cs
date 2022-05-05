@@ -27,7 +27,7 @@ public class SalesOrderScreen : ScreenHandler
         Title = company.CompanyName + " Sales order screen";
         Clear(this);
 
-        List<Customer> Customers = Database.Instance.GetCustomers();
+        List<Customer> Customers = Database.Instance.GetCustomers(company.CompanyID);
         if(Customers.Count == 0)
         {
             Console.WriteLine("Create a customer first");
@@ -102,7 +102,7 @@ public class SalesOrderScreen : ScreenHandler
             {
                 case ConsoleKey.F1:
                     if(products.Count>0)
-                        Database.Instance.NewSalesOrder(selected, this.company.CompanyID);
+                        Database.Instance.NewSalesOrder(selected, this.company);
                     break;
                 case ConsoleKey.F2:
                     ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));

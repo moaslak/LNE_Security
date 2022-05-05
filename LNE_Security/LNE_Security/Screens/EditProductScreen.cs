@@ -139,7 +139,7 @@ public class EditProductScreen : ScreenHandler
                 product.Profit = product.CalculateProfit(product.SalesPrice, product.CostPrice);
                 product.ProfitPercent = product.CalculateProfitPercent(product.SalesPrice, product.CostPrice);
 
-                ProductListPage.AddColumn("Product number", "ProductNumber", ColumnLength("Product number", product.ProductNumber));
+                ProductListPage.AddColumn("Product number", "ProductNumber", ColumnLength("Product number", product.ProductNumber.ToString()));
                 ProductListPage.AddColumn("Product name", "ProductName", ColumnLength("Product name", product.ProductName));
                 ProductListPage.AddColumn("Description", "Description", ColumnLength("Description", product.Description));
                 ProductListPage.AddColumn("Cost price", "CostPrice", ColumnLength("Cost price", product.CostPrice.ToString()));
