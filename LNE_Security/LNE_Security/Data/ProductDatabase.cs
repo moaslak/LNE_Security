@@ -91,7 +91,7 @@ namespace LNE_Security
             //close connection
             sqlConnection.Close();
         }
-        public void NewProduct()
+        public void NewProduct(Company company)
         {
             Console.WriteLine();
             Console.WriteLine("New product");
@@ -175,7 +175,7 @@ namespace LNE_Security
             
             product.Profit = product.CalculateProfit(product.SalesPrice, product.CostPrice);
             product.ProfitPercent = product.CalculateProfitPercent(product.SalesPrice, product.CostPrice);
-
+            product.CompanyID = company.CompanyID;
             string query = @"INSERT INTO [dbo].[Product]
            ([ProductNumber]
            ,[ProductName]
@@ -186,13 +186,15 @@ namespace LNE_Security
            ,[Unit]
            ,[Description]
            ,[Profit]
-           ,[ProfitPersent]) ";
+           ,[ProfitPersent]
+           ,[CompanyID]) ";
             string VALUES = "VALUES(" + product.ProductNumber.ToString() + ", '" + product.ProductName
                 + "', " + product.SalesPrice.ToString().Replace("'", "") + ", "
                 + product.CostPrice.ToString().Replace("'", "") + ", " + product.AmountInStorage.ToString().Replace("'", "")
                 + ", '" + product.LocationString + "', '" + product.Unit.ToString().Replace("'", "")
                 + "', '" + product.Description + "', " + product.Profit.ToString().Replace("'", "")
-                + ", " + product.ProfitPercent.ToString().Replace(',','.') + ")";
+                + ", " + product.ProfitPercent.ToString().Replace(',','.')
+                + ", " + product.CompanyID.ToString() + ")";
            
             query = query + VALUES;
             SqlCommand cmd = new SqlCommand(query, sqlConnection);
@@ -202,6 +204,8 @@ namespace LNE_Security
             {
                 reader = cmd.ExecuteReader();
                 reader.Close();
+                Console.WriteLine(product.ProductName + " created");
+                Console.WriteLine("Press enter to continue");
             }
             catch(ArithmeticException ex)
             {
@@ -223,7 +227,7 @@ namespace LNE_Security
             return list;
         }
 
-        public void DeleteProduct(UInt32 PID)
+        public void DeleteProduct(UInt32 PID, Company company)
         {
             SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
             string query = "DELETE FROM [dbo].[Product] WHERE PID = " + PID.ToString();
@@ -237,15 +241,15 @@ namespace LNE_Security
             //close connection
             sqlConnection.Close();
 
-            if (SelectProduct(PID) == null)
+            if (SelectProduct(PID, company) == null)
                 Console.WriteLine("Product with PID = " + PID + " was succesfully deleted");
             else
                 Console.WriteLine("Could not find product to delete");
         }
 
-        public Product SelectProduct(UInt32 PID)
+        public Product SelectProduct(UInt32 PID, Company company)
         {
-            List<Product> products = GetProducts();
+            List<Product> products = GetProducts(company);
             foreach(Product product in products)
             {
                 if(product.PID == PID) return product;
@@ -253,12 +257,16 @@ namespace LNE_Security
             return null;
         }
 
-        public List<Product> GetProducts()
+        public List<Product> GetProducts(Company company)
         {
             List<Product> products = new List<Product>();
-
+            string query = "";
             sqlConnection.Open();
-            string query = "SELECT * FROM [dbo].[Product]";
+            if (company.Role == 1)
+                query = "SELECT * FROM [dbo].[Product] WHERE CompanyID = " + company.CompanyID;
+            else
+                query = "SELECT * FROM [dbo].[Product]";
+
             SqlCommand cmd = new SqlCommand(query, sqlConnection);
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -292,6 +300,7 @@ namespace LNE_Security
                         break;
                 }
                 product.Description = reader.GetValue(8).ToString();
+                product.CompanyID = Convert.ToUInt16(reader.GetValue(11));
                 product.Profit = product.CalculateProfit(product.SalesPrice, product.CostPrice);
                 product.ProfitPercent = product.CalculateProfitPercent(product.SalesPrice, product.CostPrice);
                 products.Add(product);

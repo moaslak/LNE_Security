@@ -101,7 +101,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 selected.PID = newUint;
                 break;
             case "Quantity":
-                Product product = Database.Instance.SelectProduct(selected.PID);
+                Product product = Database.Instance.SelectProduct(selected.PID, company);
                 Console.WriteLine("Amount in storage: " + product.AmountInStorage);
                 if(product.AmountInStorage < newDouble)
                 {
@@ -261,7 +261,7 @@ internal class EditSalesOrderScreen : ScreenHandler
         List<OrderLine> orderLines = Database.Instance.GetOrderLines(selectedSalesOrder.OrderID);
         for(int i = 0; i < orderLines.Count; i++)
         {
-            orderLines[i].Product = Database.Instance.SelectProduct(orderLines[i].Product.PID);
+            orderLines[i].Product = Database.Instance.SelectProduct(orderLines[i].Product.PID, company);
         }
         selectedSalesOrder.TotalPrice = selectedSalesOrder.CalculateTotalPrice(orderLines);
         for (int i = 0; i < this.salesOrders.Count; i++)
@@ -325,7 +325,7 @@ internal class EditSalesOrderScreen : ScreenHandler
                 for (int j = 0; j < salesOrders[i].OrderLines.Count; j++)
                 {
                     salesOrders[i].OrderLines[j].PID = salesOrders[i].OrderLines[j].Product.PID;
-                    salesOrders[i].OrderLines[j].Product = Database.Instance.SelectProduct(salesOrders[i].OrderLines[j].PID);
+                    salesOrders[i].OrderLines[j].Product = Database.Instance.SelectProduct(salesOrders[i].OrderLines[j].PID, company);
                 }
                 salesOrders[i].TotalPrice = salesOrders[i].CalculateTotalPrice(salesOrders[i].OrderLines);
                 if (salesOrders[i].TotalPrice.ToString().Length > maxTotalPriceLength)
@@ -421,7 +421,21 @@ internal class EditSalesOrderScreen : ScreenHandler
         
         html2String = html2String.Replace("{Total price}", salesOrder.TotalPrice.ToString());
         html2String = html2String.Replace("{completionTime}", salesOrder.CompletionTime.ToString());
-        html2String = html2String.Replace("{packedby}", salesOrder.OrderLines[0].pickedBy.ToString()); //HACK: picked by orderline
+
+        HashSet<string> pickedBy = new HashSet<string>();
+
+        string picked = "";
+        foreach(OrderLine line in salesOrder.OrderLines)
+        {
+            pickedBy.Add(line.PickedBy);
+            if (pickedBy.Count > 1)
+                picked = picked + ", " + line.PickedBy;
+            else
+                picked = line.PickedBy;
+        }
+
+
+        html2String = html2String.Replace("{packedby}", picked);
 
         File.WriteAllText(invoicePath + "SalesOrder_" + salesOrder.OrderID.ToString() + "_" + 
             salesOrder.CompletionTime.ToString().Substring(0,10) +".html", html2String);
@@ -444,7 +458,7 @@ internal class EditSalesOrderScreen : ScreenHandler
         foreach (OrderLine orderLine in salesOrder.OrderLines)
         {
             string html = "<tr><td>{OLID}</td><td>{Product}</td><td>{Quantity}</td><td>{Price each}</td><td>{Sub price}</td></tr>";
-            Product product = Database.Instance.SelectProduct(orderLine.Product.PID);
+            Product product = Database.Instance.SelectProduct(orderLine.Product.PID, company);
             html = html.Replace("{OLID}", orderLine.OLID.ToString());
             html = html.Replace("{Product}", product.ProductName);
             html = html.Replace("{Quantity}", orderLine.Quantity.ToString());

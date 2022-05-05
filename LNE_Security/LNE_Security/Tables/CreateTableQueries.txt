@@ -32,6 +32,7 @@ Unit nchar(5),
 Description varchar(128),
 Profit money,
 ProfitPersent decimal(18,2),
+CompanyID int FORIEGN KEY REFERENCES Company(CompanyID),
 PRIMARY KEY(PID)
 )
 

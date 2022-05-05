@@ -50,13 +50,12 @@ public class StorageScreen : ScreenHandler
                     do
                     {
                         Console.WriteLine("Enter password");
-                        if (Console.ReadLine() == employee.Password)
+                        if (employee.Password == GetPassword())
                         {
                             passwordConfirmed = true;
                             loggedIn = true;
                             Console.WriteLine("Login succesful");
                         }
-
                         else
                         {
                             Console.WriteLine("Incorrect password");
@@ -185,7 +184,7 @@ public class StorageScreen : ScreenHandler
     /// <param name="orderLine"></param>
     private void ViewOrderline(OrderLine orderLine)
     {
-        Product product = Database.Instance.SelectProduct(orderLine.PID);
+        Product product = Database.Instance.SelectProduct(orderLine.PID, company);
         ListPage<Product> productListPage = new ListPage<Product>();
         productListPage.Add(product);
         productListPage.AddColumn("Product name", "ProductName", product.ProductName.Length);
@@ -239,7 +238,7 @@ public class StorageScreen : ScreenHandler
                 if (orderLine.State == OrderLine.States.Confirmed || orderLine.State == OrderLine.States.Created)
                 {
                     orderLine.PID = orderLine.Product.PID;
-                    orderLine.Product = Database.Instance.SelectProduct(orderLine.PID);
+                    orderLine.Product = Database.Instance.SelectProduct(orderLine.PID, company);
                     listPage.Add(orderLine);
                     count++;
                     if(orderLine.OLID.ToString().Length > maxOLIDLength)
@@ -251,10 +250,11 @@ public class StorageScreen : ScreenHandler
                 listPage.AddColumn("OLID", "OLID", ColumnLength("OLID", maxOrderIDLength));
                 listPage.AddColumn("Status", "State", "Incomplete".Length);
                 OrderLine selectedOrderLine = listPage.Select();
-
+                
                 if (selectedOrderLine.State != OrderLine.States.Packed)
                 {
-                    Product product = Database.Instance.SelectProduct(selectedOrderLine.PID);
+                    Product product = Database.Instance.SelectProduct(selectedOrderLine.PID, company);
+                    product.Quantity = selectedOrderLine.Quantity;
                     ListPage<Product> productListPage = new ListPage<Product>();
                     productListPage.Add(product);
                     productListPage.AddColumn("PID", "PID", ColumnLength("PID", product.PID.ToString()));
@@ -263,11 +263,11 @@ public class StorageScreen : ScreenHandler
                     productListPage.AddColumn("Amount in storage", "AmountInStorage", ColumnLength("Amount in storage", product.AmountInStorage.ToString()));
                     productListPage.AddColumn("Location", "LocationString", ColumnLength("Location", product.LocationString));
                     productListPage.AddColumn("Description", "Description", ColumnLength("Description", product.Description));
-                    
+                    productListPage.AddColumn("Quantity to pick", "Quantity", ColumnLength("Quantity to pick", product.Quantity.ToString()));
                     Product selectedProduct = productListPage.Select();
 
                     Console.WriteLine("Confirm pick? (y)es/(n)o");
-                    selectedOrderLine.pickedBy = employee.UserName;
+                    
                     switch (Console.ReadKey().Key)
                     {
                         case ConsoleKey.Y:
@@ -281,8 +281,9 @@ public class StorageScreen : ScreenHandler
                             {
                                 selectedProduct.AmountInStorage = selectedProduct.AmountInStorage - selectedOrderLine.Quantity;
                                 selectedOrderLine.State = OrderLine.States.Packed;
+                                selectedOrderLine.PickedBy = employee.UserName;
                                 Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
-                                Database.Instance.EditOrderline(selectedOrderLine.OLID, selectedOrderLine);
+                                Database.Instance.EditOrderline(selectedOrderLine.OLID, selectedOrderLine, employee);
                                 Console.WriteLine($"Orderline with OLID {selectedOrderLine.OLID} packed");
                             }
                             break;
@@ -327,7 +328,7 @@ public class StorageScreen : ScreenHandler
     /// </summary>
     private void Put()
     {
-        List<Product> products = Database.Instance.GetProducts();
+        List<Product> products = Database.Instance.GetProducts(company);
         ListPage<Product> listPageProducts = new ListPage<Product>();
 
         foreach(Product product in products)

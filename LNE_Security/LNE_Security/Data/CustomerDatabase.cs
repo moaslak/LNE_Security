@@ -30,6 +30,7 @@ partial class Database
             Customer customer = new Customer();
             customer.CID = Convert.ToUInt16(reader.GetValue(0));
             customer.ContactInfoID = Convert.ToUInt16(reader.GetValue(1));
+            customer.CompanyID = Convert.ToUInt16(reader.GetValue(2));
             customers.Add(customer);
         }
         reader.Close();
