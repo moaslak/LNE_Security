@@ -9,7 +9,7 @@ namespace LNE_Security.Screens;
 
 public class LoginScreen : ScreenHandler
 {
-    private Company Company { get; set; }
+    private Company Company = new Company();
     public LoginScreen()
     {
 
@@ -21,20 +21,20 @@ public class LoginScreen : ScreenHandler
         {
             Console.Clear();
             Console.Write("Enter username/company name: ");
-            Company.CompanyName = Console.ReadLine();
+            this.Company.CompanyName = Console.ReadLine();
 
             List<Company> list = Database.Instance.GetCompanies();
 
             foreach (Company company in list)
             {
-                if (company.CompanyName == Company.CompanyName)
+                if (company.CompanyName == this.Company.CompanyName)
                 {
                     Console.Write("Enter password: ");
-                    Company.Password = Console.ReadLine();
+                    this.Company.Password = Console.ReadLine();
 
-                    if (company.Password == Company.Password)
+                    if (company.Password == this.Company.Password)
                     {
-                        ScreenHandler.Display(new MainMenuScreen(Company));
+                        ScreenHandler.Display(new MainMenuScreen(company));
                     }
 
                 }
