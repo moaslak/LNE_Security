@@ -99,7 +99,7 @@ public class SalesOrderScreen : ScreenHandler
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.F1:
-                    Database.Instance.NewSalesOrder(selected, this.company.CompanyID);
+                    Database.Instance.NewSalesOrder(selected, this.company.CompanyID); //TODO: virker kun hvis der findes produkter i databasen.
                     break;
                 case ConsoleKey.F2:
                     ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));

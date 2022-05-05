@@ -28,6 +28,7 @@ public abstract class Person
     public string FullName { get; set; }
 
     public Address Address { get; set; }
+    public string FullAddress { get; set; }
 
     public UInt16 ID { get; set; }
 
@@ -36,88 +37,14 @@ public abstract class Person
 
     public string Email { get; set; }
 
-    //public List<string> PhoneNumbers { get; set; }
     public string PhoneNumber { get; set; }
-    /*public Person(ContactInfo contactInfo)
-    {
-        this.FirstName = contactInfo.FirstName;
-        this.LastName = contactInfo.LastName;
-        this.FullName = contactInfo.FullName;
-        this.Address = contactInfo.Address;
-        this.PhoneNumbers = contactInfo.PhoneNumber;
-        this.Email = contactInfo.Email;
-    }*/
-    public virtual Person NewPerson(
-        ContactInfo contactInfo, Database database,
-        Address address)
-    { 
-        ContactInfo = contactInfo;
-        Database = database;
-        Address = address;
-        ID++;
-        return this;
-    }
 
-    // overload
-    public virtual Person NewPerson()
-    {
-        throw new NotImplementedException();
-    }
-
-    public virtual Person DeletePerson(ContactInfo contactInfo,
-        Database database, Address address)
-    {
-        ContactInfo = contactInfo;
-        Database = database;
-        Address = address;
-        return null;
-    }
-
-    // overload
-    public virtual Person DeletePerson()
-    {
-        throw new NotImplementedException();
-    }
-
-    // overload
-
-    public virtual Person UpdatePerson()
-    {
-        throw new NotImplementedException();
-    }
-    public virtual Person UpdatePerson(ContactInfo contactInfo,
-        Database database, Address address)
-
-    {
-        ContactInfo = contactInfo;
-        Database = database;
-        Address = address;
-        return this;
-
-    }
-
-    // overload
-    public virtual Person GetPerson()
-    {
-        throw new NotImplementedException();
-    }
-
-    public virtual Person GetPerson(ContactInfo contactInfo)
-    {
-        ContactInfo = contactInfo;
-        return this;
-    }
-
-    public void CompbineNames()
-    {
-        ContactInfo contactInfo = new();
-        Console.Write($"Indtast fornavn: ");
-        var fornavn = Convert.ToString(Console.ReadLine());
-        Console.Write($"Indtast efternavn: ");
-        var efternavn = Convert.ToString(Console.ReadLine());
-        Console.WriteLine($"{fornavn + efternavn}");
-    }
-
+    public UInt16 CompanyID { get; set; }
     
+    public string CreateFullName(string FirstName, string LastName)
+    {
+        return FirstName + " " + LastName;
+    }
+
 
 }
