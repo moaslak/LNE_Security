@@ -11,7 +11,7 @@ namespace LNE_Security;
 
 public class SalesOrderScreen : ScreenHandler
 {
-    private Company company { get; set; }
+    protected Company company { get; set; }
     private Customer customer { get; set; }
     public SalesOrderScreen(Company Company, Customer Customer) : base(Company)
     {
@@ -27,7 +27,7 @@ public class SalesOrderScreen : ScreenHandler
         Title = company.CompanyName + " Sales order screen";
         Clear(this);
 
-        List<Customer> Customers = Database.Instance.GetCustomers();
+        List<Customer> Customers = Database.Instance.GetCustomers(company.CompanyID);
         if(Customers.Count == 0)
         {
             Console.WriteLine("Create a customer first");
@@ -50,6 +50,7 @@ public class SalesOrderScreen : ScreenHandler
             ListPage<SalesOrder> salesOrderListPage = new ListPage<SalesOrder>();
             SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
             List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(selected);
+            List<Product> products = Database.Instance.GetProducts(company);
 
             int fullNameMaxLength = 0;
             int maxOrderIDLength = 0;
@@ -63,7 +64,7 @@ public class SalesOrderScreen : ScreenHandler
                     for (int i = 0; i < salesOrder.OrderLines.Count; i++)
                     {
                         salesOrder.OrderLines[i].PID = salesOrder.OrderLines[i].Product.PID;
-                        salesOrder.OrderLines[i].Product = Database.Instance.SelectProduct(salesOrder.OrderLines[i].PID);
+                        salesOrder.OrderLines[i].Product = Database.Instance.SelectProduct(salesOrder.OrderLines[i].PID, company);
                     }
                     if (salesOrder.FullName.Length > fullNameMaxLength)
                         fullNameMaxLength = salesOrder.FullName.Length;
@@ -88,7 +89,8 @@ public class SalesOrderScreen : ScreenHandler
             salesOrderListPage.AddColumn("State", "State", 10);
             salesOrderListPage.Draw();
 
-            Console.WriteLine("F1 - New Sales Order");
+            if(products.Count > 0)
+                Console.WriteLine("F1 - New Sales Order");
             Console.WriteLine("F2 - Edit Sales Order");
             Console.WriteLine("F3 - Get Sales Order for Customer");
             Console.WriteLine("F7 - Delete Sales Orders by customer id");
@@ -99,7 +101,8 @@ public class SalesOrderScreen : ScreenHandler
             switch (Console.ReadKey().Key)
             {
                 case ConsoleKey.F1:
-                    Database.Instance.NewSalesOrder(selected, this.company.CompanyID); //TODO: virker kun hvis der findes produkter i databasen.
+                    if(products.Count>0)
+                        Database.Instance.NewSalesOrder(selected, this.company);
                     break;
                 case ConsoleKey.F2:
                     ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));

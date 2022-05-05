@@ -30,6 +30,7 @@ partial class Database
             employee.ContactInfoID = Convert.ToUInt16(reader.GetValue(1));
             employee.UserName = reader.GetValue(2).ToString();
             employee.Password = reader.GetValue(3).ToString();
+            employee.CompanyID = Convert.ToUInt16(reader.GetValue(4));
             employees.Add(employee);
         }
         reader.Close();
@@ -88,6 +89,7 @@ partial class Database
             employee.ContactInfoID = Convert.ToUInt16(reader.GetValue(1));
             employee.UserName = reader.GetValue(2).ToString();
             employee.Password = reader.GetValue(3).ToString();
+            employee.CompanyID = Convert.ToUInt16(reader.GetValue(4));
             employees.Add(employee);
         }
         reader.Close();

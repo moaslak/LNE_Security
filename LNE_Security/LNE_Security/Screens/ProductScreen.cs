@@ -34,13 +34,13 @@ namespace LNE_Security
 
             ListPage<Product> productListPage = new ListPage<Product>();
             ListPage<String> selectedList = new ListPage<String>();
-            List<Product> products = Database.Instance.GetProducts();
+            List<Product> products = Database.Instance.GetProducts(company);
             Product selectedProduct = new Product();
 
             int maxProductNumberLength = 0;
             int maxProductNameLength = 0;
             int maxAmountInStorageLength = 0;
-            
+            int maxCompanyIDLength = 0;
             if (products.Count > 0)
             {
                 foreach (Product product in products)
@@ -52,6 +52,8 @@ namespace LNE_Security
                         maxProductNameLength = product.ProductName.Length;
                     if(product.AmountInStorage.ToString().Length > maxAmountInStorageLength)
                         maxAmountInStorageLength = product.AmountInStorage.ToString().Length;
+                    if(product.CompanyID.ToString().Length > maxCompanyIDLength)
+                        maxCompanyIDLength = product.CompanyID.ToString().Length;
                 }
                     
 
@@ -60,6 +62,8 @@ namespace LNE_Security
                 productListPage.AddColumn("Amount in storage", "AmountInStorage", ColumnLength("Amount in storage", maxAmountInStorageLength));
                 productListPage.AddColumn("Cost price " + company.Currency.ToString(), "CostPrice", "Cost price ".Length + company.Currency.ToString().Length);
                 productListPage.AddColumn("Sales price " + company.Currency.ToString(), "SalesPrice", "Sales price ".Length + company.Currency.ToString().Length);
+                if (company.Role == 0)
+                    productListPage.AddColumn("Company ID", "CompanyID", ColumnLength("Company ID", maxCompanyIDLength));
                 if (products.Count == 0)
                     productListPage.Draw();
                 else
@@ -82,13 +86,13 @@ namespace LNE_Security
                         ScreenHandler.Display(new ProductDetailsScreen(selectedProduct, company));
                         break;
                     case ConsoleKey.F1:
-                        Database.Instance.NewProduct();
+                        Database.Instance.NewProduct(company);
                         break;
                     case ConsoleKey.F2:
                         ScreenHandler.Display(new EditProductScreen(selectedProduct, company));
                         break;
                     case ConsoleKey.F8:
-                        Database.Instance.DeleteProduct(selectedProduct.PID);
+                        Database.Instance.DeleteProduct(selectedProduct.PID, company);
                         break;
                     case ConsoleKey.F10:
                         ScreenHandler.Display(new MainMenuScreen(this.company));

@@ -29,6 +29,7 @@ partial class Database
             line.Product.PID = Convert.ToUInt16(reader.GetValue(1));
             line.Quantity = Convert.ToDouble(reader.GetValue(2));
             line.OrderID = Convert.ToUInt16(reader.GetValue(3));
+             
             string state = reader.GetValue(4).ToString();
             switch (state)
             {
@@ -51,7 +52,7 @@ partial class Database
                     line.State = OrderLine.States.Created;
                     break;
             }
-            line.pickedBy = reader.GetValue(5).ToString();
+            line.PickedBy = reader.GetValue(5).ToString();
             orderLines.Add(line);
         }
         reader.Close();
@@ -120,10 +121,11 @@ partial class Database
             Console.WriteLine("Could not find sales order to delete");
     }
 
-    private OrderLine NewOrderLine(UInt32 OrderID)
+    private OrderLine NewOrderLine(UInt32 OrderID, Customer customer)
     {
         Console.Clear();
-        List<Product> productList = Database.Instance.GetProducts();
+        Company company = Database.Instance.SelectCompany(customer.CompanyID);
+        List<Product> productList = Database.Instance.GetProducts(company);
         if (productList.Count == 0) return null;
 
         OrderLine orderline = new OrderLine();
@@ -208,7 +210,7 @@ partial class Database
         }
         return orderline;
     }
-    public void NewSalesOrder(Customer customer, UInt16 companyID)
+    public void NewSalesOrder(Customer customer, Company company)
     {
         SalesOrder salesOrder = new SalesOrder();
         Console.WriteLine();
@@ -216,7 +218,7 @@ partial class Database
 
         salesOrder.CID = customer.CID;
         salesOrder.FullName = customer.ContactInfo.FullName;
-        salesOrder.CompanyID = companyID;
+        salesOrder.CompanyID = company.CompanyID;
         SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
         DateTime randomDate = RandomDay(); // Need OrderID for Orderlines
@@ -245,7 +247,7 @@ partial class Database
         bool Done = false;
         do
         {
-            salesOrder.OrderLines.Add(NewOrderLine(salesOrder.OrderID));
+            salesOrder.OrderLines.Add(NewOrderLine(salesOrder.OrderID, customer));
             Console.WriteLine("Press 'Esc' to stop adding orderlines");
             switch (Console.ReadKey().Key)
             {
@@ -266,7 +268,7 @@ partial class Database
             
           "', [ContactInfoID] = '" + customer.ContactInfoID.ToString() +
           "', [CID] = '" + customer.CID +
-          "', [CompanyID] = '" + companyID.ToString() +
+          "', [CompanyID] = '" + company.CompanyID.ToString() +
           "', [Price] = '" + salesOrder.TotalPrice + 
           "', [State] = '" + salesOrder.State.ToString() + "'  WHERE OrderID = '" + salesOrder.OrderID+"'";
         cmd = new SqlCommand(query, sqlConnection);
@@ -313,7 +315,24 @@ partial class Database
                             ",[Quantity] =" + editedOrderline.Quantity.ToString() +
                             ",[OrderID] = " + editedOrderline.OrderID.ToString() +
                             ",[Status] = '" + editedOrderline.State.ToString() +
-                            "',[PickedBy] = '" + editedOrderline.pickedBy.ToString() +
+                            "',[PickedBy] = '" + editedOrderline.PickedBy.ToString() +
+                            "' WHERE OLID =" + OLID.ToString();
+        sqlConnection.Open();
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+        sqlConnection.Close();
+    }
+
+    public void EditOrderline(UInt16 OLID, OrderLine editedOrderline, Employee employee)
+    {
+        string query = @"UPDATE [dbo].[Orderline]
+        SET[PID] = " + editedOrderline.PID.ToString() +
+                            ",[Quantity] =" + editedOrderline.Quantity.ToString() +
+                            ",[OrderID] = " + editedOrderline.OrderID.ToString() +
+                            ",[Status] = '" + editedOrderline.State.ToString() +
+                            "',[PickedBy] = '" + employee.UserName +
                             "' WHERE OLID =" + OLID.ToString();
         sqlConnection.Open();
         SqlCommand cmd = new SqlCommand(query, sqlConnection);

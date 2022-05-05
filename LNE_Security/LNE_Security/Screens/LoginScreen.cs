@@ -9,7 +9,7 @@ namespace LNE_Security.Screens;
 
 public class LoginScreen : ScreenHandler
 {
-    private Company Company = new Company();
+    Company Company = new Company();
     public LoginScreen()
     {
 
@@ -30,13 +30,12 @@ public class LoginScreen : ScreenHandler
                 if (company.CompanyName == this.Company.CompanyName)
                 {
                     Console.Write("Enter password: ");
-                    this.Company.Password = Console.ReadLine();
+                    this.Company.Password = GetPassword();
 
                     if (company.Password == this.Company.Password)
                     {
                         ScreenHandler.Display(new MainMenuScreen(company));
                     }
-
                 }
             }
             Console.WriteLine("Invalid credentials");

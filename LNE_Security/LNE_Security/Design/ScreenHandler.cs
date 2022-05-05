@@ -9,10 +9,8 @@ namespace LNE_Security
 
     public class ScreenHandler : Screen
     {
-        
-        private Company company1;
 
-        static Company company { get; set; }
+        protected static Company company { get; set; }
         static Product product { get; set; }
 
         static ContactInfo contactInfo { get; set; }
@@ -92,6 +90,34 @@ namespace LNE_Security
             if (length > title.Length)
                 return length;
             return title.Length;
+        }
+
+        protected string GetPassword()
+        {
+            string pwd = "";
+            while (true)
+            {
+                ConsoleKeyInfo i = Console.ReadKey(true);
+                if (i.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    break;
+                }
+                else if (i.Key == ConsoleKey.Backspace)
+                {
+                    if (pwd.Length > 0)
+                    {
+                        pwd = pwd.Remove(pwd.Length - 1);
+                        Console.Write("\b \b");
+                    }
+                }
+                else if (i.KeyChar != '\u0000') // KeyChar == '\u0000' if the key pressed does not correspond to a printable character, e.g. F1, Pause-Break, etc
+                {
+                    pwd = pwd + (i.KeyChar).ToString();
+                    Console.Write("*");
+                }
+            }
+            return pwd;
         }
     }
 }

@@ -9,7 +9,8 @@ namespace LNE_Security.Data
 {
     public class DatabaseConnection
     {
-        public SqlConnection SetSqlConnection(String database)
+        //TODO: Admin set database name
+        public SqlConnection SetSqlConnection(string database)
         {
             SqlConnectionStringBuilder SqlConnectionStringBuilder = new SqlConnectionStringBuilder();
 

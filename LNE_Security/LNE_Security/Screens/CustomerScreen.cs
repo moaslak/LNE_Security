@@ -144,6 +144,7 @@ public class CustomerScreen : ScreenHandler
                 case ConsoleKey.F8:
                     DeleteSalesOrdersForCustomer(selected);
                     Database.Instance.DeleteCustomer(selected.CID);
+                    Database.Instance.DeleteContactInfo(selected.ContactInfoID);
                     break;
                 case ConsoleKey.F9:
                     DeleteSalesOrdersForCustomer(selected);
@@ -156,12 +157,27 @@ public class CustomerScreen : ScreenHandler
     {
         List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(customer);
         DateTime dateTime = DateTime.Now.AddYears(-3);
+
+        List<UInt32> deletedOrderIDs = new List<uint>(); 
+        
         foreach (SalesOrder salesOrder in salesOrders)
         {
             if(salesOrder.CompletionTime <= dateTime)
             {
+                deletedOrderIDs.Add(salesOrder.OrderID);
                 Database.Instance.DeleteSalesOrder(salesOrder.OrderID, customer);
             }
         }
+        if (deletedOrderIDs.Count > 0)
+        {
+            foreach (UInt32 deletedOrderID in deletedOrderIDs)
+            {
+                Console.WriteLine("Sales order " + deletedOrderID + " deleted");
+            }
+        }
+        else
+            Console.WriteLine("Customer does not have sales orders older than 3 years");
+        
+        
     }
 }

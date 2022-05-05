@@ -9,6 +9,33 @@ namespace LNE_Security;
 
 partial class Database
 {
+    public void DeleteContactInfo(UInt16 contactInfoID)
+    {
+        
+        try
+        {
+            string query = @"DELETE FROM [dbo].[ContactInfo] WHERE ContactInfoID = " + contactInfoID;
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+
+            //execute the SQLCommand
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+        }
+        catch(System.Data.SqlClient.SqlException ex)
+        {
+            Console.WriteLine("Cannot not delete. Contact info is linked to a closed sales order");
+            Console.WriteLine("Press a key to continue");
+            Console.ReadKey();
+            
+        }
+        finally
+        {
+            
+            sqlConnection.Close();
+        }
+        
+    }
     public UInt16 NewContactInfo(ContactInfo contactInfo)
     {
         Address address = contactInfo.Address;

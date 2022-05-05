@@ -20,6 +20,9 @@ public class Product
     public string LocationString { get; set; }
     public enum Units { piece, meter, hours }
     public Units Unit { get; set; }
+    public double Quantity { get; set; }
+
+    public UInt16 CompanyID { get; set; }
 
     public enum UnitPrice
     {

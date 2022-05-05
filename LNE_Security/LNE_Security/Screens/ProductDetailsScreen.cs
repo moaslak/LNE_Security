@@ -48,6 +48,8 @@ public class ProductDetailsScreen : ScreenHandler
 
         ProductListPage.AddColumn("Profit percent", "ProfitPercent", ColumnLength("Profit Percent", product.ProfitPercent.ToString()));
         ProductListPage.AddColumn("Profit " + company.Currency.ToString(), "Profit", ColumnLength("Profit " + company.Currency.ToString(), company.Currency.ToString()));
+        if (company.Role == 0)
+            ProductListPage.AddColumn("Company ID", "CompanyID", ColumnLength("Company ID", product.CompanyID.ToString()));
         ProductListPage.Draw();
 
         Console.WriteLine("F2 - Edit product");
