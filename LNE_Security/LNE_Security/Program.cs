@@ -26,6 +26,7 @@ class Program
         Console.WriteLine();
         Console.WriteLine("Press a key to start program");
         Console.ReadKey();
-        ScreenHandler.Display(new MainMenuScreen(Admin));
+        ScreenHandler.Display(new LoginScreen());
+        //ScreenHandler.Display(new MainMenuScreen(Admin));
     }
 }

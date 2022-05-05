@@ -9,120 +9,46 @@ using static LNE_Security.Database;
 
 namespace LNE_Security.Screens;
 
-public class LoginScreen
+public class LoginScreen : ScreenHandler
 {
-    public class Options
+    private Company Company { get; set; }   
+    public LoginScreen()
     {
-        public string Option { get; set; }
-        public string KeyPress { get; set; }
-        public Options(string option, string keyPress)
-        {
-            KeyPress = keyPress;
-            Option = option;
-
-
-        }
-    }
-
-
-    private Company company { get; set; }
-    private Product product { get; set; }
-    private Customer customer = new Customer();
-    private Person person;
-    private LNE_Security.Person.UserLogins userLogins;
-    public LoginScreen(Person user) 
-    {
-        this.userLogins = user;
+        
     }
 
     protected override void Draw()
     {
-        ListPage<LNE_Security.Person.UserLogins> userListPage = new ListPage<LNE_Security.Person.UserLogins>();
+        do
+        {
+            Console.Clear();
+            Console.Write("Enter username/company name: ");
+            Company.CompanyName = Console.ReadLine();
+
+            List<Company> list = Database.Instance.GetCompanies();
+
+            foreach (Company company in list)
+            {
+                if (company.CompanyName == Company.CompanyName)
+                {
+                    Console.Write("Enter password: ");
+                    Company.Password = Console.ReadLine();
+
+                    if (company.Password == Company.Password)
+                    {
+                        ScreenHandler.Display(new MainMenuScreen(Company));
+                    }
+
+                }
+            }
+            Console.WriteLine("Invalid credentials");
+            Console.WriteLine("Press ESC to close the app. Press another key to retry login");
+        } while (!(Console.ReadKey().Key == ConsoleKey.Escape));
+        Console.WriteLine("App closing...");
+        Thread.Sleep(1000);
+        Environment.Exit(0);
         
-        Console.Write("Username: ");
-        userLogins.UserName = Console.ReadLine();
-        Console.Write("Password: ");
-        userLogins.Password = Console.ReadLine();
 
-        if(userLogins.UserName == "Admin")
-        {
-            Title = "Admin";
-            Clear(this);
-
-            ListPage<Options> MenuOptions = new ListPage<Options>();
-            MenuOptions.AddColumn("Option", "Option");
-            MenuOptions.Add(new Options("Company screen", "F1"));
-            MenuOptions.Add(new Options("Customer screen", "F2"));
-            MenuOptions.Add(new Options("Employee screen", "F3"));
-            MenuOptions.Add(new Options("Product screen", "F4"));
-            MenuOptions.Add(new Options("Sales order screen", "F5"));
-            MenuOptions.Add(new Options("Close App", "ESC"));
-
-            Options selected = MenuOptions.Select();
-
-            switch (selected.KeyPress)
-            {
-                case "F1":
-                    ScreenHandler.Display(new CompanyScreen(company));
-                    break;
-                case "F2":
-                    ScreenHandler.Display(new CustomerScreen(customer));
-                    break;
-                case "F3":
-                    Console.WriteLine("NOT IMPLEMENTET");
-                    break;
-                case "F4":
-                    ScreenHandler.Display(new ProductScreen(product));
-                    break;
-                case "F5":
-                    if (company == null)
-                        Console.WriteLine("Select company first");
-                    else
-                        ScreenHandler.Display(new SalesOrderScreen(company, customer));
-                    break;
-                case "ESC":
-                    Environment.Exit(0);
-                    break;
-            }
-        }
-        else
-        {
-            Title = company.CompanyName;
-            Clear(this);
-
-            ListPage<Options> MenuOptions = new ListPage<Options>();
-            MenuOptions.AddColumn("Option", "Option");
-            MenuOptions.Add(new Options("Customer screen", "F2"));
-            MenuOptions.Add(new Options("Employee screen", "F3"));
-            MenuOptions.Add(new Options("Product screen", "F4"));
-            MenuOptions.Add(new Options("Sales order screen", "F5"));
-            MenuOptions.Add(new Options("Close App", "ESC"));
-
-            Options selected = MenuOptions.Select();
-
-            switch (selected.KeyPress)
-            {
-               
-                case "F2":
-                    ScreenHandler.Display(new CustomerScreen(customer));
-                    break;
-                case "F3":
-                    Console.WriteLine("NOT IMPLEMENTET");
-                    break;
-                case "F4":
-                    ScreenHandler.Display(new ProductScreen(product));
-                    break;
-                case "F5":
-                    if (company == null)
-                        Console.WriteLine("Select company first");
-                    else
-                        ScreenHandler.Display(new SalesOrderScreen(company, customer));
-                    break;
-                case "ESC":
-                    Environment.Exit(0);
-                    break;
-            }
-        }
-    }
     }
 }
+
