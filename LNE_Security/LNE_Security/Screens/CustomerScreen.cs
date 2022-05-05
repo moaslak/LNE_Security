@@ -143,8 +143,8 @@ public class CustomerScreen : ScreenHandler
                     break;
                 case ConsoleKey.F8:
                     DeleteSalesOrdersForCustomer(selected);
-                    Database.Instance.DeleteContactInfo(selected.ContactInfoID);
                     Database.Instance.DeleteCustomer(selected.CID);
+                    Database.Instance.DeleteContactInfo(selected.ContactInfoID);
                     break;
                 case ConsoleKey.F9:
                     DeleteSalesOrdersForCustomer(selected);

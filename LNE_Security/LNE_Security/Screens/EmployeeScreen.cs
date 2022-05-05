@@ -174,8 +174,9 @@ public class EmployeeScreen : ScreenHandler
                     ScreenHandler.Display(new MainMenuScreen(this.company));
                     break;
                 case ConsoleKey.F8:
-                    Database.Instance.DeleteContactInfo(selected.ContactInfoID);
+                    
                     Database.Instance.DeleteEmployee(selected.EID);
+                    Database.Instance.DeleteContactInfo(selected.ContactInfoID);
                     break;
             }
         }
