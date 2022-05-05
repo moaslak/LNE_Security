@@ -57,10 +57,8 @@ public class Company
     public ContactInfo contactInfo = new ContactInfo();
     public int Role { get; set; }
     public string Password { get; set; } 
-
-
- 
-
+    
+    public string DatabaseName { get; set; }
     public Company() 
 
     {

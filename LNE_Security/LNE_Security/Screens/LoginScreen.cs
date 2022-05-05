@@ -9,7 +9,7 @@ namespace LNE_Security.Screens;
 
 public class LoginScreen : ScreenHandler
 {
-    private Company Company = new Company();
+    Company Company = new Company();
     public LoginScreen()
     {
 

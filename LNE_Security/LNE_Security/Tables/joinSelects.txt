@@ -1,5 +1,5 @@
 ﻿Company view
-select CompanyID, CompanyName, Currency, CVR, FirstName, LastName, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country FROM company
+CREATE VIEW CompanyView AS SELECT CompanyID, CompanyName, Company.Password, Currency, CVR, FirstName, LastName, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country, Role, DatabaseName FROM company
 inner join ContactInfo On Company.ContactInfoID=ContactInfo.ContactInfoID
 inner join Address on ContactInfo.AddressID = Address.AddressID
 
@@ -17,7 +17,7 @@ inner join Customer on SalesOrder.CID = Customer.CID
 
 
 Employee view
-CREATE VIEW EmployeeView as select EID, FirstName, LastName, UserName, Password, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country, CompanyName FROM Employee
+CREATE VIEW EmployeeView as select EID, FirstName, LastName, UserName, Employee.Password, Email, PhoneNumber, StreetName, HouseNumber, City, ZipCode, Country, CompanyName FROM Employee
 inner join ContactInfo On Employee.ContactInfoID=ContactInfo.ContactInfoID
 inner join Address on ContactInfo.AddressID = Address.AddressID
 inner join Company on Employee.CompanyID = Company.CompanyID
