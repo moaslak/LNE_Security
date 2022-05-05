@@ -16,9 +16,6 @@ class Program
 
     public static void Main(string[] args)
     {
-        //HACK:
-        Company Admin = Database.Instance.SelectCompany(11); 
-       
         Console.WriteLine("Welcome screen");
         Console.WriteLine("Global keys");
         Console.WriteLine("F11 - Toggle full screen");
@@ -26,6 +23,6 @@ class Program
         Console.WriteLine();
         Console.WriteLine("Press a key to start program");
         Console.ReadKey();
-        ScreenHandler.Display(new MainMenuScreen(Admin));
+        ScreenHandler.Display(new LoginScreen());
     }
 }
