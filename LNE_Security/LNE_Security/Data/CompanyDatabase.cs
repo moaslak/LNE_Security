@@ -144,7 +144,50 @@ partial class Database
         else
             Console.WriteLine("Could not find company to delete");
     }
+    public void newCompany(Company admin)
+    {
+        Address address = new Address();
+        address.StreetName = admin.StreetName;
+        address.HouseNumber = admin.HouseNumber;
+        address.ZipCode = admin.ZipCode;
+        address.City = admin.City;
+        address.Country = admin.Country;
+        address.AddressID = Database.Instance.NewAddress(address);
+        admin.contactInfo.FirstName = admin.FirstName;
+        admin.contactInfo.LastName = admin.LastName;
+        admin.contactInfo.Email = admin.Email;
+        admin.contactInfo.PhoneNumber = admin.PhoneNumber;
+        admin.ContactInfoID = Database.Instance.NewContactInfo(address, admin);
 
+        string query = @"INSERT INTO [dbo].[Company]
+        ([CompanyName]
+        ,[Currency]
+        ,[CVR]
+        ,[ContactInfoID]
+        ,[Role]
+        ,[Password]) VALUES('" + admin.CompanyName +
+        "','" + admin.Currency +
+        "','" + admin.CVR +
+        "','" + admin.ContactInfoID +
+        "','" + admin.Role.ToString() +
+        "','" + admin.Password + "')";
+        SqlCommand cmd = new SqlCommand(query, sqlConnection);
+        sqlConnection.Open();
+
+        //execute the SQLCommand
+        SqlDataReader reader = cmd.ExecuteReader();
+        reader.Close();
+
+        query = "SELECT CompanyID FROM [dbo].[Company] WHERE CompanyName = '" + admin.CompanyName + "'";
+        cmd = new SqlCommand(query, sqlConnection);
+        reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            admin.CompanyID = Convert.ToUInt16(reader.GetValue(0));
+        }
+        //close connection
+        sqlConnection.Close();
+    }
     public void newCompany()
     {
         Console.WriteLine();
