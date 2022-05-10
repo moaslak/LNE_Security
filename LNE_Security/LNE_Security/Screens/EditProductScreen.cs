@@ -100,26 +100,40 @@ public class EditProductScreen : ScreenHandler
         if (newValue == null)
             newValue = "";
 
-            // location og unit mangler
         switch (selected.Option)
         {
-                case "Product Name":
+            case "Product Name":
+                if(newValue.Length > 64)
+                {
+                    do
+                    {
+                        newValue = Console.ReadLine();
+                    } while (newValue.Length > 64 && newValue.Length != 0);
+                }   
                 this.product.ProductName = newValue;
                 break;
-                case "Product Number":
-                    this.product.ProductNumber = newInt;
+            case "Product Number":
+                this.product.ProductNumber = newInt;
                 break;
-                case "Sales Price":
-                    this.product.SalesPrice = newDouble;
+            case "Sales Price":
+                this.product.SalesPrice = newDouble;
                 break;
-                case "Cost Price":
-                    this.product.CostPrice = newDouble;
+            case "Cost Price":
+                this.product.CostPrice = newDouble;
                 break;
-                case "Amount In Storage":
-                    this.product.AmountInStorage = newDouble;
+            case "Amount In Storage":
+                this.product.AmountInStorage = newDouble;
                 break;
-                case "Description":
-                    this.product.Description = newValue;
+            case "Description":
+                if (newValue.Length > 128)
+                {
+                    do
+                    {
+                        Console.WriteLine("Max length is 128 characters");
+                        newValue = Console.ReadLine();
+                    } while (newValue.Length > 128 && newValue.Length != 0);
+                }
+                this.product.Description = newValue;
                 break;
             default:
                 break;
@@ -127,7 +141,6 @@ public class EditProductScreen : ScreenHandler
         }       
         protected override void Draw()
         {
-            
             do
             {
                 ListPage<Product> ProductListPage = new ListPage<Product>();

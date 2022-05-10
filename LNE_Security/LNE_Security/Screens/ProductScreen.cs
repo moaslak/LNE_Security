@@ -68,8 +68,6 @@ namespace LNE_Security
                     productListPage.Draw();
                 else
                     selectedProduct = productListPage.Select();
-                
-                
             }
             if(selectedProduct != null)
             {

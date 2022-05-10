@@ -50,32 +50,75 @@ public class EditCustomerScreen : ScreenHandler
         switch (selected.Option)
         {
             case "Firstname":
-                this.contact.FirstName = newValue;
+                if(newValue.Length > 64)
+                {
+                    Console.WriteLine("Max length is 64 characters!!");
+                }
+                else
+                    this.contact.FirstName = newValue;
                 break;
             case "Lastname":
-                this.contact.LastName = newValue;
+                if (newValue.Length > 64)
+                {
+                    Console.WriteLine("Max length is 64 characters!!");
+                }
+                else
+                    this.contact.LastName = newValue;
                 break;
             case "Streetname":
-                this.address.StreetName = newValue;
+                if (newValue.Length > 128)
+                {
+                    Console.WriteLine("Max length is 128 characters!!");
+                }
+                else
+                    this.address.StreetName = newValue;
                 break;
             case "Housenumber":
-                this.address.HouseNumber = newValue;
+                if (newValue.Length > 16)
+                {
+                    Console.WriteLine("Max length is 16 characters!!");
+                }
+                else
+                    this.address.HouseNumber = newValue;
                 break;
             case "Zipcode":
-                this.address.ZipCode = newValue;
+                if (newValue.Length > 8)
+                {
+                    Console.WriteLine("Max length is 8 characters!!");
+                }
+                else
+                    this.address.ZipCode = newValue;
                 break;
             case "City":
-                this.address.City = newValue;
+                if (newValue.Length > 64)
+                {
+                    Console.WriteLine("Max length is 64 characters!!");
+                }
+                else
+                    this.address.City = newValue;
                 break;
             case "Phonenumber":
-                this.contact.PhoneNumber = newValue;
+                if (newValue.Length > 16)
+                {
+                    Console.WriteLine("Max length is 16 characters!!");
+                }
+                else
+                    this.contact.PhoneNumber = newValue;
                 break;
             case "Email":
-                this.contact.Email = newValue;
+                if (newValue.Length > 64)
+                {
+                    Console.WriteLine("Max length is 64 characters!!");
+                }
+                else
+                    this.contact.Email = newValue;
                 break;
             default:
                 break;
         }
+        Console.WriteLine("Press a key to continue");
+        Console.ReadKey();
+        this.customer.FullName = this.customer.CreateFullName(this.customer.ContactInfo.FirstName, this.customer.ContactInfo.LastName);
         Customer customer = this.customer;
         Database.Instance.EditCustomer(this.customer, selected.Option);
     }
@@ -115,18 +158,29 @@ public class EditCustomerScreen : ScreenHandler
             
             OptionListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = OptionListPage.Select();
-
-            if(selected.Value != "NO EDIT")
+            if(selected != null)
             {
-                EditCustomer(selected);
+                if (selected.Value != "NO EDIT")
+                {
+                    EditCustomer(selected);
+                }
+                else
+                {
+                    break;
+                }
             }
             else
             {
-                break;
+                Console.WriteLine("1Use arrow key and enter to select a parameter");
             }
             Console.WriteLine("Press ESC to return to Company screen");
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
-
+        this.customer.FirstName = this.customer.ContactInfo.FirstName;
+        this.customer.LastName = this.customer.ContactInfo.LastName;
+        this.customer.Email = this.customer.ContactInfo.Email;
+        this.customer.Address = this.customer.ContactInfo.Address;
+        this.customer.FullName = this.customer.ContactInfo.FullName;
+        this.customer.PhoneNumber = this.customer.ContactInfo.PhoneNumber;
 
         ScreenHandler.Display(new CustomerDetails(this.customer, company));
     }
