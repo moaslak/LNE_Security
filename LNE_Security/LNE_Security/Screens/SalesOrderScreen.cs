@@ -89,12 +89,21 @@ public class SalesOrderScreen : ScreenHandler
             salesOrderListPage.AddColumn("State", "State", 10);
             salesOrderListPage.Draw();
 
-            if(products.Count > 0)
+            if (products.Count > 0)
                 Console.WriteLine("F1 - New Sales Order");
-            Console.WriteLine("F2 - Edit Sales Order");
-            Console.WriteLine("F3 - Get Sales Order for Customer");
-            Console.WriteLine("F7 - Delete Sales Orders by customer id");
-            Console.WriteLine("F8 - Delete Sales Orders");
+            else
+                Console.WriteLine("No products available. Create some to create sales orders");
+
+            if (salesOrders.Count > 0)
+            {
+                Console.WriteLine("F2 - Edit Sales Order");
+                Console.WriteLine("F3 - Get Sales Order for Customer");
+                Console.WriteLine("F7 - Delete Sales Orders by customer id");
+                Console.WriteLine("F8 - Delete Sales Orders");
+            }
+            else
+                Console.WriteLine("No sales orders for customer");
+            
             Console.WriteLine("F10 - Back");
 
             UInt16 CID = 0;
@@ -105,8 +114,8 @@ public class SalesOrderScreen : ScreenHandler
                         Database.Instance.NewSalesOrder(selected, this.company);
                     break;
                 case ConsoleKey.F2:
-                    ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));
-
+                    if(salesOrders.Count>0)
+                        ScreenHandler.Display(new EditSalesOrderScreen(salesOrders));
                     break;
                 case ConsoleKey.F3:
                     do
