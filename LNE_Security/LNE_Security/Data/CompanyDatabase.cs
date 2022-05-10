@@ -59,7 +59,8 @@ partial class Database
             company.CVR = reader.GetValue(3).ToString();
             company.ContactInfoID = Convert.ToUInt16(reader.GetValue(4));
             company.Role = Convert.ToInt32(reader.GetValue(5));
-            company.Password = reader.GetValue(6).ToString();
+            company.DatabaseName = reader.GetValue(6).ToString();
+            company.Password = reader.GetValue(7).ToString();
 
             companies.Add(company);
         }
@@ -81,6 +82,7 @@ partial class Database
             companies[i].LastName = contactInfo.LastName;
             companies[i].Email = contactInfo.Email;
             companies[i].PhoneNumber = contactInfo.PhoneNumber;
+            
         }
         
         return companies;
@@ -88,7 +90,9 @@ partial class Database
 
     public void EditCompany(UInt16 ID, Company editedCompany)
     {
-        SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
         string query = @"UPDATE [dbo].[Company]
             SET[CompanyName] = '" + editedCompany.CompanyName +
             "',[Currency] = '" + editedCompany.Currency +
@@ -194,7 +198,8 @@ partial class Database
         Console.WriteLine("New company");
         Company newCompany = new Company();
 
-        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+        //SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
         string cur = "";
         bool curOK = false;

@@ -14,7 +14,9 @@ partial class Database
     private Employee employee { get; set; }
     public List<Employee> GetEmployees()
     {
-        SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
         List<Employee> employees = new List<Employee>();
 
         string query = @"SELECT * FROM [dbo].[Employee]";
@@ -73,7 +75,9 @@ partial class Database
 
     public List<Employee> GetEmployees(UInt16 CompanyID)
     {
-        SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
         List<Employee> employees = new List<Employee>();
 
         string query = @"SELECT * FROM [dbo].[Employee] WHERE CompanyID = " + CompanyID.ToString();

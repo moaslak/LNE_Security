@@ -48,7 +48,8 @@ public class SalesOrderScreen : ScreenHandler
         if(selected != null)
         {
             ListPage<SalesOrder> salesOrderListPage = new ListPage<SalesOrder>();
-            SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
+            SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+            //SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
             List<SalesOrder> salesOrders = Database.Instance.GetSalesOrders(selected);
             List<Product> products = Database.Instance.GetProducts(company);
 
