@@ -50,57 +50,109 @@ public class EditEmployeeScreen : ScreenHandler
         switch (selected.Option)
         {
             case "Firstname":
-                this.contact.FirstName = newValue;
+                if (newValue.Length > 64)
+                {
+                    Console.WriteLine("Max length is 64 characters!!");
+                }
+                else
+                    this.contact.FirstName = newValue;
                 break;
             case "Lastname":
-                this.contact.LastName = newValue;
+                if (newValue.Length > 64)
+                {
+                    Console.WriteLine("Max length is 64 characters!!");
+                }
+                else
+                    this.contact.LastName = newValue;
                 break;
             case "Streetname":
-                this.address.StreetName = newValue;
+                if (newValue.Length > 128)
+                {
+                    Console.WriteLine("Max length is 128 characters!!");
+                }
+                else
+                    this.address.StreetName = newValue;
                 break;
             case "Housenumber":
-                this.address.HouseNumber = newValue;
+                if (newValue.Length > 16)
+                {
+                    Console.WriteLine("Max length is 16 characters!!");
+                }
+                else
+                    this.address.HouseNumber = newValue;
                 break;
             case "Zipcode":
-                this.address.ZipCode = newValue;
+                if (newValue.Length > 8)
+                {
+                    Console.WriteLine("Max length is 8 characters!!");
+                }
+                else
+                    this.address.ZipCode = newValue;
                 break;
             case "City":
-                this.address.City = newValue;
+                if (newValue.Length > 64)
+                {
+                    Console.WriteLine("Max length is 64 characters!!");
+                }
+                else
+                    this.address.City = newValue;
                 break;
             case "Phonenumber":
-                this.contact.PhoneNumber = newValue;
+                if (newValue.Length > 16)
+                {
+                    Console.WriteLine("Max length is 16 characters!!");
+                }
+                else
+                    this.contact.PhoneNumber = newValue;
                 break;
             case "Email":
-                this.contact.Email = newValue;
+                if (newValue.Length > 64)
+                {
+                    Console.WriteLine("Max length is 64 characters!!");
+                }
+                else
+                    this.contact.Email = newValue;
                 break;
             case "User name":
-                this.employee.UserName = newValue;
+                if (newValue.Length > 64)
+                {
+                    Console.WriteLine("Max length is 64 characters!!");
+                }
+                else
+                    this.employee.UserName = newValue;
                 break;
             case "Password":
-                Console.Write("Enter new password: ");
-                this.employee.Password = this.employee.GetPassword();
-                int passwordCheck = 0;
-                bool passwordConfirmed = false;
-                do
+                if (newValue.Length > 64)
                 {
-                    Console.Write("Confirm password: ");
-                    if (this.employee.Password == this.employee.GetPassword())
-                        passwordConfirmed = true;
-                    else
-                    {
-                        Console.WriteLine("Incorrect confirmation");
-                        passwordCheck++;
-                        if(passwordCheck == 3)
-                            passwordConfirmed = true;
-                    }
-
-                } while (!(passwordConfirmed));
-                if (passwordCheck == 3 && passwordConfirmed)
-                {
-                    Console.WriteLine("Password no comfirmed!!!");
-                    Console.WriteLine("Password set to: Test!234");
-                    this.employee.Password = "Test!234";
+                    Console.WriteLine("Max length is 64 characters!!");
                 }
+                else
+                {
+                    Console.Write("Enter new password: ");
+                    this.employee.Password = this.employee.GetPassword();
+                    int passwordCheck = 0;
+                    bool passwordConfirmed = false;
+                    do
+                    {
+                        Console.Write("Confirm password: ");
+                        if (this.employee.Password == this.employee.GetPassword())
+                            passwordConfirmed = true;
+                        else
+                        {
+                            Console.WriteLine("Incorrect confirmation");
+                            passwordCheck++;
+                            if (passwordCheck == 3)
+                                passwordConfirmed = true;
+                        }
+
+                    } while (!(passwordConfirmed));
+                    if (passwordCheck == 3 && passwordConfirmed)
+                    {
+                        Console.WriteLine("Password no comfirmed!!!");
+                        Console.WriteLine("Password set to: Test!234");
+                        this.employee.Password = "Test!234";
+                    }
+                }  
                 break;
             default:
                 break;
@@ -146,15 +198,22 @@ public class EditEmployeeScreen : ScreenHandler
             OptionListPage.Add(new Options("Password", employee.Password));
             OptionListPage.Add(new Options("Back", "NO EDIT"));
             Options selected = OptionListPage.Select();
-
-            if (selected.Value != "NO EDIT")
+            if (selected != null)
             {
-                EditEmployee(selected);
+                if (selected.Value != "NO EDIT")
+                {
+                    EditEmployee(selected);
+                }
+                else
+                {
+                    break;
+                }
             }
             else
             {
-                break;
+                Console.WriteLine("1Use arrow key and enter to select a parameter");
             }
+                
             Console.WriteLine("Press ESC to return to Employee screen");
         } while ((Console.ReadKey().Key != ConsoleKey.Escape));
 

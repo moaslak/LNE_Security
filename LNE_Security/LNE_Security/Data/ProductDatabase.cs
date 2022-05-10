@@ -105,8 +105,12 @@ namespace LNE_Security
                 Console.Write("Enter product number: ");
             } while (!(int.TryParse(Console.ReadLine(), out number)));
             product.ProductNumber = number;
-            Console.Write("Enter product name: ");
-            product.ProductName = Console.ReadLine();
+            do
+            {
+                Console.Write("Enter product name: ");
+                product.ProductName = Console.ReadLine();
+            } while (product.ProductName.Length > 64 && product.ProductName.Length != 0);
+            
             double salesPrice = 0;
             do
             {
@@ -169,9 +173,12 @@ namespace LNE_Security
                     product.Unit = Product.Units.piece;
                     break;
             }
-
-            Console.Write("Enter product description: ");
-            product.Description = Console.ReadLine();
+            do
+            {
+                Console.Write("Enter product description: ");
+                product.Description = Console.ReadLine();
+            } while (product.Description.Length > 128);
+            
             
             product.Profit = product.CalculateProfit(product.SalesPrice, product.CostPrice);
             product.ProfitPercent = product.CalculateProfitPercent(product.SalesPrice, product.CostPrice);

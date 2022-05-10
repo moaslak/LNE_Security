@@ -295,6 +295,7 @@ internal class EditSalesOrderScreen : ScreenHandler
     {
         Company company = Database.Instance.SelectCompany(salesOrders[0].CompanyID);
         Customer customer = new Customer();
+
         do
         {
             Title = "Edit sales order screen";
