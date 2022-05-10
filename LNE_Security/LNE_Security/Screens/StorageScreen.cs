@@ -122,15 +122,18 @@ public class StorageScreen : ScreenHandler
         {
 
             int maxFullnameLength = 0;
+            int maxOrderIdLength = 0;
             foreach (SalesOrder salesOrder in salesOrders)
             {
                 salesOrder.FullName = (Database.Instance.SelectCustomer(salesOrder.CID)).ContactInfo.FullName;
                 salesOrdersListPage.Add(salesOrder);
                 if (salesOrder.FullName.Length > maxFullnameLength)
                     maxFullnameLength = salesOrder.FullName.Length;
+                if(salesOrder.OrderID.ToString().Length > maxOrderIdLength)
+                    maxOrderIdLength = salesOrder.OrderID.ToString().Length;
 
             }
-            salesOrdersListPage.AddColumn("Order ID", "OrderID", "Order ID".Length);
+            salesOrdersListPage.AddColumn("Order ID", "OrderID", ColumnLength("Order ID", maxOrderIdLength));
             salesOrdersListPage.AddColumn("Customer", "FullName", maxFullnameLength);
             Console.WriteLine("Choose Company");
             selected = salesOrdersListPage.Select();
@@ -138,16 +141,22 @@ public class StorageScreen : ScreenHandler
             List<OrderLine> orderLines = Database.Instance.GetOrderLines(selected.OrderID);
             
             ListPage<OrderLine> ordersListPage = new ListPage<OrderLine>();
+            int maxPIDlength = 0;
+            int maxQuantityLength = 0;
             foreach (OrderLine orderLine in orderLines)
             {
                 orderLine.PID = orderLine.Product.PID;
                 ordersListPage.Add(orderLine);
+                if(orderLine.PID.ToString().Length > maxPIDlength)
+                    maxPIDlength = orderLine.PID.ToString().Length;
+                if(orderLine.Quantity.ToString().Length > maxQuantityLength)
+                    maxQuantityLength = orderLine.Quantity.ToString().Length;
             }
-                
 
             OrderLine orderline = new OrderLine();
-            ordersListPage.AddColumn("PID", "PID", 5);
-            ordersListPage.AddColumn("Quantity", "Quantity", 6);
+
+            ordersListPage.AddColumn("PID", "PID", ColumnLength("PID", maxPIDlength));
+            ordersListPage.AddColumn("Quantity", "Quantity", ColumnLength("Quantity", maxQuantityLength));
 
             Console.WriteLine("F1 - Confirm sales order");
             Console.WriteLine("F2 - Inspect orderlines");
@@ -187,9 +196,9 @@ public class StorageScreen : ScreenHandler
         Product product = Database.Instance.SelectProduct(orderLine.PID, company);
         ListPage<Product> productListPage = new ListPage<Product>();
         productListPage.Add(product);
-        productListPage.AddColumn("Product name", "ProductName", product.ProductName.Length);
-        productListPage.AddColumn("Amount in storage", "AmountInStorage", "Amount in storage".Length);
-        productListPage.AddColumn("Location", "LocationString", "Location".Length);
+        productListPage.AddColumn("Product name", "ProductName", ColumnLength("Product name", product.ProductName));
+        productListPage.AddColumn("Amount in storage", "AmountInStorage", ColumnLength("Amount in storage", product.AmountInStorage.ToString()));
+        productListPage.AddColumn("Location", "LocationString", ColumnLength("Location",product.LocationString));
         productListPage.Draw();
     }
 
@@ -328,26 +337,42 @@ public class StorageScreen : ScreenHandler
     /// </summary>
     private void Put()
     {
+        //TODO: fix new location add
         List<Product> products = Database.Instance.GetProducts(company);
         ListPage<Product> listPageProducts = new ListPage<Product>();
+
+        int maxPIDLength = 0;
+        int maxProductNameLength = 0;
+        int maxLocationLength = 0;
+        int maxAmountLength = 0;
 
         foreach(Product product in products)
         {
             listPageProducts.Add(product);
+            if(product.PID.ToString().Length > maxPIDLength)
+                maxPIDLength = product.PID.ToString().Length;
+            if(product.ProductName.Length > maxProductNameLength)
+                maxProductNameLength = product.ProductName.Length;
+            if(product.LocationString.Length > maxLocationLength)
+                maxLocationLength = product.LocationString.Length;
+            if(product.AmountInStorage.ToString().Length > maxAmountLength)
+                maxAmountLength = product.AmountInStorage.ToString().Length;
         }
 
-        listPageProducts.AddColumn("PID", "PID");
-        listPageProducts.AddColumn("Product name", "ProductName");
-        listPageProducts.AddColumn("Location", "LocationString");
-        listPageProducts.AddColumn("Amount in storage", "AmountInStorage");
+        listPageProducts.AddColumn("PID", "PID", ColumnLength("PID", maxPIDLength));
+        listPageProducts.AddColumn("Product name", "ProductName", ColumnLength("Product name", maxProductNameLength));
+        listPageProducts.AddColumn("Location", "LocationString", ColumnLength("Location", maxLocationLength));
+        listPageProducts.AddColumn("Amount in storage", "AmountInStorage", ColumnLength("Amount in storage", maxAmountLength));
         Product selectedProduct = listPageProducts.Select();
 
         Console.WriteLine("Insert on a new location? (y)es/(n)o)");
         bool newLoc = false;
+        Product newProduct = new Product();
         switch (Console.ReadKey().Key)
         {
             
             case ConsoleKey.Y:
+                newProduct = selectedProduct;
                 newLoc = true;
                 UInt16 row = 0;
                 char section = '0';
@@ -366,12 +391,13 @@ public class StorageScreen : ScreenHandler
                 {
                     Console.Write("Enter shelve: ");
                 } while (!(byte.TryParse(Console.ReadLine(), out shelve)));
-                selectedProduct.Location.Section = section;
-                selectedProduct.Location.Shelve = shelve;
-                selectedProduct.Location.Row = row;
-                selectedProduct.LocationString = selectedProduct.Location.Location2String(selectedProduct.Location);
-                Database.Instance.NewProduct(selectedProduct);
-                Console.WriteLine("Location: " + selectedProduct.LocationString);
+                newProduct.Location.Section = section;
+                newProduct.Location.Shelve = shelve;
+                newProduct.Location.Row = row;
+                newProduct.LocationString = newProduct.Location.Location2String(newProduct.Location);
+                newProduct.PID = selectedProduct.PID;
+                Database.Instance.NewProduct(newProduct);
+                Console.WriteLine("Location: " + newProduct.LocationString);
                 break;
             case ConsoleKey.N:
                 Console.WriteLine();
@@ -440,9 +466,9 @@ public class StorageScreen : ScreenHandler
             {
                 Console.Write("Add: ");
             } while (!(double.TryParse(Console.ReadLine(), out add)));
-            selectedProduct.AmountInStorage = selectedProduct.AmountInStorage + add;
-            Database.Instance.EditProduct(selectedProduct.PID, selectedProduct);
-            Console.WriteLine(add + " " + selectedProduct.ProductName + " added to location: " + selectedProduct.LocationString);
+            newProduct.AmountInStorage = newProduct.AmountInStorage + add;
+            Database.Instance.EditProduct(newProduct.PID, newProduct);
+            Console.WriteLine(add + " " + newProduct.ProductName + " added to location: " + newProduct.LocationString);
         }
     } 
 }
