@@ -16,7 +16,9 @@ partial class Database
     private Customer customer { get; set; }
     public List<Customer> GetCustomers()
     {
-        SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
         List<Customer> customers = new List<Customer>();
 
         string query = @"SELECT * FROM [dbo].[Customer]";
@@ -73,7 +75,9 @@ partial class Database
 
     public List<Customer> GetCustomers(UInt16 companyID)
     {
-        SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
         List<Customer> customers = new List<Customer>();
 
         string query = @"SELECT * FROM [dbo].[Customer] WHERE CompanyID = " + companyID.ToString();
@@ -142,7 +146,9 @@ partial class Database
 
     public void EditCustomer(Customer editedCustomer, string option)
     {
-        SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
         string query = "UPDATE [dbo].[ContactInfo] SET[FirstName] = '" + editedCustomer.ContactInfo.FirstName + "' " +
             ",[LastName] = '" + editedCustomer.ContactInfo.LastName + "', [Email] = '" + editedCustomer.ContactInfo.Email +
             "', [PhoneNumber] = '" + editedCustomer.ContactInfo.PhoneNumber + "' WHERE ContactInfoID = '" + editedCustomer.ContactInfoID +"'";
@@ -171,7 +177,9 @@ partial class Database
 
     public void DeleteCustomer(UInt16 CID)
     {
-        SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
         string query = "DELETE FROM [dbo].[Customer] WHERE CID = " + CID.ToString();
         SqlCommand cmd = new SqlCommand(query, sqlConnection);
         sqlConnection.Open();
@@ -199,7 +207,9 @@ partial class Database
 
     public void NewCustomer(Customer customer)
     {
-        SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
         string query = @"INSERT INTO [dbo].[Customer] 
             (
             [ContactInfoID],

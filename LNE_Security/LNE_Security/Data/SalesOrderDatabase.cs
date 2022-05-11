@@ -12,7 +12,9 @@ namespace LNE_Security;
 
 partial class Database
 {
-    SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
+    SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+    //SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
     public List<OrderLine> GetOrderLines(UInt32 OrderID)
     {
@@ -219,7 +221,9 @@ partial class Database
         salesOrder.CID = customer.CID;
         salesOrder.FullName = customer.ContactInfo.FullName;
         salesOrder.CompanyID = company.CompanyID;
-        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
+        SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+        //SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
         DateTime randomDate = RandomDay(); // Need OrderID for Orderlines
         string query = "INSERT INTO[dbo].[SalesOrder] (OrderTime, ContactInfoID, CID, CompanyID) VALUES('" + 

@@ -24,7 +24,9 @@ namespace LNE_Security
 
         public void EditProduct(UInt32 PID, Product editedProduct)
         {
-            SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+            SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+            //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
             string query = @"UPDATE [dbo].[Product]
             SET[ProductNumber] = " + editedProduct.ProductNumber.ToString() + 
                 ",[ProductName] = '" + editedProduct.ProductName + "'" +
@@ -97,7 +99,9 @@ namespace LNE_Security
             Console.WriteLine("New product");
             Product product = new Product();
 
-            SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
+            SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+            //SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection("LNE_Security");
 
             int number = 0;
             do
@@ -236,7 +240,9 @@ namespace LNE_Security
 
         public void DeleteProduct(UInt32 PID, Company company)
         {
-            SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
+            SqlConnection sqlConnection = new DatabaseConnection().SetSqlConnection();
+
+            //SqlConnection sqlConnection = databaseConnection.SetSqlConnection("LNE_Security");
             string query = "DELETE FROM [dbo].[Product] WHERE PID = " + PID.ToString();
             SqlCommand cmd = new SqlCommand(query, sqlConnection);
             sqlConnection.Open();
