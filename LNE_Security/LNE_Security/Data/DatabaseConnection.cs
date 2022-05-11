@@ -33,8 +33,9 @@ namespace LNE_Security.Data
             SqlConnectionStringBuilder.ConnectTimeout = 5;
             SqlConnectionStringBuilder.UserID = "mort40f4.SKOLE";
             SqlConnectionStringBuilder.Password = "fhq3CCN626";
-            string database = File.ReadAllText("..\\Data\\CONFIG.txt"); //TODO: relative path
-            database = database.Replace("Database=", "");
+            //string database = File.ReadAllText("..\\Data\\CONFIG.txt"); //TODO: relative path
+            //database = database.Replace("Database=", "");
+            string database = "mort40f4.SKOLE";
             SqlConnectionStringBuilder.InitialCatalog = database;
             SqlConnection SqlConnection = new SqlConnection(SqlConnectionStringBuilder.ConnectionString);
             return SqlConnection;
